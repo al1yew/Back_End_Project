@@ -1,87 +1,12 @@
-﻿<!-- main wrapper start -->
+﻿@model HomeVM
+
+<!-- main wrapper start -->
 <main>
     <!-- hero slider section start -->
-    <section class="hero-slider">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="hero-slider-active slick-arrow-style slick-arrow-style_hero slick-dot-style">
-                        <!-- single slider item start -->
-                        <div class="hero-single-slide">
-                            <div class="hero-slider-item bg-img" data-bg="/assets/img/slider/slider-1.jpg">
-                                <div class="hero-slider-content slide-1">
-                                    <h5 class="slide-subtitle">Top Selling!</h5>
-                                    <h2 class="slide-title">New Collection</h2>
-                                    <p class="slide-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incidid</p>
-                                    <a href="shop.html" class="btn btn-hero">SHOP NOW</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- single slider item end -->
-                        <!-- single slider item start -->
-                        <div class="hero-single-slide">
-                            <div class="hero-slider-item bg-img" data-bg="/assets/img/slider/slider-2.jpg">
-                                <div class="hero-slider-content slide-1">
-                                    <h5 class="slide-subtitle">Best Selling!</h5>
-                                    <h2 class="slide-title">Top Collection</h2>
-                                    <p class="slide-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incidid</p>
-                                    <a href="shop.html" class="btn btn-hero">SHOP NOW</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- single slider item end -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    @await Component.InvokeAsync("HomeSlider", Model.HomeSliders)
     <!-- hero slider section end -->
     <!-- service features start -->
-    <section class="service-policy-area">
-        <div class="container">
-            <div class="row">
-                <!-- single policy item start -->
-                <div class="col-lg-4">
-                    <div class="service-policy-item mt-30 bg-1">
-                        <div class="policy-icon">
-                            <img src="~/assets/img/icon/policy-1.png" alt="policy icon">
-                        </div>
-                        <div class="policy-content">
-                            <h5 class="policy-title">FREE SHIPPING</h5>
-                            <p class="policy-desc">Free shipping on all order</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- single policy item start -->
-                <!-- single policy item start -->
-                <div class="col-lg-4">
-                    <div class="service-policy-item mt-30 bg-2">
-                        <div class="policy-icon">
-                            <img src="~/assets/img/icon/policy-2.png" alt="policy icon">
-                        </div>
-                        <div class="policy-content">
-                            <h5 class="policy-title">ONLINE SUPPORT</h5>
-                            <p class="policy-desc">Online support 24 hours a day</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- single policy item start -->
-                <!-- single policy item start -->
-                <div class="col-lg-4">
-                    <div class="service-policy-item mt-30 bg-3">
-                        <div class="policy-icon">
-                            <img src="~/assets/img/icon/policy-3.png" alt="policy icon">
-                        </div>
-                        <div class="policy-content">
-                            <h5 class="policy-title">MONEY RETURN</h5>
-                            <p class="policy-desc">Back guarantee under 5 days</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- single policy item start -->
-            </div>
-        </div>
-    </section>
+    @await Component.InvokeAsync("HomeService", Model.HomeServices)
     <!-- service features end -->
     <!-- our product area start -->
     <section class="our-product section-padding">
@@ -113,9 +38,9 @@
                                     <span class="price-old"><del>$70.00</del></span>
                                 </div>
                                 <div class="product-action-link">
-                                    <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                    <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
-                                    <a href="#" data-toggle="modal" data-target="#quick_view">
+                                    <a data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                    <a data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                    <a data-toggle="modal" data-target="#quick_view" asp-controller="Product" asp-action="DetailModal" asp-route-id="@*product.Id*@">
                                         <span data-toggle="tooltip"
                                               title="Quick View"><i class="ion-ios-eye-outline"></i></span>
                                     </a>
@@ -139,9 +64,9 @@
                                     <span class="price-old"><del>$70.00</del></span>
                                 </div>
                                 <div class="product-action-link">
-                                    <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                    <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
-                                    <a href="#" data-toggle="modal" data-target="#quick_view">
+                                    <a data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                    <a data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                    <a data-toggle="modal" data-target="#quick_view">
                                         <span data-toggle="tooltip"
                                               title="Quick View"><i class="ion-ios-eye-outline"></i></span>
                                     </a>
@@ -165,9 +90,9 @@
                                     <span class="price-old"><del>$70.00</del></span>
                                 </div>
                                 <div class="product-action-link">
-                                    <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                    <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
-                                    <a href="#" data-toggle="modal" data-target="#quick_view">
+                                    <a data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                    <a data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                    <a data-toggle="modal" data-target="#quick_view">
                                         <span data-toggle="tooltip"
                                               title="Quick View"><i class="ion-ios-eye-outline"></i></span>
                                     </a>
@@ -191,9 +116,9 @@
                                     <span class="price-old"><del>$70.00</del></span>
                                 </div>
                                 <div class="product-action-link">
-                                    <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                    <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
-                                    <a href="#" data-toggle="modal" data-target="#quick_view">
+                                    <a data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                    <a data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                    <a data-toggle="modal" data-target="#quick_view">
                                         <span data-toggle="tooltip"
                                               title="Quick View"><i class="ion-ios-eye-outline"></i></span>
                                     </a>
@@ -217,9 +142,9 @@
                                     <span class="price-old"><del>$70.00</del></span>
                                 </div>
                                 <div class="product-action-link">
-                                    <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                    <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
-                                    <a href="#" data-toggle="modal" data-target="#quick_view">
+                                    <a data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                    <a data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                    <a data-toggle="modal" data-target="#quick_view">
                                         <span data-toggle="tooltip"
                                               title="Quick View"><i class="ion-ios-eye-outline"></i></span>
                                     </a>
@@ -234,34 +159,7 @@
     </section>
     <!-- our product area end -->
     <!-- banner statistic area start -->
-    <div class="banner-statistics">
-        <div class="container">
-            <div class="row no-gutters mtn-30">
-                <div class="col-md-6">
-                    <div class="img-container mt-30">
-                        <a href="product-details.html">
-                            <img src="~/assets/img/banner/banner-1.jpg" alt="banner-image">
-                        </a>
-                        <div class="banner-text">
-                            <h5 class="banner-subtitle">sports shoes</h5>
-                            <h3 class="banner-title">20% Off<br>For Sports men</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="img-container mt-30">
-                        <a href="product-details.html">
-                            <img src="~/assets/img/banner/banner-2.jpg" alt="banner-image">
-                        </a>
-                        <div class="banner-text">
-                            <h5 class="banner-subtitle">sports shoes</h5>
-                            <h3 class="banner-title">20% Off<br>For Sports men</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @await Component.InvokeAsync("HomeBanner", Model.HomeBanners)
     <!-- banner statistic area end -->
     <!-- top seller area start -->
     <section class="top-seller-area section-padding">
@@ -277,7 +175,7 @@
             <div class="row">
                 <div class="col-xl-4 col-lg-5 col-md-5">
                     <div class="product-banner">
-                        <a href="#">
+                        <a>
                             <img src="~/assets/img/banner/banner-3.jpg" alt="product banner">
                         </a>
                     </div>
@@ -308,9 +206,9 @@
                                         <span><i class="ion-android-star"></i></span>
                                     </div>
                                     <div class="product-link-2">
-                                        <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                        <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
-                                        <a href="#" data-toggle="modal" data-target="#quick_view">
+                                        <a data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                        <a data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                        <a data-toggle="modal" data-target="#quick_view">
                                             <span data-toggle="tooltip"
                                                   title="Quick View"><i class="ion-ios-eye-outline"></i></span>
                                         </a>
@@ -343,9 +241,9 @@
                                         <span><i class="ion-android-star"></i></span>
                                     </div>
                                     <div class="product-link-2">
-                                        <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                        <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
-                                        <a href="#" data-toggle="modal" data-target="#quick_view">
+                                        <a data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                        <a data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                        <a data-toggle="modal" data-target="#quick_view">
                                             <span data-toggle="tooltip"
                                                   title="Quick View"><i class="ion-ios-eye-outline"></i></span>
                                         </a>
@@ -378,9 +276,9 @@
                                         <span><i class="ion-android-star"></i></span>
                                     </div>
                                     <div class="product-link-2">
-                                        <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                        <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
-                                        <a href="#" data-toggle="modal" data-target="#quick_view">
+                                        <a data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                        <a data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                        <a data-toggle="modal" data-target="#quick_view">
                                             <span data-toggle="tooltip"
                                                   title="Quick View"><i class="ion-ios-eye-outline"></i></span>
                                         </a>
@@ -413,9 +311,9 @@
                                         <span><i class="ion-android-star"></i></span>
                                     </div>
                                     <div class="product-link-2">
-                                        <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                        <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
-                                        <a href="#" data-toggle="modal" data-target="#quick_view">
+                                        <a data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                        <a data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                        <a data-toggle="modal" data-target="#quick_view">
                                             <span data-toggle="tooltip"
                                                   title="Quick View"><i class="ion-ios-eye-outline"></i></span>
                                         </a>
@@ -448,9 +346,9 @@
                                         <span><i class="ion-android-star"></i></span>
                                     </div>
                                     <div class="product-link-2">
-                                        <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                        <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
-                                        <a href="#" data-toggle="modal" data-target="#quick_view">
+                                        <a data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                        <a data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                        <a data-toggle="modal" data-target="#quick_view">
                                             <span data-toggle="tooltip"
                                                   title="Quick View"><i class="ion-ios-eye-outline"></i></span>
                                         </a>
@@ -483,9 +381,9 @@
                                         <span><i class="ion-android-star"></i></span>
                                     </div>
                                     <div class="product-link-2">
-                                        <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                        <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
-                                        <a href="#" data-toggle="modal" data-target="#quick_view">
+                                        <a data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                        <a data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                        <a data-toggle="modal" data-target="#quick_view">
                                             <span data-toggle="tooltip"
                                                   title="Quick View"><i class="ion-ios-eye-outline"></i></span>
                                         </a>
@@ -605,41 +503,8 @@
     </section>
     <!-- latest blog area end -->
     <!-- brand area start -->
-    <div class="brand-area section-padding">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="brand-active-carousel">
-                        <div class="brand-item">
-                            <a href="#">
-                                <img src="~/assets/img/brand/br1.png" alt="brand image">
-                            </a>
-                        </div>
-                        <div class="brand-item">
-                            <a href="#">
-                                <img src="~/assets/img/brand/br2.png" alt="brand image">
-                            </a>
-                        </div>
-                        <div class="brand-item">
-                            <a href="#">
-                                <img src="~/assets/img/brand/br3.png" alt="brand image">
-                            </a>
-                        </div>
-                        <div class="brand-item">
-                            <a href="#">
-                                <img src="~/assets/img/brand/br4.png" alt="brand image">
-                            </a>
-                        </div>
-                        <div class="brand-item">
-                            <a href="#">
-                                <img src="~/assets/img/brand/br5.png" alt="brand image">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @await Component.InvokeAsync("BrandSlider", Model.HomeBrandSliders)
     <!-- brand area end -->
 </main>
+
 <!-- main wrapper end -->

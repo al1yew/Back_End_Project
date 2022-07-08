@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20220708130056_AddedSettingTable.cs" />
+    <Compile Remove="Migrations\20220708130056_AddedSettingTable.Designer.cs" />
+    <Compile Remove="Migrations\20220708184438_AddedBlogTableAndRelatedTables.cs" />
+    <Compile Remove="Migrations\20220708184438_AddedBlogTableAndRelatedTables.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.25" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.25" />
@@ -16,10 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
-    <Folder Include="ViewComponents\" />
-    <Folder Include="ViewModels\" />
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>

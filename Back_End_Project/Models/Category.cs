@@ -41,6 +41,6 @@ namespace Back_End_Project.Models
 
         //Category photo will be assigned to property string Image
         [NotMapped]
-        public IFormFile File { get; set; }
+        public IFormFile Photo { get; set; }
     }
 }

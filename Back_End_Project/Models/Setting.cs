@@ -6,15 +6,12 @@ using System.Threading.Tasks;
 
 namespace Back_End_Project.Models
 {
-    public class Tag
+    public class Setting
     {
         public int Id { get; set; }
-
-        [StringLength(30)]
-        [Required]
-        public string TagName { get; set; }
-
-        //relations of Tag
-        public IEnumerable<ProductToTag> ProductToTags { get; set; }
+        [Required, StringLength(255)]
+        public string Key { get; set; }
+        [Required, StringLength(2048)]
+        public string Value { get; set; }
     }
 }

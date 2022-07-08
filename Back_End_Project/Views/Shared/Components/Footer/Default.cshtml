@@ -1,0 +1,101 @@
+﻿@model FooterVM
+
+<footer class="footer-wrapper">
+    <!-- footer main area start -->
+    <div class="footer-widget-area section-padding">
+        <div class="container">
+            <div class="row mtn-40">
+                <!-- footer widget item start -->
+                <div class="col-xl-5 col-lg-3 col-md-6">
+                    <div class="widget-item mt-40">
+                        <h5 class="widget-title">My Account</h5>
+                        <div class="widget-body">
+                            <ul class="location-wrap">
+                                <li><i class="ion-ios-location-outline"></i>@Model.Settings.FirstOrDefault(m => m.Key == "Address").Value</li>
+                                <li>
+                                    <i class="ion-ios-email-outline"></i>Mail Us: <a href="mailto:@(Model.Settings.FirstOrDefault(m=>m.Key == "Email").Value)">
+                                        @Model.Settings.FirstOrDefault(m => m.Key == "Email").Value
+                                    </a>
+                                </li>
+                                <li>
+                                    <i class="ion-ios-telephone-outline"></i>Phone: <a href="tel:@(Model.Settings.FirstOrDefault(m=>m.Key == "Phone").Value)">
+                                        @(Model.Settings.FirstOrDefault(m=>m.Key == "Phone").Value)
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer widget item end -->
+                <!-- footer widget item start -->
+                <div class="col-xl-2 col-lg-3 col-md-6">
+                    <div class="widget-item mt-40">
+                        <h5 class="widget-title">Categories</h5>
+                        <div class="widget-body">
+                            <ul class="useful-link">
+                                @foreach (Category category in Model.Categories.Where(c => c.IsMain).Take(6))
+                                {
+                    <li><a asp-controller="Shop" asp-action="ShowByCategory" asp-route-id="@category.Id">@category.Name</a></li>}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer widget item end -->
+                <!-- footer widget item start -->
+                <div class="col-xl-2 col-lg-3 offset-xl-1 col-md-6">
+                    <div class="widget-item mt-40">
+                        <h5 class="widget-title">Brands</h5>
+                        <div class="widget-body">
+                            <ul class="useful-link">
+                                @foreach (Brand brand in Model.Brands.Take(6))
+                                {
+                    <li><a asp-controller="Shop" asp-action="ShowByBrand" asp-route-id="@brand.Id">@brand.Name</a></li>}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer widget item end -->
+                <!-- footer widget item start -->
+                <div class="col-xl-2 col-lg-3 col-md-6">
+                    <div class="widget-item mt-40">
+                        <h5 class="widget-title">Information</h5>
+                        <div class="widget-body">
+                            <ul class="useful-link">
+                                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li><a asp-controller="About" asp-action="Index">About Us</a></li>
+                                <li><a asp-controller="Contact" asp-action="Index">Contact Us</a></li>
+                                <li><a asp-controller="Account" asp-action="MyAccount">My Account</a></li>
+                                <li><a asp-controller="Account" asp-action="MyAccount">Orders Tracking</a></li>
+                                <li><a asp-controller="Contact" asp-action="Index">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer widget item end -->
+            </div>
+        </div>
+    </div>
+    <!-- footer main area end -->
+    <!-- footer bottom area start -->
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 order-2 order-md-1">
+                    <div class="copyright-text text-center text-md-left">
+                        @Html.Raw(Model.Settings.FirstOrDefault(m => m.Key == "Copyright").Value)
+                    </div>
+                </div>
+                <div class="col-md-6 order-1 order-md-2">
+                    <div class="footer-social-link text-center text-md-right">
+                        <a href="@Model.Settings.FirstOrDefault(m=>m.Key == "FacebookLink").Value"><i class="fa fa-facebook"></i></a>
+                        <a href="@Model.Settings.FirstOrDefault(m=>m.Key == "TwitterLink").Value"><i class="fa fa-twitter"></i></a>
+                        <a href="@Model.Settings.FirstOrDefault(m=>m.Key == "InstagramLink").Value"><i class="fa fa-instagram"></i></a>
+                        <a href="@Model.Settings.FirstOrDefault(m=>m.Key == "LinkedInLink").Value"><i class="fa fa-linkedin"></i></a>
+                        <a href="@Model.Settings.FirstOrDefault(m=>m.Key == "YoutubeLink").Value"><i class="fa fa-youtube-play"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- footer bottom area end -->
+</footer>

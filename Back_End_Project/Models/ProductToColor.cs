@@ -9,7 +9,6 @@ namespace Back_End_Project.Models
     {
         public int Id { get; set; }
 
-
         //relations product and color models
         public Product Product { get; set; }
         public int ProductId { get; set; }

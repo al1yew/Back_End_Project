@@ -64,11 +64,12 @@ namespace Back_End_Project.Models
         public int BrandId { get; set; }
 
 
+
         //images
         [NotMapped]
-        public IFormFile File { get; set; }
+        public IFormFile Photo { get; set; }
         [NotMapped]
-        public IEnumerable<IFormFile> Files { get; set; }
+        public IEnumerable<IFormFile> Photos { get; set; }
 
 
         //crud for Manage Area
