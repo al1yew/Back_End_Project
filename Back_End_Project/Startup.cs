@@ -1,7 +1,10 @@
+using Back_End_Project.DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
@@ -14,12 +17,19 @@ namespace Back_End_Project
 {
     public class Startup
     {
+        private IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
+
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -29,7 +39,7 @@ namespace Back_End_Project
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSession();
+            //app.UseSession();
 
             app.UseRouting();
 
