@@ -1,0 +1,20 @@
+﻿@model List<HomeBrandSlider>
+
+<div class="brand-area section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="brand-active-carousel">
+                    @foreach (var item in Model)
+                    {
+                        <div class="brand-item">
+                            <a>
+                                <img src="~/assets/img/brand/@item.Image" alt="brand image">
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

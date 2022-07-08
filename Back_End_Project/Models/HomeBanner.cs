@@ -17,5 +17,6 @@ namespace Back_End_Project.Models
 
         [StringLength(40)]
         public string SubTitle { get; set; }
+        public string RedirectUrl { get; set; }
     }
 }

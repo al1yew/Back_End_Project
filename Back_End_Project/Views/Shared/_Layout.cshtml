@@ -1,9 +1,7 @@
 ﻿@using Back_End_Project.Interfaces
 @inject ILayoutService layoutService
 
-@{ 
-    IDictionary<string, string> settings = await layoutService.GetSetting();
-}
+@{ IDictionary<string, string> settings = await layoutService.GetSetting(); }
 
 <!DOCTYPE html>
 <html class="no-js" lang="zxx">

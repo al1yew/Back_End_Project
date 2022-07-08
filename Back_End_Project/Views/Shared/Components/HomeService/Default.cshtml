@@ -1,47 +1,22 @@
-﻿@model HomeService
+﻿@model List<HomeService>
 
 <section class="service-policy-area">
     <div class="container">
         <div class="row">
-            <!-- single policy item start -->
-            <div class="col-lg-4">
-                <div class="service-policy-item mt-30 bg-1">
-                    <div class="policy-icon">
-                        <img src="~/assets/img/icon/policy-1.png" alt="policy icon">
-                    </div>
-                    <div class="policy-content">
-                        <h5 class="policy-title">FREE SHIPPING</h5>
-                        <p class="policy-desc">Free shipping on all order</p>
-                    </div>
-                </div>
-            </div>
-            <!-- single policy item start -->
-            <!-- single policy item start -->
-            <div class="col-lg-4">
-                <div class="service-policy-item mt-30 bg-2">
-                    <div class="policy-icon">
-                        <img src="~/assets/img/icon/policy-2.png" alt="policy icon">
-                    </div>
-                    <div class="policy-content">
-                        <h5 class="policy-title">ONLINE SUPPORT</h5>
-                        <p class="policy-desc">Online support 24 hours a day</p>
+            @foreach (HomeService homeService in Model)
+            {
+                <div class="col-lg-4">
+                    <div class="service-policy-item mt-30 bg-1" style="color: @homeService.Color">
+                        <div class="policy-icon">
+                            <img src="~/assets/img/icon/@homeService.Image" alt="policy icon">
+                        </div>
+                        <div class="policy-content">
+                            <h5 class="policy-title">@homeService.Title</h5>
+                            <p class="policy-desc">@homeService.SubTitle</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- single policy item start -->
-            <!-- single policy item start -->
-            <div class="col-lg-4">
-                <div class="service-policy-item mt-30 bg-3">
-                    <div class="policy-icon">
-                        <img src="~/assets/img/icon/policy-3.png" alt="policy icon">
-                    </div>
-                    <div class="policy-content">
-                        <h5 class="policy-title">MONEY RETURN</h5>
-                        <p class="policy-desc">Back guarantee under 5 days</p>
-                    </div>
-                </div>
-            </div>
-            <!-- single policy item start -->
+            }
         </div>
     </div>
 </section>

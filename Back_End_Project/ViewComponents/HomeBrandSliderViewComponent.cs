@@ -8,13 +8,8 @@ using System.Threading.Tasks;
 
 namespace Back_End_Project.ViewComponents
 {
-    public class BrandSliderViewComponent : ViewComponent
+    public class HomeBrandSliderViewComponent : ViewComponent
     {
-        private readonly AppDbContext _context;
-        public BrandSliderViewComponent(AppDbContext context)
-        {
-            _context = context;
-        }
         public async Task<IViewComponentResult> InvokeAsync(List<HomeBrandSlider> brandSliders)
         {
             return View(await Task.FromResult(brandSliders));

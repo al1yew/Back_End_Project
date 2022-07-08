@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Back_End_Project.ViewComponents
 {
-    public class HomeSliderViewComponent : ViewComponent
+    public class HomeServiceViewComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(List<HomeSlider> homeSliders)
+        public async Task<IViewComponentResult> InvokeAsync(List<HomeService> homeServices)
         {
-            return View(await Task.FromResult(homeSliders));
+            return View(await Task.FromResult(homeServices));
         }
     }
 }
