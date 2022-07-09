@@ -21,13 +21,18 @@ namespace Back_End_Project.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            List<Blog> blogs = await _context.Blogs
-                .Include(b => b.BlogCategory)
-                .Include(b => b.BlogTag)
-                .Include(b => b.BlogAuthor)
-                .ToListAsync();
+            List<Blog> blogs = await _context.Blogs.ToListAsync();
 
-            return View(blogs);
+            BlogVM blogVM = new BlogVM
+            {
+                Blogs = blogs,
+                BlogTags = await _context.BlogTags.ToListAsync(),
+                BlogAuthors = await _context.BlogAuthors.ToListAsync(),
+                BlogCategories = await _context.BlogCategories.ToListAsync(),
+                RecentBlogs = await _context.Blogs.Where(b => b.IsRecent).ToListAsync()
+            };
+
+            return View(blogVM);
         }
 
         public async Task<IActionResult> Detail(int? id)
@@ -43,7 +48,7 @@ namespace Back_End_Project.Controllers
 
             if (blog == null) return NotFound();
 
-            BlogVM blogVM = new BlogVM
+            BlogDetailVM blogVM = new BlogDetailVM
             {
                 Blog = blog,
                 Blogs = await _context.Blogs
@@ -54,7 +59,6 @@ namespace Back_End_Project.Controllers
 
             return View(blogVM);
         }
-
         public async Task<IActionResult> BlogSearch(string blogsearch)
         {
             List<Blog> blogs = await _context.Blogs
@@ -69,6 +73,80 @@ namespace Back_End_Project.Controllers
                 .ToListAsync();
 
             return PartialView("_SearchBlogPartial", blogs);
+        }
+        public async Task<IActionResult> SortByCategory(int? id)
+        {
+            if (id == null)
+            {
+                return View("Index");
+            }
+            else
+            {
+                List<Blog> blogs = await _context.Blogs
+                .Where(b => b.BlogCategoryId == id)
+                .ToListAsync();
+
+                BlogVM blogVM = new BlogVM
+                {
+                    Blogs = blogs,
+                    BlogTags = await _context.BlogTags.ToListAsync(),
+                    BlogAuthors = await _context.BlogAuthors.ToListAsync(),
+                    BlogCategories = await _context.BlogCategories.ToListAsync(),
+                    RecentBlogs = await _context.Blogs.Where(b => b.IsRecent).ToListAsync()
+                };
+
+                return View("Index", blogVM);
+            }
+        }
+
+        public async Task<IActionResult> SortByTag(int? id)
+        {
+            if (id == null)
+            {
+                return View("Index");
+            }
+            else
+            {
+                List<Blog> blogs = await _context.Blogs
+                .Where(b => b.BlogTagId == id)
+                .ToListAsync();
+
+                BlogVM blogVM = new BlogVM
+                {
+                    Blogs = blogs,
+                    BlogTags = await _context.BlogTags.ToListAsync(),
+                    BlogAuthors = await _context.BlogAuthors.ToListAsync(),
+                    BlogCategories = await _context.BlogCategories.ToListAsync(),
+                    RecentBlogs = await _context.Blogs.Where(b => b.IsRecent).ToListAsync()
+                };
+
+                return View("Index", blogVM);
+            }
+        }
+
+        public async Task<IActionResult> SortByAuthor(int? id)
+        {
+            if (id == null)
+            {
+                return View("Index");
+            }
+            else
+            {
+                List<Blog> blogs = await _context.Blogs
+                .Where(b => b.BlogAuthorId == id)
+                .ToListAsync();
+
+                BlogVM blogVM = new BlogVM
+                {
+                    Blogs = blogs,
+                    BlogTags = await _context.BlogTags.ToListAsync(),
+                    BlogAuthors = await _context.BlogAuthors.ToListAsync(),
+                    BlogCategories = await _context.BlogCategories.ToListAsync(),
+                    RecentBlogs = await _context.Blogs.Where(b=>b.IsRecent).ToListAsync()
+                };
+
+                return View("Index", blogVM);
+            }
         }
     }
 }

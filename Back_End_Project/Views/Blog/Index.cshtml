@@ -1,5 +1,5 @@
 ﻿
-@model List<Blog>
+@model BlogVM
 <!-- main wrapper start -->
 <main>
     <!-- breadcrumb area start -->
@@ -29,23 +29,24 @@
                     <div class="blog-widget-wrapper">
                         <!-- widget item start -->
                         <div class="blog-widget author-slider">
-                            @foreach (Blog blog in Model)
+                            @foreach (var item in Model.BlogAuthors)
                             {
-                <div>
-                    <div class="blog-widget-img">
-                        <img src="~/assets/img/blog/@blog.BlogAuthor.AuthorImage" />
-                    </div>
-                    <div class="blog-author-title text-center">
-                        <h5>@blog.BlogAuthor.AuthorName</h5>
-                        <span>@blog.BlogAuthor.AuthorPosition</span>
-                        <div class="blog-widget-icon">
-                            <a href="@(blog.BlogAuthor.LinkedInUrl)"><i class="fa fa-linkedin"></i></a>
-                            <a href="@(blog.BlogAuthor.LinkedInUrl)"><i class="fa fa-facebook"></i></a>
-                            <a href="@(blog.BlogAuthor.LinkedInUrl)"><i class="fa fa-twitch"></i></a>
-                            <a href="@(blog.BlogAuthor.LinkedInUrl)"><i class="fa fa-pinterest"></i></a>
-                        </div>
-                    </div>
-                </div>}
+                                <div>
+                                    <div class="blog-widget-img">
+                                        <img src="~/assets/img/blog/@item.AuthorImage" />
+                                    </div>
+                                    <div class="blog-author-title text-center">
+                                        <h5><a asp-controller="Blog" asp-action="SortByAuthor" asp-route-id="@item.Id">@item.AuthorName</a></h5>
+                                        <span>@item.AuthorPosition</span>
+                                        <div class="blog-widget-icon">
+                                            <a href="@(item.LinkedInUrl)"><i class="fa fa-linkedin"></i></a>
+                                            <a href="@(item.LinkedInUrl)"><i class="fa fa-facebook"></i></a>
+                                            <a href="@(item.LinkedInUrl)"><i class="fa fa-twitch"></i></a>
+                                            <a href="@(item.LinkedInUrl)"><i class="fa fa-pinterest"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
                         <p class="text text-danger">Slide for Blogger</p>
                         <!-- widget item end -->
@@ -57,7 +58,7 @@
                                 <input data-url="http://localhost:15866/Blog/BlogSearch" placeholder="Search keyword" type="text" class="search-field blog-search">
                                 <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
                             </form>
-                            <div class="search-body-blog">
+                            <div class="search-body-blog d-none">
                                 <ul class="list-group-blog" style="height: 300px;position:absolute;width: 100%; right:0; z-index:500;">
                                 </ul>
                             </div>
@@ -68,7 +69,7 @@
                         <div class="blog-widget">
                             <h4 class="blog-widget-title">Recent Posts</h4>
                             <ul class="recent-posts-inner">
-                                @foreach (Blog blog1 in Model.Where(b => b.IsRecent).Take(5))
+                                @foreach (Blog blog1 in Model.RecentBlogs.Take(5))
                                 {
                     <li class="recent-posts">
                         <div class="recent-posts-image">
@@ -96,9 +97,9 @@
                         <div class="blog-widget">
                             <h4 class="blog-widget-title">Categories</h4>
                             <ul class="blog-categories">
-                                @foreach (Blog blog2 in Model)
+                                @foreach (var item in Model.BlogCategories)
                                 {
-                                    <li><a>@blog2.BlogCategory.Name</a><span>(@blog2.BlogCategory.Blogs.Distinct().Count())</span></li>
+                                    <li><a asp-controller="Blog" asp-action="SortByCategory" asp-route-id="@item.Id">@item.Name</a><span>(say)</span></li>
                                 }
                             </ul>
                         </div>
@@ -107,9 +108,9 @@
                         <div class="blog-widget">
                             <h4 class="blog-widget-title">Tags</h4>
                             <div class="blog-tag">
-                                @foreach (Blog blog3 in Model)
+                                @foreach (var item in Model.BlogTags)
                                 {
-                    <a>@blog3.BlogTag.Name</a>}
+                                    <a asp-controller="Blog" asp-action="SortByTag" asp-route-id="@item.Id">@item.Name</a>}
                             </div>
                         </div>
                         <!-- widget item end -->
@@ -117,7 +118,7 @@
                 </div>
                 <div class="col-lg-9 order-1 order-lg-2">
                     <div class="row">
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.Blogs)
                         {
             <div class="col-md-6">
                 <div class="blog-post-item mb-30">

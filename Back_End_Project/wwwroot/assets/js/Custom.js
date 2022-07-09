@@ -94,6 +94,7 @@
 
         if (inputvalue) {
             console.log(inputvalue)
+            $(".search-body-blog").removeClass("d-none")
             fetch(url)
                 .then(res => res.text())
                 .then(data => {
@@ -102,6 +103,7 @@
         }
         else {
             $(".search-body-blog .list-group-blog").html('');
+            $(".search-body-blog").addClass("d-none");
         }
     });
 
