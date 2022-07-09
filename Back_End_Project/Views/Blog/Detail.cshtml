@@ -1,5 +1,4 @@
-﻿@model Blog
-
+﻿@model BlogVM
 <!-- main wrapper start -->
 <main>
     <!-- breadcrumb area start -->
@@ -11,9 +10,9 @@
                         <nav aria-label="breadcrumb">
                             <h1 class="breadcrumb-title">Blog</h1>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item"><a href="blog-right-sidebar.html">Blog</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Blog Details</li>
+                                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li class="breadcrumb-item"><a asp-controller="Blog" asp-action="Index">Blog</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">@Model.Blog.BlogTitle.Substring(0,15) ...</li>
                             </ul>
                         </nav>
                     </div>
@@ -31,16 +30,16 @@
                         <!-- widget item start -->
                         <div class="blog-widget">
                             <div class="blog-widget-img">
-                                <img src="~/assets/img/blog/11.jpg" alt="author thumb" />
+                                <img src="~/assets/img/blog/@Model.Blog.BlogAuthor.AuthorImage" />
                             </div>
                             <div class="blog-author-title text-center">
-                                <h5>Erik Jhonson</h5>
-                                <span>UI UX Designer</span>
+                                <h5>@Model.Blog.BlogAuthor.AuthorName</h5>
+                                <span>@Model.Blog.BlogAuthor.AuthorPosition</span>
                                 <div class="blog-widget-icon">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-vimeo"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                                    <a href="@Model.Blog.BlogAuthor.LinkedInUrl"><i class="fa fa-facebook"></i></a>
+                                    <a href="@Model.Blog.BlogAuthor.LinkedInUrl"><i class="fa fa-twitter"></i></a>
+                                    <a href="@Model.Blog.BlogAuthor.LinkedInUrl"><i class="fa fa-vimeo"></i></a>
+                                    <a href="@Model.Blog.BlogAuthor.LinkedInUrl"><i class="fa fa-pinterest-p"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -58,42 +57,17 @@
                         <div class="blog-widget">
                             <h4 class="blog-widget-title">Recent Posts</h4>
                             <ul class="recent-posts-inner">
-                                <li class="recent-posts">
-                                    <div class="recent-posts-image">
-                                        <a href="blog-details.html"><img src="~/assets/img/blog/recent-01.jpg" alt="post thumb"></a>
-                                    </div>
-                                    <div class="recent-posts-body">
-                                        <span class="recent-posts-meta">February  13,  2018</span>
-                                        <h6 class="recent-posts-title"><a href="blog-details.html">Diffrent title gose This is demo</a></h6>
-                                    </div>
-                                </li>
-                                <li class="recent-posts">
-                                    <div class="recent-posts-image">
-                                        <a href="blog-details.html"><img src="~/assets/img/blog/recent-02.jpg" alt="post thumb"></a>
-                                    </div>
-                                    <div class="recent-posts-body">
-                                        <span class="recent-posts-meta">February  13,  2018</span>
-                                        <h6 class="recent-posts-title"><a href="blog-details.html">Diffrent title gose This is demo</a></h6>
-                                    </div>
-                                </li>
-                                <li class="recent-posts">
-                                    <div class="recent-posts-image">
-                                        <a href="blog-details.html"><img src="~/assets/img/blog/recent-03.jpg" alt="post thumb"></a>
-                                    </div>
-                                    <div class="recent-posts-body">
-                                        <span class="recent-posts-meta">February  13,  2018</span>
-                                        <h6 class="recent-posts-title"><a href="blog-details.html">Diffrent title gose This is demo</a></h6>
-                                    </div>
-                                </li>
-                                <li class="recent-posts">
-                                    <div class="recent-posts-image">
-                                        <a href="blog-details.html"><img src="~/assets/img/blog/recent-04.jpg" alt="post thumb"></a>
-                                    </div>
-                                    <div class="recent-posts-body">
-                                        <span class="recent-posts-meta">February  13,  2018</span>
-                                        <h6 class="recent-posts-title"><a href="blog-details.html">Diffrent title gose This is demo</a></h6>
-                                    </div>
-                                </li>
+                                @foreach (Blog blog1 in Model.Blogs.Where(b => b.IsRecent).Take(5))
+                                {
+                    <li class="recent-posts">
+                        <div class="recent-posts-image">
+                            <a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog1.Id"><img src="~/assets/img/blog/@blog1.BlogImage"></a>
+                        </div>
+                        <div class="recent-posts-body">
+                            <span class="recent-posts-meta">@blog1.PublishDate</span>
+                            <h6 class="recent-posts-title"><a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog1.Id">@blog1.BlogTitle</a></h6>
+                        </div>
+                    </li>}
                             </ul>
                         </div>
                         <!-- widget item end -->
@@ -101,12 +75,9 @@
                         <div class="blog-widget">
                             <h4 class="blog-widget-title">Categories</h4>
                             <ul class="blog-categories">
-                                <li><a href="blog-details.html">Shoes</a><span>(20)</span></li>
-                                <li><a href="blog-details.html">Fashion</a><span>(18)</span></li>
-                                <li><a href="blog-details.html">Wallet</a><span>(40)</span></li>
-                                <li><a href="blog-details.html">Life Style</a><span>(66)</span></li>
-                                <li><a href="blog-details.html">Electronics</a><span>(66)</span></li>
-                                <li><a href="blog-details.html">Jewellery & Cosmetics</a><span>(30)</span></li>
+                                @foreach (Blog blog2 in Model.Blogs)
+                                {
+                    <li><a>@blog2.BlogCategory.Name</a><span>(say)</span></li>}
                             </ul>
                         </div>
                         <!-- widget item end -->
@@ -114,11 +85,9 @@
                         <div class="blog-widget">
                             <h4 class="blog-widget-title">Tags</h4>
                             <div class="blog-tag">
-                                <a href="blog-details.html">Fashion</a>
-                                <a href="blog-details.html">Shoes</a>
-                                <a href="blog-details.html">Wallet</a>
-                                <a href="blog-details.html">Bags</a>
-                                <a href="blog-details.html">Jewelery</a>
+                                @foreach (Blog blog3 in Model.Blogs)
+                                {
+                    <a>@blog3.BlogTag.Name</a>}
                             </div>
                         </div>
                         <!-- widget item end -->
@@ -130,45 +99,26 @@
                             <!-- blog single item start -->
                             <div class="blog-post-item">
                                 <div class="blog-thumb">
-                                    <img src="~/assets/img/blog/blog-details-1.jpg" alt="blog thumb">
+                                    <img src="~/assets/img/blog/@Model.Blog.BlogImage" alt="blog thumb">
                                 </div>
                                 <div class="blog-content blog-details">
                                     <h5 class="blog-title">
-                                        Celebrity Daughter Opens About Upto Having Her Eye
+                                        @Model.Blog.BlogTitle
                                     </h5>
                                     <ul class="blog-meta">
-                                        <li><span>By: </span>Admin,</li>
-                                        <li><span>On: </span>14.07.2029</li>
+                                        <li><span>By: </span>@Model.Blog.BlogAuthor.AuthorName</li>
+                                        <li><span>On: </span>@Model.Blog.PublishDate</li>
                                     </ul>
                                     <p>
-                                        Bigger ipsum dolor sit amet consectetur adipisicing elit. Voluptate perferendis
-                                        consequuntur illo aliquid nihil ad neque, debitis praesentium libero ullam
-                                        asperiores exercitationem deserunt inventore facilis, officiis,
+                                        @Model.Blog.UpperText
                                     </p>
                                     <blockquote>
                                         <p>
-                                            Quisque semper nunc vitae erat pellentesque, ac placerat arcu consectetur.
-                                            venenatis elit ac ultrices convallis. Duis est nisi, tincidunt ac urna sed,
-                                            cursus blandit lectus. In ullamcorper sit amet ligula ut eleifend. Proin
-                                            dictum
-                                            tempor ligula, ac feugiat metus. Sed finibus tortor eu scelerisque
-                                            scelerisque.
+                                            @Model.Blog.StrongText
                                         </p>
                                     </blockquote>
                                     <p>
-                                        aliquam maiores asperiores recusandae commodi blanditiis ipsum tempora culpa
-                                        possimus assumenda ab quidem a voluptatum quia natus? Ex neque, saepe
-                                        reiciendis
-                                        quasi velit perspiciatis error vel quas quibusdam autem nesciunt voluptas odit
-                                        quis
-                                        dignissimos eos aspernatur voluptatum est repellat. Pariatur praesentium,
-                                        corrupti
-                                        deserunt ducimus quo doloremque nostrum aspernatur saepe cupiditate sit autem
-                                        exercitationem debitis, maiores vitae perferendis nemo? Voluptas illo, animi
-                                        temporibus quod earum molestias eaque, iure rem amet autem dignissimos officia
-                                        dolores numquam distinctio esse voluptates optio pariatur aspernatur omnis?
-                                        Ipsam
-                                        qui commodi velit natus reiciendis quod quibusdam nemo eveniet similique animi!
+                                        @Model.Blog.BottomText
                                     </p>
                                 </div>
                             </div>

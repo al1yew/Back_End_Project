@@ -39,6 +39,15 @@ namespace Back_End_Project.Models
         [StringLength(maximumLength: 255)]
         public string Image { get; set; }
 
+        [StringLength(maximumLength: 2048)]
+        public string FirstText { get; set; }
+
+        [StringLength(maximumLength: 2048)]
+        public string SecondText { get; set; }
+
+
+
+
         //for main home page
         public bool IsAvailable { get; set; }
         public bool IsTopSeller { get; set; }
@@ -48,11 +57,9 @@ namespace Back_End_Project.Models
         //relations with product many to many
         public IEnumerable<ProductToColor> ProductToColors { get; set; }
         public IEnumerable<ProductToSize> ProductToSizes { get; set; }
-        public IEnumerable<ProductToTag> ProductToTags { get; set; }
 
 
         //relations with product one to many
-        public IEnumerable<ProductDescription> ProductDescriptions { get; set; }
         public List<ProductImage> ProductImages { get; set; }
         public IEnumerable<ProductInformation> ProductInformation { get; set; }
 

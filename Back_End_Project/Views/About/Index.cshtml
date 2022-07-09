@@ -1,17 +1,36 @@
-﻿<!--====== About Part Start ======-->
+﻿@model IDictionary<string, string>
+<!--====== About Part Start ======-->
 
-<section class="about-page pt-20">
+<div class="breadcrumb-area bg-img" data-bg="~/assets/img/banner/breadcrumb-banner.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-wrap text-center">
+                    <nav aria-label="breadcrumb">
+                        <h1 class="breadcrumb-title">About</h1>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">About</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="about-page pt-20 mb-20">
     <div class="container-fluid custom-container">
         <div class="row">
             <div class="col-lg-6">
                 <div class="about-image mt-30">
-                    <img src="assets/images/slider-5.jpg" alt="">
+                    <img src="assets/img/about/@Model.FirstOrDefault(x=>x.Key == "AboutPhoto").Value" alt="">
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="about-content mt-30">
-                    <h2 class="title">Welcome to Allup</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam eum commodi obcaecati soluta minima rem error nihil. Deleniti quis maxime tempore optio enim, sapiente consectetur? Sed accusantium voluptatem rerum nisi quas, ipsum cupiditate. Autem quis possimus delectus pariatur corrupti facilis ex nobis voluptatem totam provident debitis, obcaecati exercitationem praesentium saepe hic. <br> <br> Sint voluptatum beatae necessitatibus quos mollitia vero, optio asperiores aut tempora iusto eum rerum, possimus, minus quidem ut saepe laboriosam. Praesentium aperiam accusantium minus repellendus accusamus neque iusto pariatur laudantium provident quod recusandae exercitationem natus dignissimos, molestias quibusdam doloremque eaque fugit molestiae modi quam unde. Error est dolor facere.</p>
+                    <h2 class="title">@Model.FirstOrDefault(x => x.Key == "AboutTitle").Value</h2>
+                    <p>@Model.FirstOrDefault(x => x.Key == "AboutFirstRightText").Value <br />@Model.FirstOrDefault(x => x.Key == "AboutSecondRightText").Value</p>
                 </div>
             </div>
         </div> <!-- row -->
@@ -20,19 +39,19 @@
                 <div class="col-lg-4">
                     <div class="about-item mt-30">
                         <h4 class="title">Our company</h4>
-                        <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. Lorem ipsum dolor sit amet conse ctetur adipisicing elit.</p>
+                        <p>@Model.FirstOrDefault(x => x.Key == "AboutOurCompanyText").Value</p>
                     </div> <!-- about item -->
                 </div>
                 <div class="col-lg-4">
                     <div class="about-item mt-30">
                         <h4 class="title">Our team</h4>
-                        <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. Lorem ipsum dolor sit amet conse ctetur adipisicing elit.</p>
+                        <p>@Model.FirstOrDefault(x => x.Key == "AboutOurTeamText").Value</p>
                     </div> <!-- about item -->
                 </div>
                 <div class="col-lg-4">
                     <div class="about-item mt-30">
                         <h4 class="title">Testimonials</h4>
-                        <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. Lorem ipsum dolor sit amet conse ctetur adipisicing elit.</p>
+                        <p>@Model.FirstOrDefault(x => x.Key == "AboutTestimonialsText").Value</p>
                     </div> <!-- about item -->
                 </div>
             </div> <!-- row -->

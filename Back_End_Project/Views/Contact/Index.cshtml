@@ -1,6 +1,5 @@
-﻿
+﻿@model IDictionary<string, string>
 
-<!-- main wrapper start -->
 <main>
     <!-- breadcrumb area start -->
     <div class="breadcrumb-area bg-img" data-bg="~/assets/img/banner/breadcrumb-banner.jpg">
@@ -11,7 +10,7 @@
                         <nav aria-label="breadcrumb">
                             <h1 class="breadcrumb-title">Contact Us</h1>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
                             </ul>
                         </nav>
@@ -28,7 +27,7 @@
                 <div class="col-lg-6">
                     <div class="contact-message">
                         <h2 class="contact-title">tell us your project</h2>
-                        <form id="contact-form" action="http://whizthemes.com/mail-php/genger/mail.php" method="post" class="contact-form">
+                        <form id="contact-form" method="post" class="contact-form">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <input name="first_name" placeholder="Name *" type="text" required>
@@ -61,18 +60,20 @@
                     <div class="contact-info pt-0">
                         <h2 class="contact-title">contact us</h2>
                         <p>
-                            Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum
-                            est notare quam littera gothica, quam nunc putamus parum claram anteposuerit litterarum
-                            formas human.
+                            @Model.FirstOrDefault(x => x.Key == "ContactUsText").Value
                         </p>
                         <ul>
-                            <li><i class="fa fa-fax"></i> Address : No 40 Baria Sreet 133/2 NewYork City</li>
-                            <li><i class="fa fa-phone"></i> info@yourdomain.com</li>
-                            <li><i class="fa fa-envelope-o"></i> +88013245657</li>
+                            <li><i class="fa fa-fax"></i> Address : @Model.FirstOrDefault(x => x.Key == "Address").Value</li>
+                            <li>
+                                <i class="fa fa-phone"></i><a href="mailto:@Model.FirstOrDefault(x => x.Key == "Email").Value">
+                                    @Model.FirstOrDefault(x => x.Key == "Email").Value
+                                </a>
+                            </li>
+                            <li><i class="fa fa-envelope-o"></i> <a href="tel:@Model.FirstOrDefault(x => x.Key == "Phone").Value">@Model.FirstOrDefault(x => x.Key == "Phone").Value</a></li>
                         </ul>
                         <div class="working-time">
                             <h3>Working Hours</h3>
-                            <p class="pb-0"><span>Monday – Saturday:</span>08AM – 22PM</p>
+                            <p class="pb-0">@Html.Raw(Model.FirstOrDefault(x => x.Key == "WorkingHours").Value)</p>
                         </div>
                     </div>
                 </div>
@@ -81,4 +82,3 @@
     </div>
     <!-- contact wrapper area end -->
 </main>
-<!-- main wrapper end -->

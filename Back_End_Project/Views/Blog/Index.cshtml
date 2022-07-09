@@ -1,6 +1,5 @@
-﻿@model List<Blog>
-
-
+﻿
+@model List<Blog>
 <!-- main wrapper start -->
 <main>
     <!-- breadcrumb area start -->
@@ -12,8 +11,8 @@
                         <nav aria-label="breadcrumb">
                             <h1 class="breadcrumb-title">Blog</h1>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Blog Left Sidebar</li>
+                                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Blog</li>
                             </ul>
                         </nav>
                     </div>
@@ -29,21 +28,26 @@
                 <div class="col-lg-3 order-2 order-lg-1">
                     <div class="blog-widget-wrapper">
                         <!-- widget item start -->
-                        <div class="blog-widget">
-                            <div class="blog-widget-img">
-                                <img src="~/assets/img/blog/11.jpg" alt="author thumb" />
-                            </div>
-                            <div class="blog-author-title text-center">
-                                <h5>Erik Jhonson</h5>
-                                <span>UI UX Designer</span>
-                                <div class="blog-widget-icon">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-vimeo"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                                </div>
-                            </div>
+                        <div class="blog-widget author-slider">
+                            @foreach (Blog blog in Model)
+                            {
+                <div>
+                    <div class="blog-widget-img">
+                        <img src="~/assets/img/blog/@blog.BlogAuthor.AuthorImage" />
+                    </div>
+                    <div class="blog-author-title text-center">
+                        <h5>@blog.BlogAuthor.AuthorName</h5>
+                        <span>@blog.BlogAuthor.AuthorPosition</span>
+                        <div class="blog-widget-icon">
+                            <a href="@(blog.BlogAuthor.LinkedInUrl)"><i class="fa fa-linkedin"></i></a>
+                            <a href="@(blog.BlogAuthor.LinkedInUrl)"><i class="fa fa-facebook"></i></a>
+                            <a href="@(blog.BlogAuthor.LinkedInUrl)"><i class="fa fa-twitch"></i></a>
+                            <a href="@(blog.BlogAuthor.LinkedInUrl)"><i class="fa fa-pinterest"></i></a>
                         </div>
+                    </div>
+                </div>}
+                        </div>
+                        <p class="text text-danger">Slide for Blogger</p>
                         <!-- widget item end -->
                         <!-- widget item start -->
                         <div class="blog-widget">
@@ -58,42 +62,17 @@
                         <div class="blog-widget">
                             <h4 class="blog-widget-title">Recent Posts</h4>
                             <ul class="recent-posts-inner">
-                                <li class="recent-posts">
-                                    <div class="recent-posts-image">
-                                        <a href="blog-details.html"><img src="~/assets/img/blog/recent-01.jpg" alt="post thumb"></a>
-                                    </div>
-                                    <div class="recent-posts-body">
-                                        <span class="recent-posts-meta">February  13,  2018</span>
-                                        <h6 class="recent-posts-title"><a href="blog-details.html">Diffrent title gose This is demo</a></h6>
-                                    </div>
-                                </li>
-                                <li class="recent-posts">
-                                    <div class="recent-posts-image">
-                                        <a href="blog-details.html"><img src="~/assets/img/blog/recent-02.jpg" alt="post thumb"></a>
-                                    </div>
-                                    <div class="recent-posts-body">
-                                        <span class="recent-posts-meta">February  13,  2018</span>
-                                        <h6 class="recent-posts-title"><a href="blog-details.html">Diffrent title gose This is demo</a></h6>
-                                    </div>
-                                </li>
-                                <li class="recent-posts">
-                                    <div class="recent-posts-image">
-                                        <a href="blog-details.html"><img src="~/assets/img/blog/recent-03.jpg" alt="post thumb"></a>
-                                    </div>
-                                    <div class="recent-posts-body">
-                                        <span class="recent-posts-meta">February  13,  2018</span>
-                                        <h6 class="recent-posts-title"><a href="blog-details.html">Diffrent title gose This is demo</a></h6>
-                                    </div>
-                                </li>
-                                <li class="recent-posts">
-                                    <div class="recent-posts-image">
-                                        <a href="blog-details.html"><img src="~/assets/img/blog/recent-04.jpg" alt="post thumb"></a>
-                                    </div>
-                                    <div class="recent-posts-body">
-                                        <span class="recent-posts-meta">February  13,  2018</span>
-                                        <h6 class="recent-posts-title"><a href="blog-details.html">Diffrent title gose This is demo</a></h6>
-                                    </div>
-                                </li>
+                                @foreach (Blog blog1 in Model.Where(b => b.IsRecent).Take(5))
+                                {
+                    <li class="recent-posts">
+                        <div class="recent-posts-image">
+                            <a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog1.Id"><img src="~/assets/img/blog/@blog1.BlogImage"></a>
+                        </div>
+                        <div class="recent-posts-body">
+                            <span class="recent-posts-meta">@blog1.PublishDate</span>
+                            <h6 class="recent-posts-title"><a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog1.Id">@blog1.BlogTitle</a></h6>
+                        </div>
+                    </li>}
                             </ul>
                         </div>
                         <!-- widget item end -->
@@ -101,12 +80,9 @@
                         <div class="blog-widget">
                             <h4 class="blog-widget-title">Categories</h4>
                             <ul class="blog-categories">
-                                <li><a href="blog-details.html">Shoes</a><span>(20)</span></li>
-                                <li><a href="blog-details.html">Fashion</a><span>(18)</span></li>
-                                <li><a href="blog-details.html">Wallet</a><span>(40)</span></li>
-                                <li><a href="blog-details.html">Life Style</a><span>(66)</span></li>
-                                <li><a href="blog-details.html">Electronics</a><span>(66)</span></li>
-                                <li><a href="blog-details.html">Jewellery & Cosmetics</a><span>(30)</span></li>
+                                @foreach (Blog blog2 in Model)
+                                {
+                    <li><a>@blog2.BlogCategory.Name</a><span>(say)</span></li>}
                             </ul>
                         </div>
                         <!-- widget item end -->
@@ -114,11 +90,9 @@
                         <div class="blog-widget">
                             <h4 class="blog-widget-title">Tags</h4>
                             <div class="blog-tag">
-                                <a href="blog-details.html">Fashion</a>
-                                <a href="blog-details.html">Shoes</a>
-                                <a href="blog-details.html">Wallet</a>
-                                <a href="blog-details.html">Bags</a>
-                                <a href="blog-details.html">Jewelery</a>
+                                @foreach (Blog blog3 in Model)
+                                {
+                    <a>@blog3.BlogTag.Name</a>}
                             </div>
                         </div>
                         <!-- widget item end -->
@@ -126,140 +100,29 @@
                 </div>
                 <div class="col-lg-9 order-1 order-lg-2">
                     <div class="row">
-                        <div class="col-md-6">
-                            <!-- blog single item start -->
-                            <div class="blog-post-item mb-30">
-                                <div class="blog-thumb">
-                                    <a href="blog-details.html">
-                                        <img src="~/assets/img/blog/blog-1.jpg" alt="blog thumb">
-                                    </a>
-                                </div>
-                                <div class="blog-content">
-                                    <h5 class="blog-title">
-                                        <a href="blog-details.html">
-                                            Celebrity Daughter Opens About Upto Having Her Eye
-                                        </a>
-                                    </h5>
-                                    <ul class="blog-meta">
-                                        <li><span>By: </span>Admin,</li>
-                                        <li><span>On: </span>14.07.2029</li>
-                                    </ul>
-                                    <a href="blog-details.html" class="read-more">Read More...</a>
-                                </div>
-                            </div>
-                            <!-- blog single item start -->
-                        </div>
-                        <div class="col-md-6">
-                            <!-- blog single item start -->
-                            <div class="blog-post-item mb-30">
-                                <div class="blog-thumb">
-                                    <a href="blog-details.html">
-                                        <img src="~/assets/img/blog/blog-2.jpg" alt="blog thumb">
-                                    </a>
-                                </div>
-                                <div class="blog-content">
-                                    <h5 class="blog-title">
-                                        <a href="blog-details.html">
-                                            Sotto Winner Offering Up Money To Any Man That Will Date Her
-                                        </a>
-                                    </h5>
-                                    <ul class="blog-meta">
-                                        <li><span>By: </span>Admin,</li>
-                                        <li><span>On: </span>14.07.2029</li>
-                                    </ul>
-                                    <a href="blog-details.html" class="read-more">Read More...</a>
-                                </div>
-                            </div>
-                            <!-- blog single item start -->
-                        </div>
-                        <div class="col-md-6">
-                            <!-- blog single item start -->
-                            <div class="blog-post-item mb-30">
-                                <div class="blog-thumb embed-responsive embed-responsive-16by9">
-                                    <iframe src="https://www.youtube.com/embed/4qNHr0W6F0o" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                                </div>
-                                <div class="blog-content">
-                                    <h5 class="blog-title">
-                                        <a href="blog-details.html">
-                                            Children Left Home Alone For 4 Days In TV Series Experiment
-                                        </a>
-                                    </h5>
-                                    <ul class="blog-meta">
-                                        <li><span>By: </span>Admin,</li>
-                                        <li><span>On: </span>14.07.2029</li>
-                                    </ul>
-                                    <a href="blog-details.html" class="read-more">Read More...</a>
-                                </div>
-                            </div>
-                            <!-- blog single item start -->
-                        </div>
-                        <div class="col-md-6">
-                            <!-- blog single item start -->
-                            <div class="blog-post-item mb-30">
-                                <div class="blog-thumb embed-responsive embed-responsive-16by9">
-                                    <iframe src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/501298839&amp;color=%23ff5500&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true&amp;visual=true"></iframe>
-                                </div>
-                                <div class="blog-content">
-                                    <h5 class="blog-title">
-                                        <a href="blog-details.html">
-                                            People Are Willing Lie When To Comes Money Research from
-                                        </a>
-                                    </h5>
-                                    <ul class="blog-meta">
-                                        <li><span>By: </span>Admin,</li>
-                                        <li><span>On: </span>14.07.2029</li>
-                                    </ul>
-                                    <a href="blog-details.html" class="read-more">Read More...</a>
-                                </div>
-                            </div>
-                            <!-- blog single item start -->
-                        </div>
-                        <div class="col-md-6">
-                            <!-- blog single item start -->
-                            <div class="blog-post-item mb-30">
-                                <div class="blog-thumb">
-                                    <a href="blog-details.html">
-                                        <img src="~/assets/img/blog/blog-3.jpg" alt="blog thumb">
-                                    </a>
-                                </div>
-                                <div class="blog-content">
-                                    <h5 class="blog-title">
-                                        <a href="blog-details.html">
-                                            Romantic Love Stories Of Hollywood Popular Celebrities
-                                        </a>
-                                    </h5>
-                                    <ul class="blog-meta">
-                                        <li><span>By: </span>Admin,</li>
-                                        <li><span>On: </span>14.07.2029</li>
-                                    </ul>
-                                    <a href="blog-details.html" class="read-more">Read More...</a>
-                                </div>
-                            </div>
-                            <!-- blog single item start -->
-                        </div>
-                        <div class="col-md-6">
-                            <!-- blog single item start -->
-                            <div class="blog-post-item mb-30">
-                                <div class="blog-thumb">
-                                    <a href="blog-details.html">
-                                        <img src="~/assets/img/blog/blog-4.jpg" alt="blog thumb">
-                                    </a>
-                                </div>
-                                <div class="blog-content">
-                                    <h5 class="blog-title">
-                                        <a href="blog-details.html">
-                                            Celebrity Daughter Opens About Upto Having Her Eye
-                                        </a>
-                                    </h5>
-                                    <ul class="blog-meta">
-                                        <li><span>By: </span>Admin,</li>
-                                        <li><span>On: </span>14.07.2029</li>
-                                    </ul>
-                                    <a href="blog-details.html" class="read-more">Read More...</a>
-                                </div>
-                            </div>
-                            <!-- blog single item start -->
-                        </div>
+                        @foreach (var item in Model)
+                        {
+            <div class="col-md-6">
+                <div class="blog-post-item mb-30">
+                    <div class="blog-thumb">
+                        <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.Id">
+                            <img src="~/assets/img/blog/@item.BlogImage">
+                        </a>
+                    </div>
+                    <div class="blog-content">
+                        <h5 class="blog-title">
+                            <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.Id">
+                                @item.BlogTitle
+                            </a>
+                        </h5>
+                        <ul class="blog-meta">
+                            <li><span>By: </span>@item.BlogAuthor.AuthorName</li>
+                            <li><span>On: </span>@item.PublishDate</li>
+                        </ul>
+                        <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.Id" class="read-more">Read More...</a>
+                    </div>
+                </div>
+            </div>}
                     </div>
                     <!-- start pagination area -->
                     <div class="paginatoin-area text-center">

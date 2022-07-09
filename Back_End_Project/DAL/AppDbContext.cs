@@ -18,7 +18,6 @@ namespace Back_End_Project.DAL
         public DbSet<Product> Products { get; set; }
         public DbSet<Color> Colors { get; set; }
         public DbSet<Size> Sizes { get; set; }
-        public DbSet<Tag> Tags { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
 
@@ -39,7 +38,6 @@ namespace Back_End_Project.DAL
 
         //relations one to many PRODUCT
         public DbSet<ProductImage> ProductImages { get; set; }
-        public DbSet<ProductDescription> ProductDescriptions { get; set; }
         public DbSet<ProductInformation> ProductInformations { get; set; }
 
 
@@ -47,12 +45,12 @@ namespace Back_End_Project.DAL
         public DbSet<BlogComment> BlogComments { get; set; }
         public DbSet<BlogCategory> BlogCategories { get; set; }
         public DbSet<BlogTag> BlogTags { get; set; }
+        public DbSet<BlogAuthor> BlogAuthors { get; set; }
 
 
         //relations many to many PRODUCT
         public DbSet<ProductToColor> ProductToColors { get; set; }
         public DbSet<ProductToSize> ProductToSizes { get; set; }
-        public DbSet<ProductToTag> ProductToTags { get; set; }
 
     }
 }

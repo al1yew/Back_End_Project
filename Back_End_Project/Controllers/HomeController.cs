@@ -30,7 +30,7 @@ namespace Back_End_Project.Controllers
                 IsTopSeller = products.Where(p => p.IsTopSeller).ToList(),
                 HomeServices = await _context.HomeServices.ToListAsync(),
                 HomeBanners = await _context.HomeBanners.ToListAsync(),
-                Blogs = await _context.Blogs.ToListAsync()
+                Blogs = await _context.Blogs.Include(b=>b.BlogAuthor).ToListAsync()
             };
 
             return View(homeVM);

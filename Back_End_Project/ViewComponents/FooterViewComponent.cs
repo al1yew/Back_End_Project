@@ -1,5 +1,5 @@
 ﻿using Back_End_Project.DAL;
-using Back_End_Project.ViewModels.BasketViewModels;
+using Back_End_Project.ViewModels.FooterViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -9,6 +9,12 @@
     <Compile Remove="Migrations\20220708130056_AddedSettingTable.Designer.cs" />
     <Compile Remove="Migrations\20220708184438_AddedBlogTableAndRelatedTables.cs" />
     <Compile Remove="Migrations\20220708184438_AddedBlogTableAndRelatedTables.Designer.cs" />
+    <Compile Remove="Migrations\20220709105852_AddedBlogAuthorTable.cs" />
+    <Compile Remove="Migrations\20220709105852_AddedBlogAuthorTable.Designer.cs" />
+    <Compile Remove="Migrations\20220709110023_AddedBlogAuthorTable.cs" />
+    <Compile Remove="Migrations\20220709110023_AddedBlogAuthorTable.Designer.cs" />
+    <Compile Remove="Migrations\20220709110236_UpdatedBlogTable.cs" />
+    <Compile Remove="Migrations\20220709110236_UpdatedBlogTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,10 +26,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>

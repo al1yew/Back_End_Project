@@ -40,7 +40,7 @@
                                     <div class="product-action-link">
                                         <a data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
                                         <a data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
-                                        <a data-toggle="modal" data-target="#quick_view">
+                                        <a data-toggle="modal" data-target="#quick_view"  asp-controller="Product" asp-action="DetailModal" asp-route-id="@product1.Id" class="detailmodal">
                                             <span data-toggle="tooltip"
                                                   title="Quick View"><i class="ion-ios-eye-outline"></i></span>
                                         </a>
@@ -149,7 +149,7 @@
                                         </a>
                                     </h5>
                                     <ul class="blog-meta">
-                                        <li><span>By: </span>@blog.AuthorName</li>
+                                        <li><span>By: </span>@blog.BlogAuthor.AuthorName</li>
                                         <li><span>On: </span>@blog.PublishDate</li>
                                     </ul>
                                     <a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog.Id" class="read-more">Read More...</a>

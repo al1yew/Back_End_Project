@@ -26,17 +26,8 @@ namespace Back_End_Project.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AuthorImage")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("AuthorName")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("AuthorPosition")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                    b.Property<int>("BlogAuthorId")
+                        .HasColumnType("int");
 
                     b.Property<int>("BlogCategoryId")
                         .HasColumnType("int");
@@ -55,20 +46,8 @@ namespace Back_End_Project.Migrations
                     b.Property<string>("BottomText")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FacebookUrl")
-                        .HasColumnType("nvarchar(1024)")
-                        .HasMaxLength(1024);
-
                     b.Property<bool>("IsRecent")
                         .HasColumnType("bit");
-
-                    b.Property<string>("LinkedInUrl")
-                        .HasColumnType("nvarchar(1024)")
-                        .HasMaxLength(1024);
-
-                    b.Property<string>("PinterestUrl")
-                        .HasColumnType("nvarchar(1024)")
-                        .HasMaxLength(1024);
 
                     b.Property<DateTime?>("PublishDate")
                         .HasColumnType("datetime2");
@@ -76,20 +55,46 @@ namespace Back_End_Project.Migrations
                     b.Property<string>("StrongText")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TwitterUrl")
-                        .HasColumnType("nvarchar(1024)")
-                        .HasMaxLength(1024);
-
                     b.Property<string>("UpperText")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BlogAuthorId");
 
                     b.HasIndex("BlogCategoryId");
 
                     b.HasIndex("BlogTagId");
 
                     b.ToTable("Blogs");
+                });
+
+            modelBuilder.Entity("Back_End_Project.Models.BlogAuthor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthorImage")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("AuthorName")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("AuthorPosition")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("LinkedInUrl")
+                        .HasColumnType("nvarchar(1024)")
+                        .HasMaxLength(1024);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BlogAuthors");
                 });
 
             modelBuilder.Entity("Back_End_Project.Models.BlogCategory", b =>
@@ -377,6 +382,10 @@ namespace Back_End_Project.Migrations
                     b.Property<decimal>("DiscountPrice")
                         .HasColumnType("money");
 
+                    b.Property<string>("FirstText")
+                        .HasColumnType("nvarchar(2048)")
+                        .HasMaxLength(2048);
+
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
@@ -407,6 +416,10 @@ namespace Back_End_Project.Migrations
                     b.Property<int>("ReviewCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("SecondText")
+                        .HasColumnType("nvarchar(2048)")
+                        .HasMaxLength(2048);
+
                     b.Property<decimal>("Tax")
                         .HasColumnType("money");
 
@@ -420,31 +433,6 @@ namespace Back_End_Project.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Back_End_Project.Models.ProductDescription", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("FirstText")
-                        .HasColumnType("int")
-                        .HasMaxLength(2048);
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SecondText")
-                        .HasColumnType("int")
-                        .HasMaxLength(2048);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductDescriptions");
                 });
 
             modelBuilder.Entity("Back_End_Project.Models.ProductImage", b =>
@@ -479,8 +467,8 @@ namespace Back_End_Project.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Text")
-                        .HasColumnType("int")
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(2048)")
                         .HasMaxLength(2048);
 
                     b.HasKey("Id");
@@ -534,28 +522,6 @@ namespace Back_End_Project.Migrations
                     b.ToTable("ProductToSizes");
                 });
 
-            modelBuilder.Entity("Back_End_Project.Models.ProductToTag", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("ProductToTags");
-                });
-
             modelBuilder.Entity("Back_End_Project.Models.Setting", b =>
                 {
                     b.Property<int>("Id")
@@ -595,25 +561,14 @@ namespace Back_End_Project.Migrations
                     b.ToTable("Sizes");
                 });
 
-            modelBuilder.Entity("Back_End_Project.Models.Tag", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("TagName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Tags");
-                });
-
             modelBuilder.Entity("Back_End_Project.Models.Blog", b =>
                 {
+                    b.HasOne("Back_End_Project.Models.BlogAuthor", "BlogAuthor")
+                        .WithMany("Blogs")
+                        .HasForeignKey("BlogAuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Back_End_Project.Models.BlogCategory", "BlogCategory")
                         .WithMany("Blogs")
                         .HasForeignKey("BlogCategoryId")
@@ -654,15 +609,6 @@ namespace Back_End_Project.Migrations
                     b.HasOne("Back_End_Project.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Back_End_Project.Models.ProductDescription", b =>
-                {
-                    b.HasOne("Back_End_Project.Models.Product", "Product")
-                        .WithMany("ProductDescriptions")
-                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -711,21 +657,6 @@ namespace Back_End_Project.Migrations
                     b.HasOne("Back_End_Project.Models.Size", "Size")
                         .WithMany("ProductToSizes")
                         .HasForeignKey("SizeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Back_End_Project.Models.ProductToTag", b =>
-                {
-                    b.HasOne("Back_End_Project.Models.Product", "Product")
-                        .WithMany("ProductToTags")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Back_End_Project.Models.Tag", "Tag")
-                        .WithMany("ProductToTags")
-                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

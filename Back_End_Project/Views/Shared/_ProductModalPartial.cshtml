@@ -1,0 +1,52 @@
+﻿@model Product
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+</div>
+<div class="modal-body">
+    <div class="product-details-inner">
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="product-large-slider mb-20">
+
+                    @foreach (var item in Model.ProductImages)
+                    {
+        <div class="pro-large-img img-zoom">
+            <img src="~/assets/img/product/@item.Image" alt="" />
+        </div>}
+                </div>
+                <div class="pro-nav slick-row-5">
+                    @foreach (var item in Model.ProductImages)
+                    {
+        <div class="pro-nav-thumb"><img src="~/assets/img/product/@item.Image" /></div>}
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="product-details-des">
+                    <h3 class="pro-det-title">@Model.Name</h3>
+                    <div class="pro-review">
+                        <span><a href="#tab-one">Reviews: @Model.ReviewCount</a></span>
+                    </div>
+                    <div class="price-box">
+                        <span class="price-regular">$@Model.DiscountPrice</span>
+                        <span class="price-old"><del>$@Model.Price</del></span>
+                    </div>
+                    <p>
+                        @Model.Description
+                    </p>
+                    <div class="quantity-cart-box d-flex align-items-center mb-20">
+                        <div class="quantity">
+                            <div class="pro-qty"><input type="text" value="1"></div>
+                        </div>
+                        <a asp-controller="Basket" asp-action="AddToCart" asp-route-id="@Model.Id" class="btn btn-default">Add To Cart</a>
+                    </div>
+                    <div class="availability mb-20">
+                        <h5 class="title @(Model.Count > 0 ?"text-success":"text-danger")"> Availability :</h5>
+                        <span class="value">@(Model.Count > 0 ? "In Stock" : "Out Of Stock") </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -11,7 +11,7 @@ namespace Back_End_Project.Models
         public int Id { get; set; }
 
         [StringLength(2048)]
-        public int Text { get; set; }
+        public string Text { get; set; }
 
 
         //relation one to many
