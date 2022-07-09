@@ -270,7 +270,6 @@
 
 
 <!--Search area appears in this component because it is logical due to search button ON HEADER-->
-
 <!-- offcanvas search form start -->
 <div class="offcanvas-search-wrapper">
     <div class="offcanvas-search-inner">
@@ -278,12 +277,19 @@
             <i class="ion-android-close"></i>
         </div>
         <div class="container">
-            <div class="offcanvas-search-box">
-                <form class="d-flex bdr-bottom w-100">
-                    <input type="text" placeholder="Search entire storage here...">
-                    <button class="search-btn"><i class="ion-ios-search-strong"></i>search</button>
+
+            <div class="offcanvas-search-box d-flex flex-column ">
+                <form class="d-flex bdr-bottom w-100" method="post">
+                    <input type="text" class="input-search" data-url="http://localhost:15866/Product/Search" placeholder="Search entire storage here...">
+                    <button type="submit" class="search-btn"><i class="ion-ios-search-strong"></i>search</button>
                 </form>
+                <div class="search-body" style="width:100%">
+                    <ul class="list-group" style="z-index: 500; width: 100%; padding: 30px; background-color: transparent; height: 500px; overflow-y: scroll;">
+                        
+                    </ul>
+                </div>
             </div>
+
         </div>
     </div>
 </div>

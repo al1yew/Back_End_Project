@@ -1,11 +1,11 @@
 ﻿$(document).ready(function () {
 
-    //-----------------------------------------------Blog page Authors slider
+    //----------------------------------------------- Blog page Authors slider
+
     $('.author-slider').slick();
-    console.log("salam")
 
 
-    //-----------------------------------------------Product Modal
+    //----------------------------------------------- Product Modal
 
     $(".detailmodal").click(function (e) {
         e.preventDefault();
@@ -60,10 +60,49 @@
     });
 
 
+    //----------------------------------------------- Product Search
+
+    $(".input-search").keyup(function () {
+        let inputvalue = $(this).val();
+
+        let url = $(this).data('url');
+
+        url = url + '?search=' + inputvalue;
+
+        if (inputvalue) {
+            console.log(inputvalue)
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $(".search-body .list-group").html(data);
+                })
+        }
+        else {
+            $(".search-body .list-group").html('');
+        }
+    });
 
 
+    //----------------------------------------------- Blog Search
 
+    $(".blog-search").keyup(function () {
+        let inputvalue = $(this).val();
 
+        let url = $(this).data('url');
 
+        url = url + '?blogsearch=' + inputvalue;
+
+        if (inputvalue) {
+            console.log(inputvalue)
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $(".search-body-blog .list-group-blog").html(data);
+                })
+        }
+        else {
+            $(".search-body-blog .list-group-blog").html('');
+        }
+    });
 
 });

@@ -50,13 +50,19 @@
                         <p class="text text-danger">Slide for Blogger</p>
                         <!-- widget item end -->
                         <!-- widget item start -->
+
                         <div class="blog-widget">
                             <h4 class="blog-widget-title">Search</h4>
                             <form class="widget-search-form">
-                                <input placeholder="Search keyword" type="text" class="search-field">
+                                <input data-url="http://localhost:15866/Blog/BlogSearch" placeholder="Search keyword" type="text" class="search-field blog-search">
                                 <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
                             </form>
+                            <div class="search-body-blog">
+                                <ul class="list-group-blog" style="height: 300px;position:absolute;width: 100%; right:0; z-index:500;">
+                                </ul>
+                            </div>
                         </div>
+
                         <!-- widget item end -->
                         <!-- widget item start -->
                         <div class="blog-widget">
@@ -70,9 +76,19 @@
                         </div>
                         <div class="recent-posts-body">
                             <span class="recent-posts-meta">@blog1.PublishDate</span>
-                            <h6 class="recent-posts-title"><a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog1.Id">@blog1.BlogTitle</a></h6>
+                            <h6 class="recent-posts-title"><a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog1.Id">
+                                @if (blog1.BlogTitle.ToString().Length > 15)
+                                {
+                                    @(blog1.BlogTitle.ToString().Substring(0, 15) + "...")
+                                }
+                                else
+                                {
+                                    @blog1.BlogTitle
+                                }
+                                 </a></h6>
                         </div>
-                    </li>}
+                    </li>
+}
                             </ul>
                         </div>
                         <!-- widget item end -->
@@ -82,7 +98,8 @@
                             <ul class="blog-categories">
                                 @foreach (Blog blog2 in Model)
                                 {
-                    <li><a>@blog2.BlogCategory.Name</a><span>(say)</span></li>}
+                                    <li><a>@blog2.BlogCategory.Name</a><span>(@blog2.BlogCategory.Blogs.Distinct().Count())</span></li>
+                                }
                             </ul>
                         </div>
                         <!-- widget item end -->
@@ -112,7 +129,14 @@
                     <div class="blog-content">
                         <h5 class="blog-title">
                             <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.Id">
-                                @item.BlogTitle
+                                @if (item.BlogTitle.ToString().Length > 25)
+                                {
+                                    @(item.BlogTitle.ToString().Substring(0, 25) + "...")
+                                }
+                                else
+                                {
+                                    @item.BlogTitle
+                                }
                             </a>
                         </h5>
                         <ul class="blog-meta">

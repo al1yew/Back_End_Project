@@ -1,0 +1,26 @@
+﻿@model List<Blog>
+
+@foreach (Blog blog in Model)
+{
+    <li class="list-group-item d-flex justify-content-between align-items-center" style="width:100%; background-color:white; ">
+        <a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog.Id" target="_blank">
+            <img src="~/assets/img/blog/@blog.BlogImage" style="width:100px">
+        </a>
+
+        <a style="font-size:12px; margin-left:10px;" asp-controller="Blog" asp-action="Detail" asp-route-id="@blog.Id" target="_blank">
+            @if (blog.BlogTitle != null)
+            {
+                @(blog.BlogTitle.Substring(0, 20)+ "...")
+            }
+            else
+            {
+                @blog.BlogTitle
+            }
+        </a>
+
+        <p style="font-size:12px;" class="text-danger px-3">
+            By: @blog.BlogAuthor.AuthorName
+        </p>
+
+    </li>
+}

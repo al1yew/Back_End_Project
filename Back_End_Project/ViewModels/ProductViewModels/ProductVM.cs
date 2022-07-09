@@ -12,5 +12,6 @@ namespace Back_End_Project.ViewModels.ProductViewModels
         public IDictionary<string, string> Settings { get; set; }
         public List<Color> Colors { get; set; }
         public List<Size> Sizes { get; set; }
+        public List<Category> Categories { get; set; }
     }
 }

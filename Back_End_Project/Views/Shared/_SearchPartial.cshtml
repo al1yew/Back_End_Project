@@ -1,0 +1,18 @@
+﻿@model List<Product>
+
+@foreach (Product product in Model)
+{
+    <li class="list-group-item d-flex justify-content-between align-items-center" style="width:100%"; background-color: transparent;">
+        <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id" target="_blank">
+            <img src="assets/img/product/@product.Image" style="width:150px">
+        </a>
+
+        <a style="font-size:24px;" asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id" target="_blank">@product.Name</a>
+        
+
+        <p class="text-danger px-3">
+            €@(product.DiscountPrice > 0 ? product.DiscountPrice : product.Price)
+        </p>
+
+    </li>
+}

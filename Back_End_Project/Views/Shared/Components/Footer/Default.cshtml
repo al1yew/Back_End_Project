@@ -35,7 +35,8 @@
                             <ul class="useful-link">
                                 @foreach (Category category in Model.Categories.Where(c => c.IsMain).Take(6))
                                 {
-                    <li><a asp-controller="Shop" asp-action="ShowByCategory" asp-route-id="@category.Id">@category.Name</a></li>}
+                    <li><a asp-controller="Product" asp-action="SortByCategory" asp-route-id="@category.Id">@category.Name</a></li>
+}
                             </ul>
                         </div>
                     </div>
@@ -49,7 +50,7 @@
                             <ul class="useful-link">
                                 @foreach (Brand brand in Model.Brands.Take(6))
                                 {
-                    <li><a asp-controller="Shop" asp-action="ShowByBrand" asp-route-id="@brand.Id">@brand.Name</a></li>}
+                    <li><a asp-controller="Product" asp-action="SortByBrand" asp-route-id="@brand.Id">@brand.Name</a></li>}
                             </ul>
                         </div>
                     </div>
