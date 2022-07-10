@@ -1,5 +1,4 @@
-﻿
-@model BlogVM
+﻿@model BlogVM
 <!-- main wrapper start -->
 <main>
     <!-- breadcrumb area start -->
@@ -16,13 +15,27 @@
                             </ul>
                         </nav>
                     </div>
+                    <div class="row mb-2 mt-2">
+                        <div class="w-100 order-1 order-md-2">
+                            <div class="w-100 top-bar-right d-flex justify-content-end" style="padding-right: 15px;">
+                                <div class="product-short">
+                                    <p>Show: </p>
+                                    <select class="sortbycountproduct" name="sortbycount">
+                                        <option selected="@(ViewBag.Select == 5 ? "true" : "false")" value="6">6</option>
+                                        <option selected="@(ViewBag.Select == 10 ? "true" : "false")" value="12">12</option>
+                                        <option selected="@(ViewBag.Select == 15 ? "true" : "false")" value="18">18</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- breadcrumb area end -->
     <!-- blog main wrapper start -->
-    <div class="blog-main-wrapper section-padding">
+    <div class="blog-main-wrapper section-padding" style="padding-top:40px;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 order-2 order-lg-1">
@@ -31,22 +44,21 @@
                         <div class="blog-widget author-slider">
                             @foreach (var item in Model.BlogAuthors)
                             {
-                                <div>
-                                    <div class="blog-widget-img">
-                                        <img src="~/assets/img/blog/@item.AuthorImage" />
-                                    </div>
-                                    <div class="blog-author-title text-center">
-                                        <h5><a asp-controller="Blog" asp-action="SortByAuthor" asp-route-id="@item.Id">@item.AuthorName</a></h5>
-                                        <span>@item.AuthorPosition</span>
-                                        <div class="blog-widget-icon">
-                                            <a href="@(item.LinkedInUrl)"><i class="fa fa-linkedin"></i></a>
-                                            <a href="@(item.LinkedInUrl)"><i class="fa fa-facebook"></i></a>
-                                            <a href="@(item.LinkedInUrl)"><i class="fa fa-twitch"></i></a>
-                                            <a href="@(item.LinkedInUrl)"><i class="fa fa-pinterest"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
+                <div>
+                    <div class="blog-widget-img">
+                        <img src="~/assets/img/blog/@item.AuthorImage" />
+                    </div>
+                    <div class="blog-author-title text-center">
+                        <h5><a asp-controller="Blog" asp-action="SortByAuthor" asp-route-id="@item.Id">@item.AuthorName</a></h5>
+                        <span>@item.AuthorPosition</span>
+                        <div class="blog-widget-icon">
+                            <a href="@(item.LinkedInUrl)"><i class="fa fa-linkedin"></i></a>
+                            <a href="@(item.LinkedInUrl)"><i class="fa fa-facebook"></i></a>
+                            <a href="@(item.LinkedInUrl)"><i class="fa fa-twitch"></i></a>
+                            <a href="@(item.LinkedInUrl)"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>}
                         </div>
                         <p class="text text-danger">Slide for Blogger</p>
                         <!-- widget item end -->
@@ -77,16 +89,15 @@
                         </div>
                         <div class="recent-posts-body">
                             <span class="recent-posts-meta">@blog1.PublishDate</span>
-                            <h6 class="recent-posts-title"><a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog1.Id">
-                                @if (blog1.BlogTitle.ToString().Length > 15)
-                                {
-                                    @(blog1.BlogTitle.ToString().Substring(0, 15) + "...")
-                                }
-                                else
-                                {
-                                    @blog1.BlogTitle
-                                }
-                                 </a></h6>
+                            <h6 class="recent-posts-title">
+                                <a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog1.Id">
+                                    @if (blog1.BlogTitle.ToString().Length > 15)
+                                    {@(blog1.BlogTitle.ToString().Substring(0, 15) + "...") }
+                                    else
+                                    {
+                    @blog1.BlogTitle}
+                                </a>
+                            </h6>
                         </div>
                     </li>
 }
@@ -99,8 +110,8 @@
                             <ul class="blog-categories">
                                 @foreach (var item in Model.BlogCategories)
                                 {
-                                    <li><a asp-controller="Blog" asp-action="SortByCategory" asp-route-id="@item.Id">@item.Name</a><span>(say)</span></li>
-                                }
+                    <li><a asp-controller="Blog" asp-action="SortByCategory" asp-route-id="@item.Id">@item.Name</a><span>(say)</span></li>
+}
                             </ul>
                         </div>
                         <!-- widget item end -->
@@ -110,24 +121,36 @@
                             <div class="blog-tag">
                                 @foreach (var item in Model.BlogTags)
                                 {
-                                    <a asp-controller="Blog" asp-action="SortByTag" asp-route-id="@item.Id">@item.Name</a>}
+                    <a asp-controller="Blog" asp-action="SortByTag" asp-route-id="@item.Id">@item.Name</a>}
                             </div>
                         </div>
                         <!-- widget item end -->
                     </div>
                 </div>
                 <div class="col-lg-9 order-1 order-lg-2">
+                    
+
                     <div class="row blog-col-lg-9">
                         @await Html.PartialAsync("_BlogIndexPartial", Model.Blogs)
                     </div>
                     <!-- start pagination area -->
                     <div class="paginatoin-area text-center">
                         <ul class="pagination-box">
-                            <li><a class="Previous" href="#"><i class="ion-ios-arrow-left"></i></a></li>
-                            <li class="active"><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a class="Next" href="#"><i class="ion-ios-arrow-right"></i></a></li>
+                            @if (Model.Blogs.HasPrev)
+                                {
+                                    <li class="page-item"><a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="1">@("<<")</a></li>
+
+                                    <li class="page-item"><a class="page-link"  asp-controller="Blog" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Blogs.Page-1)">@("<")</a></li>
+                                }
+                                @for (int i = 1; i <= Model.Blogs.PageCount; i++)
+                                {
+                                    <li class="page-item @(Model.Blogs.Page == i ? "active":"")"><a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@i">@i</a></li>
+                                }
+                                @if (Model.Blogs.HasNext)
+                                {
+                                    <li class="page-item"><a class="page-link"  asp-controller="Blog" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Blogs.Page+1)">@(">")</a></li>
+                                    <li class="page-item"><a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@Model.Blogs.PageCount">@(">>")</a></li>
+                                }
                         </ul>
                     </div>
                     <!-- end pagination area -->
