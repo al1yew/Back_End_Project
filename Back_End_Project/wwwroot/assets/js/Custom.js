@@ -169,20 +169,58 @@
         }
     });
 
-
-
-
-
 });
 
+//--------------------------------------WRITTEN IN GLOBAL-----------------------------------
+
+//----------------------------------------------- Get the value of select option
+
+//$('.sortbycountproduct').on('change', function () {
+//    console.log($(this).val())
+//    let val = $(this).val()
+//    $.ajax({
+//        type: "POST",
+//        url: "/Product/Index",
+//        "data": "{sortby: `val` }",
+//        contentType: "application/json; charset=utf-8",
+//        dataType: "json",
+//        success: function (data) {
+//            console.log("salam");
+//        }
+//    });
+//});
+
+//$('.sortbyproduct').on('change', function () {
+//    console.log($(this).val())
+//});
 
 
+////----------------------------------------------- pricing filter
 
+//var rangeSlider = $(".price-range"),
+//    amount = $("#amount"),
+//    minPrice = rangeSlider.data('min'),
+//    maxPrice = rangeSlider.data('max');
+//rangeSlider.slider({
+//    range: true,
+//    min: minPrice,
+//    max: maxPrice,
+//    values: [minPrice, maxPrice],
+//    slide: function (event, ui) {
+//        amount.val("$" + ui.values[0] + " - $" + ui.values[1]);
+//    }
+//});
+//amount.val(" $" + rangeSlider.slider("values", 0) +
+//    " - $" + rangeSlider.slider("values", 1));
 
-
-
-
-
+//$(".price-filter").click(function (e) {
+//    e.preventDefault()
+//    $.post("/Product/Index", { amount: $('#amount').val() }, function (data, status) {
+//        //Response callback
+//        alert("Data: " + data + "\nStatus: " + status);
+//        console.log("Data: " + data + "\nStatus: " + status)
+//    });
+//});
 
 
 

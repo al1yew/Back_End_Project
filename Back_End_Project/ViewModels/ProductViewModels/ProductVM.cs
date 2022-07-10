@@ -8,7 +8,7 @@ namespace Back_End_Project.ViewModels.ProductViewModels
 {
     public class ProductVM
     {
-        public List<Product> Products { get; set; }
+        public PaginationList<Product> Products { get; set; }
         public IDictionary<string, string> Settings { get; set; }
         public List<Color> Colors { get; set; }
         public List<Size> Sizes { get; set; }

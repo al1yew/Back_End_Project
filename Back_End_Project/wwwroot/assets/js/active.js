@@ -230,22 +230,22 @@
 	// image zoom effect
 	$('.img-zoom').zoom();
 
-	// pricing filter
-	var rangeSlider = $(".price-range"),
-		amount = $("#amount"),
-		minPrice = rangeSlider.data('min'),
-		maxPrice = rangeSlider.data('max');
-	rangeSlider.slider({
-		range: true,
-		min: minPrice,
-		max: maxPrice,
-		values: [minPrice, maxPrice],
-		slide: function (event, ui) {
-			amount.val("$" + ui.values[0] + " - $" + ui.values[1]);
-		}
-	});
-	amount.val(" $" + rangeSlider.slider("values", 0) +
-		" - $" + rangeSlider.slider("values", 1));
+	//// pricing filter
+	//var rangeSlider = $(".price-range"),
+	//	amount = $("#amount"),
+	//	minPrice = rangeSlider.data('min'),
+	//	maxPrice = rangeSlider.data('max');
+	//rangeSlider.slider({
+	//	range: true,
+	//	min: minPrice,
+	//	max: maxPrice,
+	//	values: [minPrice, maxPrice],
+	//	slide: function (event, ui) {
+	//		amount.val("$" + ui.values[0] + " - $" + ui.values[1]);
+	//	}
+	//});
+	//amount.val(" $" + rangeSlider.slider("values", 0) +
+	//	" - $" + rangeSlider.slider("values", 1));
 
 
 	// product view mode change js

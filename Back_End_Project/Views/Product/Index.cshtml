@@ -57,7 +57,7 @@
                                                 <label for="amount">Price: </label>
                                                 <input type="text" id="amount">
                                             </div>
-                                            <button class="filter-btn">filter</button>
+                                            <button class="filter-btn price-filter">filter</button>
                                         </form>
                                     </div>
                                 </div>
@@ -115,7 +115,7 @@
                         <!-- shop product top wrap start -->
                         <div class="shop-top-bar">
                             <div class="row">
-                                <div class="col-xl-5 col-lg-4 col-md-3 order-2 order-md-1">
+                                <div class="col-xl-3 col-lg-2 col-md-2 order-2 order-md-1">
                                     <div class="top-bar-left">
                                         <div class="product-view-mode">
                                             <a href="#" data-target="grid-view"><i class="fa fa-th"></i></a>
@@ -123,22 +123,27 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-7 col-lg-8 col-md-9 order-1 order-md-2">
+                                <div class="col-xl-9 col-lg-9 col-md-9 order-1 order-md-2">
                                     <div class="top-bar-right">
                                         <div class="product-short">
-                                            <p>Sort By : </p>
-                                            <select class="nice-select" name="sortby">
-                                                <option value="trending">Relevance</option>
-                                                <option value="sales">Name (A - Z)</option>
-                                                <option value="sales">Name (Z - A)</option>
-                                                <option value="rating">Price (Low &gt; High)</option>
-                                                <option value="date">Rating (Lowest)</option>
-                                                <option value="price-asc">Model (A - Z)</option>
-                                                <option value="price-asc">Model (Z - A)</option>
+                                            <p>Show: </p>
+                                            <select class="sortbycountproduct" name="sortbycount">
+                                                <option selected="@(ViewBag.Select == 5 ? "true" : "false")" value="5">5</option>
+                                                <option selected="@(ViewBag.Select == 10 ? "true" : "false")" value="10">10</option>
+                                                <option selected="@(ViewBag.Select == 15 ? "true" : "false")" value="15">15</option>
+                                                <option selected="@(ViewBag.Select == 20 ? "true" : "false")" value="20">20</option>
                                             </select>
                                         </div>
-                                        <div class="product-amount">
-                                            <p>Showing 1–16 of 21 results</p>
+                                        <div class="product-short">
+                                            <p>Sort By:</p>
+                                            <select class="nice-select sortbyproduct" name="sortby">
+                                                @*<option selected="@(ViewBag.Sortby == 0 ? "true" : "false")" value="0">Relevance</option>*@
+                                                <option selected="@(ViewBag.Sortby == 1 ? "true" : "false")" value="1">Name (A - Z)</option>
+                                                <option selected="@(ViewBag.Sortby == 2 ? "true" : "false")" value="2">Name (Z - A)</option>
+                                                <option selected="@(ViewBag.Sortby == 3 ? "true" : "false")" value="3">Price (Low &gt; High)</option>
+                                                <option selected="@(ViewBag.Sortby == 4 ? "true" : "false")" value="3">Price (High &gt; Low)</option>
+                                                <option selected="@(ViewBag.Sortby == 5 ? "true" : "false")" value="4">Rating (Lowest)</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -153,11 +158,21 @@
                         <!-- start pagination area -->
                         <div class="paginatoin-area text-center mt-45">
                             <ul class="pagination-box">
-                                <li><a class="Previous" href="#"><i class="ion-ios-arrow-left"></i></a></li>
-                                <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a class="Next" href="#"><i class="ion-ios-arrow-right"></i></a></li>
+                                @if (Model.Products.HasPrev)
+                                {
+                                    <li class="page-item"><a class="page-link" asp-controller="Product" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="1">@("<<")</a></li>
+
+                                    <li class="page-item"><a class="page-link"  asp-controller="Product" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Products.Page-1)">@("<")</a></li>
+                                }
+                                @for (int i = 1; i <= Model.Products.PageCount; i++)
+                                {
+                                    <li class="page-item @(Model.Products.Page == i ? "active":"")"><a class="page-link" asp-controller="Product" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@i">@i</a></li>
+                                }
+                                @if (Model.Products.HasNext)
+                                {
+                                    <li class="page-item"><a class="page-link"  asp-controller="Product" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Products.Page+1)">@(">")</a></li>
+                                    <li class="page-item"><a class="page-link" asp-controller="Product" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@Model.Products.PageCount">@(">>")</a></li>
+                                }
                             </ul>
                         </div>
                         <!-- end pagination area -->
