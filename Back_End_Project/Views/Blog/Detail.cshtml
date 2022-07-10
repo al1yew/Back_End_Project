@@ -49,7 +49,7 @@
                             <h4 class="blog-widget-title">Search</h4>
                             <form class="widget-search-form">
                                 <input data-url="http://localhost:15866/Blog/BlogSearch" placeholder="Search keyword" type="text" class="search-field blog-search">
-                                <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+                                <a asp-controller="Blog" asp-action="SortBySearch" data-url="http://localhost:15866/Blog/SortBySearch" class="search-button-blog search-btn"><i class="fa fa-search"></i></a>
                             </form>
                             <div class="search-body-blog d-none">
                                 <ul class="list-group-blog" style="height: 300px;position:absolute;width: 100%; right:0; z-index:500;">

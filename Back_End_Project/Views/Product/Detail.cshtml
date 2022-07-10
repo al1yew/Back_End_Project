@@ -33,14 +33,18 @@
                                 <div class="product-large-slider mb-20">
                                     @foreach (var item in Model.Product.ProductImages)
                                     {
-                        <div class="pro-large-img img-zoom">
-                            <img src="~/assets/img/product/@item.Image" alt="" />
-                        </div>}
+                                        <div class="pro-large-img img-zoom">
+                                            <img src="~/assets/img/product/@item.Image" alt="" />
+                                        </div>
+                                    }
                                 </div>
                                 <div class="pro-nav slick-row-5">
                                     @foreach (var item in Model.Product.ProductImages)
                                     {
-                        <div class="pro-nav-thumb"><img src="~/assets/img/product/@item.Image" /></div>}
+                                        <div class="pro-nav-thumb">
+                                            <img src="~/assets/img/product/@item.Image" />
+                                        </div>
+                                    }
                                 </div>
                             </div>
                             <div class="col-lg-7">
@@ -100,8 +104,7 @@
                                                         <ul>
                                                             @foreach (var item in Model.Product.ProductInformation)
                                                             {
-                                                <li>@item.Text</li>
-}
+                                                <li>@item.Text</li>}
                                                         </ul>
                                                     </div>
                                                 </div>

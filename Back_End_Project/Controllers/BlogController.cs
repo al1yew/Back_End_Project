@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-//v index v categories vrode shto to polucilos sprosit u ucitela
+//v index v categories vrode gde (say) shto to polucilos sprosit u ucitela
 //v index sdelat poisk po kategorii, avtoru, tegu, knopke poiska, a takje pagination, 
 //v detail sdelat form, voprosi doljni idti v admin panel, ottuda nado umet otvechat, mojno skinut v partial 
 namespace Back_End_Project.Controllers
@@ -98,7 +98,6 @@ namespace Back_End_Project.Controllers
                 return View("Index", blogVM);
             }
         }
-
         public async Task<IActionResult> SortByTag(int? id)
         {
             if (id == null)
@@ -123,7 +122,6 @@ namespace Back_End_Project.Controllers
                 return View("Index", blogVM);
             }
         }
-
         public async Task<IActionResult> SortByAuthor(int? id)
         {
             if (id == null)
@@ -142,11 +140,40 @@ namespace Back_End_Project.Controllers
                     BlogTags = await _context.BlogTags.ToListAsync(),
                     BlogAuthors = await _context.BlogAuthors.ToListAsync(),
                     BlogCategories = await _context.BlogCategories.ToListAsync(),
-                    RecentBlogs = await _context.Blogs.Where(b=>b.IsRecent).ToListAsync()
+                    RecentBlogs = await _context.Blogs.Where(b => b.IsRecent).ToListAsync()
                 };
 
                 return View("Index", blogVM);
             }
+        }
+        public async Task<IActionResult> SortBySearch(string sortbysearch)
+        {
+            if (sortbysearch == null)
+            {
+                return View("Index");
+            }
+
+            List<Blog> blogs = await _context.Blogs
+            .Where(b => b.BlogTitle.ToLower().Contains(sortbysearch.ToLower()) ||
+            b.BlogAuthor.AuthorName.ToLower().Contains(sortbysearch.ToLower()) ||
+            b.BlogCategory.Name.ToLower().Contains(sortbysearch.ToLower()) ||
+            b.BlogTag.Name.ToLower().Contains(sortbysearch.ToLower()) ||
+            b.UpperText.ToLower().Contains(sortbysearch.ToLower()) ||
+            b.StrongText.ToLower().Contains(sortbysearch.ToLower()) ||
+            b.BottomText.ToLower().Contains(sortbysearch.ToLower()))
+            .Include(b => b.BlogAuthor)
+            .ToListAsync();
+
+            BlogVM blogVM = new BlogVM
+            {
+                Blogs = blogs,
+                BlogTags = await _context.BlogTags.ToListAsync(),
+                BlogAuthors = await _context.BlogAuthors.ToListAsync(),
+                BlogCategories = await _context.BlogCategories.ToListAsync(),
+                RecentBlogs = await _context.Blogs.Where(b => b.IsRecent).ToListAsync()
+            };
+
+            return View("Index", blogVM);
         }
     }
 }

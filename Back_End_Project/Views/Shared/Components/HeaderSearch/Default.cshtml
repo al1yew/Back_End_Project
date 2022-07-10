@@ -281,7 +281,7 @@
             <div class="offcanvas-search-box d-flex flex-column ">
                 <form class="d-flex bdr-bottom w-100" method="post">
                     <input type="text" class="input-search" data-url="http://localhost:15866/Product/Search" placeholder="Search entire storage here...">
-                    <button type="submit" class="search-btn"><i class="ion-ios-search-strong"></i>search</button>
+                    <a asp-controller="Product" asp-action="SortBySearch" data-url="http://localhost:15866/Product/SortBySearch" class="search-button-product search-btn"><i class="ion-ios-search-strong"></i>search</a>
                 </form>
                 <div class="search-body" style="width:100%">
                     <ul class="list-group" style="z-index: 500; width: 100%; padding: 30px; background-color: transparent; height: 500px; overflow-y: scroll;">

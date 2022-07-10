@@ -246,5 +246,33 @@ namespace Back_End_Project.Controllers
                 return View("Index", productVM);
             }
         }
+
+        public async Task<IActionResult> SortBySearch(string sortbysearch)
+        {
+            if (sortbysearch == null)
+            {
+                return View("Index");
+            }
+
+            List<Product> products = await _context.Products
+                .Where(p => p.Name.ToLower().Contains(sortbysearch.ToLower()) ||
+                p.Brand.Name.ToLower().Contains(sortbysearch.ToLower()) ||
+                p.Category.Name.ToLower().Contains(sortbysearch.ToLower()) ||
+                p.Description.ToLower().Contains(sortbysearch.ToLower()) ||
+                p.FirstText.ToLower().Contains(sortbysearch.ToLower()) ||
+                p.SecondText.ToLower().Contains(sortbysearch.ToLower()))
+                .ToListAsync();
+
+            ProductVM productVM = new ProductVM
+            {
+                Products = products,
+                Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
+                Sizes = await _context.Sizes.ToListAsync(),
+                Colors = await _context.Colors.ToListAsync(),
+                Categories = await _context.Categories.ToListAsync()
+            };
+
+            return View("Index", productVM);
+        }
     }
 }

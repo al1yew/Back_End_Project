@@ -56,7 +56,7 @@
                             <h4 class="blog-widget-title">Search</h4>
                             <form class="widget-search-form">
                                 <input data-url="http://localhost:15866/Blog/BlogSearch" placeholder="Search keyword" type="text" class="search-field blog-search">
-                                <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+                                <a asp-controller="Blog" asp-action="SortBySearch" data-url="http://localhost:15866/Blog/SortBySearch" class="search-button-blog search-btn"><i class="fa fa-search"></i></a>
                             </form>
                             <div class="search-body-blog d-none">
                                 <ul class="list-group-blog" style="height: 300px;position:absolute;width: 100%; right:0; z-index:500;">
@@ -117,37 +117,8 @@
                     </div>
                 </div>
                 <div class="col-lg-9 order-1 order-lg-2">
-                    <div class="row">
-                        @foreach (var item in Model.Blogs)
-                        {
-            <div class="col-md-6">
-                <div class="blog-post-item mb-30">
-                    <div class="blog-thumb">
-                        <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.Id">
-                            <img src="~/assets/img/blog/@item.BlogImage">
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <h5 class="blog-title">
-                            <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.Id">
-                                @if (item.BlogTitle.ToString().Length > 25)
-                                {
-                                    @(item.BlogTitle.ToString().Substring(0, 25) + "...")
-                                }
-                                else
-                                {
-                                    @item.BlogTitle
-                                }
-                            </a>
-                        </h5>
-                        <ul class="blog-meta">
-                            <li><span>By: </span>@item.BlogAuthor.AuthorName</li>
-                            <li><span>On: </span>@item.PublishDate</li>
-                        </ul>
-                        <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.Id" class="read-more">Read More...</a>
-                    </div>
-                </div>
-            </div>}
+                    <div class="row blog-col-lg-9">
+                        @await Html.PartialAsync("_BlogIndexPartial", Model.Blogs)
                     </div>
                     <!-- start pagination area -->
                     <div class="paginatoin-area text-center">

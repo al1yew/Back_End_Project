@@ -1,0 +1,30 @@
+﻿@model List<Blog>
+
+    @foreach (var item in Model)
+    {
+    <div class="col-md-6">
+        <div class="blog-post-item mb-30">
+            <div class="blog-thumb">
+                <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.Id">
+                    <img src="~/assets/img/blog/@item.BlogImage">
+                </a>
+            </div>
+            <div class="blog-content">
+                <h5 class="blog-title">
+                    <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.Id">
+                        @if (item.BlogTitle.ToString().Length > 25)
+                        {@(item.BlogTitle.ToString().Substring(0, 25) + "...") }
+                        else
+                        {
+        @item.BlogTitle}
+                    </a>
+                </h5>
+                <ul class="blog-meta">
+                    <li><span>By: </span>@item.BlogAuthor.AuthorName</li>
+                    <li><span>On: </span>@item.PublishDate</li>
+                </ul>
+                <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.Id" class="read-more">Read More...</a>
+            </div>
+        </div>
+    </div>
+    }
