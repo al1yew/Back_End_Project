@@ -64,7 +64,7 @@
                                         <div class="quantity">
                                             <div class="pro-qty"><input type="text" value="1"></div>
                                         </div>
-                                        <a asp-controller="Basket" asp-action="AddToCart" asp-route-id="@Model.Product.Id" class="btn btn-default">Add To Cart</a>
+                                        <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@Model.Product.Id" class="btn btn-default addtobasket">Add To Cart</a>
                                     </div>
                                     <div class="availability mb-20">
                                         <h5 class="title @(Model.Product.Count > 0 ?"text-success":"text-danger")"> Availability :</h5>
@@ -232,7 +232,7 @@
                                     </div>
                                     <div class="product-action-link">
                                         <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                        <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                        <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@item.Id" data-toggle="tooltip" title="Add To Cart" class="addtobasket"><i class="ion-bag"></i></a>
                                         <a data-toggle="modal" data-target="#quick_view" asp-controller="Product" asp-action="DetailModal" asp-route-id="@item.Id" class="detailmodal">
                                             <span data-toggle="tooltip"
                                                   title="Quick View"><i class="ion-ios-eye-outline"></i></span>

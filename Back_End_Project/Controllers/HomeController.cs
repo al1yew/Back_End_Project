@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+//navbar koqda najimayesh shto b toggle elesin active klassini custom js gotov ostalos dokonchit 
 namespace Back_End_Project.Controllers
 {
     public class HomeController : Controller

@@ -20,7 +20,7 @@
             </div>
             <div class="product-action-link">
                 <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@product.Id" data-toggle="tooltip" title="Add To Cart" class="addtobasket"><i class="ion-bag addtobasket"></i></a>
                 <a data-toggle="modal" data-target="#quick_view" asp-controller="Product" asp-action="DetailModal" asp-route-id="@product.Id" class="detailmodal">
                     <span data-toggle="tooltip"
                           title="Quick View"><i class="ion-ios-eye-outline"></i></span>
@@ -49,7 +49,7 @@
             </p>
             <div class="product-link-2 position-static">
                 <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                <a href="#" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@product.Id" data-toggle="tooltip" title="Add To Cart" class="addtobasket"><i class="ion-bag addtobasket"></i></a>
                 <a data-toggle="modal" data-target="#quick_view" asp-controller="Product" asp-action="DetailModal" asp-route-id="@product.Id" class="detailmodal">
                     <span data-toggle="tooltip"
                           title="Quick View"><i class="ion-ios-eye-outline"></i></span>

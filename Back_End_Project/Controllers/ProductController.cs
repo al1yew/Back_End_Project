@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 //sdelat normalnie produkti nakonecto
 //sdelat pagination,
 //detail page slider ne rabotaet ya v custom js zakinul vse ego slick slider kodi
+//koqda delayesh pagination, posle togo kak vibral kategoriyu, i perekluchayeshsa na vtoruyu stranicku, on pochemu to sbrasivayet 
+//kategorii i dayet zanovo vse
 namespace Back_End_Project.Controllers
 {
     public class ProductController : Controller

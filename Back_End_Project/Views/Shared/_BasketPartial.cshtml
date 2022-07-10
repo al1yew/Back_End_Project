@@ -1,0 +1,57 @@
+﻿@model List<BasketVM>
+
+<div class="minicart-close">
+    <i class="ion-android-close"></i>
+</div>
+<div class="minicart-content-box">
+    <div class="minicart-item-wrapper">
+        <ul>
+            @foreach (BasketVM basketVM in Model)
+            {
+                <li class="minicart-item">
+                    <div class="minicart-thumb">
+                        <a asp-controller="Product" asp-action="Detail" asp-route-id="@basketVM.ProductId">
+                            <img src="~/assets/img/product/@basketVM.Image" alt="product">
+                        </a>
+                    </div>
+                    <div class="minicart-content">
+                        <h3 class="product-name">
+                            <a asp-controller="Product" asp-action="Detail" asp-route-id="@basketVM.ProductId">@basketVM.Name</a>
+                        </h3>
+                        <p>
+                            <span class="cart-quantity"><strong>@(basketVM.Count)x</strong></span>
+                            <span class="cart-price">€@basketVM.Price</span>
+                        </p>
+                    </div>
+                    <a class="minicart-remove deletefrombasket" asp-controller="Basket" asp-action="DeleteFromBasket" asp-route-id="@basketVM.ProductId"><i class="ion-android-close"></i></a>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="minicart-pricing-box">
+        <ul>
+            <li>
+                <span>sub-total</span>
+                <span><strong>€@Model.Sum(b => b.Price * b.Count).ToString("F2")</strong></span>
+            </li>
+            <li>
+                <span> Tax </span>
+                <span><strong>€@Model.Sum(b => b.Tax * b.Count).ToString("F2")</strong></span>
+            </li>
+            <li>
+                <span>VAT (+5%)</span>
+                <span><strong>€@((1.05 * (@Model.Sum(b => b.Price * b.Count) + @Model.Sum(b => b.Tax * b.Count))).ToString("F2"))</strong></span>
+            </li>
+            <li class="total">
+                <span>total</span>
+                <span><strong>€@((1.05 * (@Model.Sum(b => b.Price * b.Count) + @Model.Sum(b => b.Tax * b.Count))).ToString("F2"))</strong></span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="minicart-button">
+        <a asp-controller="Basket" asp-action="Index"><i class="fa fa-shopping-cart"></i> view cart</a>
+        <a asp-controller="Order" asp-action="Index"><i class="fa fa-share"></i> checkout</a>
+    </div>
+</div>

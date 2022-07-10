@@ -47,7 +47,6 @@ namespace Back_End_Project.Models
 
 
 
-
         //for main home page
         public bool IsAvailable { get; set; }
         public bool IsTopSeller { get; set; }
@@ -57,11 +56,14 @@ namespace Back_End_Project.Models
         //relations with product many to many
         public IEnumerable<ProductToColor> ProductToColors { get; set; }
         public IEnumerable<ProductToSize> ProductToSizes { get; set; }
+        public IEnumerable<Basket> Baskets { get; set; }
+        //---------------------Baskets is Many to many between product and user, many users can have many products 
 
 
         //relations with product one to many
         public List<ProductImage> ProductImages { get; set; }
         public IEnumerable<ProductInformation> ProductInformation { get; set; }
+        public IEnumerable<OrderItem> OrderItems { get; set; }
 
 
         //relations of product
@@ -76,7 +78,7 @@ namespace Back_End_Project.Models
         [NotMapped]
         public IFormFile Photo { get; set; }
         [NotMapped]
-        public IEnumerable<IFormFile> Photos { get; set; }
+        public IEnumerable<IFormFile> Files { get; set; }
 
 
         //crud for Manage Area

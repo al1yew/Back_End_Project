@@ -1,4 +1,5 @@
-﻿@model IDictionary<string, string>
+﻿@model HeaderSearchVM
+
 <!-- Computer header-->
 
 <header class="header-area">
@@ -10,12 +11,12 @@
                 <div class="row align-items-center">
                     <div class="col-lg-4">
                         <div class="welcome-message">
-                            <p>@Model.FirstOrDefault(m => m.Key == "Title").Value</p>
+                            <p>@Model.Settings.FirstOrDefault(m => m.Key == "Title").Value</p>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="welcome-message">
-                            <p>@Html.Raw(Model.FirstOrDefault(m => m.Key == "FreeShipping").Value)</p>
+                            <p>@Html.Raw(Model.Settings.FirstOrDefault(m => m.Key == "FreeShipping").Value)</p>
                         </div>
                     </div>
                     <div class="col-lg-4 text-right">
@@ -52,7 +53,7 @@
                     <div class="col-lg-2">
                         <div class="logo">
                             <a asp-controller="Home" asp-action="Index">
-                                <img src="~/assets/img/logo/@Model.FirstOrDefault(m=>m.Key == "HeaderLogo").Value" alt="">
+                                <img src="~/assets/img/logo/@Model.Settings.FirstOrDefault(m=>m.Key == "HeaderLogo").Value" alt="">
                             </a>
                         </div>
                     </div>
@@ -110,15 +111,22 @@
                                             <i class="ion-ios-gear-outline"></i>
                                         </a>
                                         <ul class="dropdown-list">
-                                            <li><a asp-controller="Account" asp-action="Login">Login</a></li>
-                                            <li><a asp-controller="Account" asp-action="Register">Register</a></li>
-                                            <li><a asp-controller="Account" asp-action="MyAccount">My Account</a></li>
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+                                                <li><a asp-controller="Account" asp-action="Profile">@User.Identity.Name</a></li>
+                                                <li><a asp-controller="Account" asp-action="Logout">Log Out</a></li>
+                                            }
+                                            else
+                                            {
+                                                <li><a asp-controller="Account" asp-action="Register">Sign Up</a></li>
+                                                <li><a asp-controller="Account" asp-action="Login">Sign in</a></li>
+                                            }
                                         </ul>
                                     </li>
                                     <li>
                                         <a class="minicart-btn">
                                             <i class="ion-bag"></i>
-                                            <div class="notification">2</div>
+                                            <div class="notification basketelementscount">@Model.BasketVMs.Count()</div>
                                         </a>
                                     </li>
                                 </ul>
@@ -141,7 +149,7 @@
                     <div class="mobile-main-header">
                         <div class="mobile-logo">
                             <a asp-controller="Home" asp-action="Index">
-                                <img src="~/assets/img/logo/@Model.FirstOrDefault(m=>m.Key == "HeaderLogo").Value" alt="Brand Logo">
+                                <img src="~/assets/img/logo/@Model.Settings.FirstOrDefault(m=>m.Key == "HeaderLogo").Value" alt="Brand Logo">
                             </a>
                         </div>
                         <div class="mobile-menu-toggler">
@@ -231,9 +239,16 @@
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="myaccount">
-                                <a class="dropdown-item" asp-controller="Account" asp-action="MyAccount">My Account</a>
-                                <a class="dropdown-item" asp-controller="Account" asp-action="Login"> Login</a>
-                                <a class="dropdown-item" asp-controller="Account" asp-action="Register">Register</a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Profile">@User.Identity.Name</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Log Out</a>
+                                }
+                                else
+                                {
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Register">Sign Up</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Login">Sign in</a>
+                                }
                             </div>
                         </div>
                     </li>
@@ -246,20 +261,20 @@
                     <ul>
                         <li>
                             <i class="fa fa-mobile"></i>
-                            <a href="#">@Model.FirstOrDefault(m => m.Key == "Phone").Value</a>
+                            <a href="#">@Model.Settings.FirstOrDefault(m => m.Key == "Phone").Value</a>
                         </li>
                         <li>
                             <i class="fa fa-envelope-o"></i>
-                            <a href="#">@Model.FirstOrDefault(m => m.Key == "Email").Value</a>
+                            <a href="#">@Model.Settings.FirstOrDefault(m => m.Key == "Email").Value</a>
                         </li>
                     </ul>
                 </div>
                 <div class="off-canvas-social-widget">
-                    <a href="@Model.FirstOrDefault(m=>m.Key == "FacebookLink").Value"><i class="fa fa-facebook"></i></a>
-                    <a href="@Model.FirstOrDefault(m=>m.Key == "TwitterLink").Value"><i class="fa fa-twitter"></i></a>
-                    <a href="@Model.FirstOrDefault(m=>m.Key == "InstagramLink").Value"><i class="fa fa-instagram"></i></a>
-                    <a href="@Model.FirstOrDefault(m=>m.Key == "LinkedInLink").Value"><i class="fa fa-linkedin"></i></a>
-                    <a href="@Model.FirstOrDefault(m=>m.Key == "YoutubeLink").Value"><i class="fa fa-youtube-play"></i></a>
+                    <a href="@Model.Settings.FirstOrDefault(m=>m.Key == "FacebookLink").Value"><i class="fa fa-facebook"></i></a>
+                    <a href="@Model.Settings.FirstOrDefault(m=>m.Key == "TwitterLink").Value"><i class="fa fa-twitter"></i></a>
+                    <a href="@Model.Settings.FirstOrDefault(m=>m.Key == "InstagramLink").Value"><i class="fa fa-instagram"></i></a>
+                    <a href="@Model.Settings.FirstOrDefault(m=>m.Key == "LinkedInLink").Value"><i class="fa fa-linkedin"></i></a>
+                    <a href="@Model.Settings.FirstOrDefault(m=>m.Key == "YoutubeLink").Value"><i class="fa fa-youtube-play"></i></a>
                 </div>
             </div>
             <!-- offcanvas widget area end -->

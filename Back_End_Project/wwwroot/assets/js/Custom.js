@@ -169,8 +169,151 @@
         }
     });
 
+
+    //----------------------------------------------- Add to basket
+
+    $(document).on("click", ".addtobasket", function (e) {
+        e.preventDefault();
+
+        let url = $(this).attr('href');
+
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $(".minicart-inner-content").html(data);
+            })
+    })
+
+    //----------------------------------------------- Delete to basket
+
+    $(document).on('click', '.deletefrombasket', function (e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $(".minicart-inner-content").html(data);
+            })
+    })
+
+    //----------------------------------------------- Decrease Count of item in basket
+
+    $(document).on('click', '.decrease', function (e) {
+        e.preventDefault();
+        let inputCount = $(this).next().val();
+
+        if (inputCount >= 1) {
+            inputCount--;
+            $(this).next().val(inputCount);
+            let url = $(this).attr('href') + '/?count=' + inputCount;
+            console.log('sub');
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('.basketindexcontainer').html(data);
+
+                    fetch('/basket/getbasket')
+                        .then(res => res.text())
+                        .then(data => {
+                            $('.minicart-inner-content').html(data);
+                        });
+                });
+        }
+    })
+
+    //----------------------------------------------- Increase Count of item in basket
+
+    $(document).on('click', '.increase', function (e) {
+        e.preventDefault();
+        let inputCount = $(this).prev().val();
+
+        if (inputCount > 0) {
+            inputCount++;
+        } else {
+            inputCount = 1;
+        }
+
+        $(this).prev().val(inputCount);
+
+        let url = $(this).attr('href') + '/?count=' + inputCount;
+        console.log('add');
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $('.basketindexcontainer').html(data);
+
+                fetch('/basket/getbasket')
+                    .then(res => res.text())
+                    .then(data => {
+                        $('.minicart-inner-content').html(data);
+                    });
+            });
+    })
+
+    //----------------------------------------------- Delete item from basket
+
+    $(document).on('click', '.deletefromcartbtn', function (e) {
+        e.preventDefault();
+
+        fetch($(this).attr('href'))
+            .then(res => res.text())
+            .then(data => {
+                $('.basketindexcontainer').html(data);
+
+                fetch('/basket/getbasket')
+                    .then(res => res.text())
+                    .then(data => {
+                        $('.minicart-inner-content').html(data);
+                    });
+            })
+    })
+
+
+    //----------------------------------------------- Toastr
+
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+    if ($('#successInput').val().length) {
+        toastr["success"]($('#successInput').val(), $('#successInput').val().split(' ')[0])
+    }
+
+
+    //----------------------------------------------- Tabmenu Navbar
+
+    let path = window.location.pathname
+    path = path.split('/')
+    let links = $('.header-menu-for-tabmenu')
+
+    for (var i = 0; i < links.length; i++) {
+        let hrefpath = links[i].children[0].getAttribute('href').split('/')
+        if (hrefpath[1].toLowerCase() == path[1].toLowerCase()) {
+            links[i].classList.add('active')
+        } else {
+            links[i].classList.remove('active')
+        }
+    }
 });
 
+
+/*
 //--------------------------------------WRITTEN IN GLOBAL-----------------------------------
 
 //----------------------------------------------- Get the value of select option
@@ -361,3 +504,4 @@ $(document).ready(function () {
         focusOnSelect: true
     });
 });
+*/

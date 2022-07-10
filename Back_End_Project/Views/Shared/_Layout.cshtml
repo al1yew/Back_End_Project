@@ -1,7 +1,10 @@
 ﻿@using Back_End_Project.Interfaces
 @inject ILayoutService layoutService
 
-@{ IDictionary<string, string> settings = await layoutService.GetSetting(); }
+@{ 
+    IDictionary<string, string> settings = await layoutService.GetSetting();
+    List<BasketVM> basketVMs = await layoutService.GetBasket();
+}
 
 <!DOCTYPE html>
 <html class="no-js" lang="zxx">
@@ -24,7 +27,19 @@
 
     <link rel="stylesheet" type="text/css" href="~/assets/slick-1.8.1/slick/slick.css" />
     <link rel="stylesheet" type="text/css" href="~/assets/slick-1.8.1/slick/slick-theme.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 
+    <style>
+        .my-account-order .table tr {
+            cursor: pointer;
+        }
+
+        .my-account-order .table .hiddenRow {
+            padding: 0 4px !important;
+            background-color: #eeeeee;
+            font-size: 13px;
+        }
+    </style>
 
     <!--[if lt IE 9]>
     <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -33,6 +48,11 @@
 </head>
 
 <body>
+
+    @if (TempData["success"] != null)
+    {
+        <input type="hidden" id="successInput" value="@TempData["success"]" />
+    }
 
     @await Component.InvokeAsync("HeaderSearch", settings)
 
@@ -45,84 +65,16 @@
         <div class="minicart-inner">
             <div class="offcanvas-overlay"></div>
             <div class="minicart-inner-content">
-                <div class="minicart-close">
-                    <i class="ion-android-close"></i>
-                </div>
-                <div class="minicart-content-box">
-                    <div class="minicart-item-wrapper">
-                        <ul>
-                            <li class="minicart-item">
-                                <div class="minicart-thumb">
-                                    <a href="product-details.html">
-                                        <img src="~/assets/img/cart/cart-1.jpg" alt="product">
-                                    </a>
-                                </div>
-                                <div class="minicart-content">
-                                    <h3 class="product-name">
-                                        <a href="product-details.html">Flowers bouquet pink for all flower lovers</a>
-                                    </h3>
-                                    <p>
-                                        <span class="cart-quantity">1 <strong>&times;</strong></span>
-                                        <span class="cart-price">$100.00</span>
-                                    </p>
-                                </div>
-                                <button class="minicart-remove"><i class="ion-android-close"></i></button>
-                            </li>
-                            <li class="minicart-item">
-                                <div class="minicart-thumb">
-                                    <a href="product-details.html">
-                                        <img src="~/assets/img/cart/cart-2.jpg" alt="product">
-                                    </a>
-                                </div>
-                                <div class="minicart-content">
-                                    <h3 class="product-name">
-                                        <a href="product-details.html">Jasmine flowers white for all flower lovers</a>
-                                    </h3>
-                                    <p>
-                                        <span class="cart-quantity">1 <strong>&times;</strong></span>
-                                        <span class="cart-price">$80.00</span>
-                                    </p>
-                                </div>
-                                <button class="minicart-remove"><i class="ion-android-close"></i></button>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="minicart-pricing-box">
-                        <ul>
-                            <li>
-                                <span>sub-total</span>
-                                <span><strong>$300.00</strong></span>
-                            </li>
-                            <li>
-                                <span>Eco Tax (-2.00)</span>
-                                <span><strong>$10.00</strong></span>
-                            </li>
-                            <li>
-                                <span>VAT (20%)</span>
-                                <span><strong>$60.00</strong></span>
-                            </li>
-                            <li class="total">
-                                <span>total</span>
-                                <span><strong>$370.00</strong></span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="minicart-button">
-                        <a href="cart.html"><i class="fa fa-shopping-cart"></i> view cart</a>
-                        <a href="cart.html"><i class="fa fa-share"></i> checkout</a>
-                    </div>
-                </div>
+                @await Html.PartialAsync("_BasketPartial", basketVMs)
             </div>
         </div>
-    </div>
+    </div>  
 
 
     <div class="modal" id="quick_view">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                
+
             </div>
         </div>
     </div>
@@ -147,5 +99,9 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script type="text/javascript" src="~/assets/slick-1.8.1/slick/slick.min.js"></script>
 
+    <script src="~/assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="~/assets/js/plugins/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    @RenderSection("Script", false)
 </body>
 </html>

@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 //v index v categories vrode gde (say) shto to polucilos sprosit u ucitela
 //v detail sdelat form, voprosi doljni idti v admin panel, ottuda nado umet otvechat, mojno skinut v partial 
+//koqda delayesh pagination, posle togo kak vibral kategoriyu, i perekluchayeshsa na vtoruyu stranicku, on pochemu to sbrasivayet 
+//kategorii i dayet zanovo vse
 namespace Back_End_Project.Controllers
 {
     public class BlogController : Controller
@@ -41,7 +43,6 @@ namespace Back_End_Project.Controllers
 
             return View(blogVM);
         }
-
         public async Task<IActionResult> Detail(int? id)
         {
             if (id == null) return BadRequest();

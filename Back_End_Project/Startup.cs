@@ -1,5 +1,6 @@
 using Back_End_Project.DAL;
 using Back_End_Project.Interfaces;
+using Back_End_Project.Models;
 using Back_End_Project.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,6 +34,26 @@ namespace Back_End_Project
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
+            services.AddIdentity<AppUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+
+            }).AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+            });
+
             services.AddScoped<ILayoutService, LayoutService>();
 
             services.AddHttpContextAccessor();
@@ -45,7 +66,7 @@ namespace Back_End_Project
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseSession();
+            app.UseSession();
 
             app.UseRouting();
 
