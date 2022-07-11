@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-//obyedenit register html i login html, dla kadogo buttona dat svoy link, i smenit ix na a href vashe, sdelat wishlist, compare, oba s limitom
+//sdelat wishlist, compare, oba s limitom
 //vezde proverat esli user is admin poslat ego nax
 namespace Back_End_Project.Controllers
 {
@@ -53,95 +53,6 @@ namespace Back_End_Project.Controllers
         {
             if (!ModelState.IsValid) return View();
             //var area = ControllerContext.RouteData.DataTokens["area"];
-            //admin cookie de di se onu atirig logouta
-
-            AppUser existingAppUser = await _userManager.Users.Include(u => u.Baskets)
-                .FirstOrDefaultAsync(u => u.NormalizedEmail == registerVM.Email.Trim().ToUpperInvariant()
-                && u.NormalizedUserName == registerVM.UserName.Trim().ToUpperInvariant()
-                && !u.IsAdmin && !u.IsDeleted);
-
-            //registerdan birbasha aparsin Home Indekse
-
-            if (existingAppUser != null)
-            {
-                await _signInManager.SignInAsync(existingAppUser, true);
-
-                string basketCookie = HttpContext.Request.Cookies["basket"];
-
-                if (!string.IsNullOrWhiteSpace(basketCookie))
-                {
-                    List<BasketVM> BasketVMs = JsonConvert.DeserializeObject<List<BasketVM>>(basketCookie);
-
-                    List<Basket> baskets = new List<Basket>();
-
-                    foreach (BasketVM BasketVM in BasketVMs)
-                    {
-                        if (existingAppUser.Baskets != null && existingAppUser.Baskets.Count() > 0)
-                        {
-                            Basket existedBasket = existingAppUser.Baskets.FirstOrDefault(b => b.ProductId != BasketVM.ProductId);
-
-                            if (existedBasket == null)
-                            {
-                                Basket basket = new Basket
-                                {
-                                    AppUserId = existingAppUser.Id,
-                                    ProductId = BasketVM.ProductId,
-                                    Count = BasketVM.Count
-                                };
-
-                                baskets.Add(basket);
-                            }
-                            else
-                            {
-                                existedBasket.Count += BasketVM.Count;
-                                BasketVM.Count = existedBasket.Count;
-                            }
-                        }
-                        else
-                        {
-                            Basket basket = new Basket
-                            {
-                                AppUserId = existingAppUser.Id,
-                                ProductId = BasketVM.ProductId,
-                                Count = BasketVM.Count
-                            };
-
-                            baskets.Add(basket);
-                        }
-                    }
-
-                    basketCookie = JsonConvert.SerializeObject(BasketVMs);
-
-                    HttpContext.Response.Cookies.Append("basket", basketCookie);
-
-                    await _context.Baskets.AddRangeAsync(baskets);
-                    await _context.SaveChangesAsync();
-                }
-                else
-                {
-                    if (existingAppUser.Baskets != null && existingAppUser.Baskets.Count() > 0)
-                    {
-                        List<BasketVM> BasketVMs = new List<BasketVM>();
-
-                        foreach (Basket basket in existingAppUser.Baskets)
-                        {
-                            BasketVM BasketVM = new BasketVM
-                            {
-                                ProductId = basket.ProductId,
-                                Count = basket.Count
-                            };
-
-                            BasketVMs.Add(BasketVM);
-                        }
-
-                        basketCookie = JsonConvert.SerializeObject(BasketVMs);
-
-                        HttpContext.Response.Cookies.Append("basket", basketCookie);
-                    }
-                }
-
-                return RedirectToAction("Index", "Home");
-            }
 
             AppUser appUser = new AppUser
             {
@@ -165,6 +76,82 @@ namespace Back_End_Project.Controllers
 
             result = await _userManager.AddToRoleAsync(appUser, "Member");
 
+            await _signInManager.SignInAsync(appUser, true);
+
+            string basketCookie = HttpContext.Request.Cookies["basket"];
+
+            if (!string.IsNullOrWhiteSpace(basketCookie))
+            {
+                List<BasketVM> BasketVMs = JsonConvert.DeserializeObject<List<BasketVM>>(basketCookie);
+
+                List<Basket> baskets = new List<Basket>();
+
+                foreach (BasketVM BasketVM in BasketVMs)
+                {
+                    if (appUser.Baskets != null && appUser.Baskets.Count() > 0)
+                    {
+                        Basket existedBasket = appUser.Baskets.FirstOrDefault(b => b.ProductId != BasketVM.ProductId);
+
+                        if (existedBasket == null)
+                        {
+                            Basket basket = new Basket
+                            {
+                                AppUserId = appUser.Id,
+                                ProductId = BasketVM.ProductId,
+                                Count = BasketVM.Count
+                            };
+
+                            baskets.Add(basket);
+                        }
+                        else
+                        {
+                            existedBasket.Count += BasketVM.Count;
+                            BasketVM.Count = existedBasket.Count;
+                        }
+                    }
+                    else
+                    {
+                        Basket basket = new Basket
+                        {
+                            AppUserId = appUser.Id,
+                            ProductId = BasketVM.ProductId,
+                            Count = BasketVM.Count
+                        };
+
+                        baskets.Add(basket);
+                    }
+                }
+
+                basketCookie = JsonConvert.SerializeObject(BasketVMs);
+
+                HttpContext.Response.Cookies.Append("basket", basketCookie);
+
+                await _context.Baskets.AddRangeAsync(baskets);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                if (appUser.Baskets != null && appUser.Baskets.Count() > 0)
+                {
+                    List<BasketVM> BasketVMs = new List<BasketVM>();
+
+                    foreach (Basket basket in appUser.Baskets)
+                    {
+                        BasketVM BasketVM = new BasketVM
+                        {
+                            ProductId = basket.ProductId,
+                            Count = basket.Count
+                        };
+
+                        BasketVMs.Add(BasketVM);
+                    }
+
+                    basketCookie = JsonConvert.SerializeObject(BasketVMs);
+
+                    HttpContext.Response.Cookies.Append("basket", basketCookie);
+                }
+            }
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -177,20 +164,47 @@ namespace Back_End_Project.Controllers
 
             if (appUser == null)
             {
+                RegisterVM registerVM = new RegisterVM();
+
+                LoginRegisterVM loginRegisterVM = new LoginRegisterVM
+                {
+                    RegisterVM = registerVM,
+                    LoginVM = loginVM
+                };
+
                 ModelState.AddModelError("", "Email or Password is wrong!");
-                return View(loginVM);
+
+                return View("LoginRegister", loginRegisterVM);
             }
 
             if (appUser.IsAdmin)
             {
+                RegisterVM registerVM = new RegisterVM();
+
+                LoginRegisterVM loginRegisterVM = new LoginRegisterVM
+                {
+                    RegisterVM = registerVM,
+                    LoginVM = loginVM
+                };
+
                 ModelState.AddModelError("", "Email or Password is wrong!");
-                return View(loginVM);
+
+                return View("LoginRegister", loginRegisterVM);
             }
 
             if (!await _userManager.CheckPasswordAsync(appUser, loginVM.Password))
             {
+                RegisterVM registerVM = new RegisterVM();
+
+                LoginRegisterVM loginRegisterVM = new LoginRegisterVM
+                {
+                    RegisterVM = registerVM,
+                    LoginVM = loginVM
+                };
+
                 ModelState.AddModelError("", "Email or Password is wrong!");
-                return View(loginVM);
+
+                return View("LoginRegister", loginRegisterVM);
             }
 
             await _signInManager.SignInAsync(appUser, loginVM.RememberMe);

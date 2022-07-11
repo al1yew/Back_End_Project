@@ -10,7 +10,6 @@ namespace Back_End_Project.ViewModels.AccountViewModels
     {
         [Required]
         [StringLength(255)]
-        [EmailAddress]
         public string Email { get; set; }
         [Required]
         [StringLength(255)]
