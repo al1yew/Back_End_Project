@@ -44,7 +44,7 @@ namespace Back_End_Project
                 options.Password.RequireNonAlphanumeric = false;
 
                 options.Lockout.AllowedForNewUsers = true;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
 
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();

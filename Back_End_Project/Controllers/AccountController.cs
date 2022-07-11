@@ -11,7 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+//obyedenit register html i login html, dla kadogo buttona dat svoy link, i smenit ix na a href vashe, sdelat wishlist, compare, oba s limitom
+//vezde proverat esli user is admin poslat ego nax
 namespace Back_End_Project.Controllers
 {
     public class AccountController : Controller
@@ -33,15 +34,114 @@ namespace Back_End_Project.Controllers
         }
 
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult LoginRegister()
         {
-            return View();
+            RegisterVM registerVM = new RegisterVM();
+            LoginVM loginVM = new LoginVM();
+
+            LoginRegisterVM loginRegisterVM = new LoginRegisterVM
+            {
+                RegisterVM = registerVM,
+                LoginVM = loginVM
+            };
+
+            return View(loginRegisterVM);
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM registerVM)
         {
             if (!ModelState.IsValid) return View();
+            //var area = ControllerContext.RouteData.DataTokens["area"];
+            //admin cookie de di se onu atirig logouta
+
+            AppUser existingAppUser = await _userManager.Users.Include(u => u.Baskets)
+                .FirstOrDefaultAsync(u => u.NormalizedEmail == registerVM.Email.Trim().ToUpperInvariant()
+                && u.NormalizedUserName == registerVM.UserName.Trim().ToUpperInvariant()
+                && !u.IsAdmin && !u.IsDeleted);
+
+            //registerdan birbasha aparsin Home Indekse
+
+            if (existingAppUser != null)
+            {
+                await _signInManager.SignInAsync(existingAppUser, true);
+
+                string basketCookie = HttpContext.Request.Cookies["basket"];
+
+                if (!string.IsNullOrWhiteSpace(basketCookie))
+                {
+                    List<BasketVM> BasketVMs = JsonConvert.DeserializeObject<List<BasketVM>>(basketCookie);
+
+                    List<Basket> baskets = new List<Basket>();
+
+                    foreach (BasketVM BasketVM in BasketVMs)
+                    {
+                        if (existingAppUser.Baskets != null && existingAppUser.Baskets.Count() > 0)
+                        {
+                            Basket existedBasket = existingAppUser.Baskets.FirstOrDefault(b => b.ProductId != BasketVM.ProductId);
+
+                            if (existedBasket == null)
+                            {
+                                Basket basket = new Basket
+                                {
+                                    AppUserId = existingAppUser.Id,
+                                    ProductId = BasketVM.ProductId,
+                                    Count = BasketVM.Count
+                                };
+
+                                baskets.Add(basket);
+                            }
+                            else
+                            {
+                                existedBasket.Count += BasketVM.Count;
+                                BasketVM.Count = existedBasket.Count;
+                            }
+                        }
+                        else
+                        {
+                            Basket basket = new Basket
+                            {
+                                AppUserId = existingAppUser.Id,
+                                ProductId = BasketVM.ProductId,
+                                Count = BasketVM.Count
+                            };
+
+                            baskets.Add(basket);
+                        }
+                    }
+
+                    basketCookie = JsonConvert.SerializeObject(BasketVMs);
+
+                    HttpContext.Response.Cookies.Append("basket", basketCookie);
+
+                    await _context.Baskets.AddRangeAsync(baskets);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    if (existingAppUser.Baskets != null && existingAppUser.Baskets.Count() > 0)
+                    {
+                        List<BasketVM> BasketVMs = new List<BasketVM>();
+
+                        foreach (Basket basket in existingAppUser.Baskets)
+                        {
+                            BasketVM BasketVM = new BasketVM
+                            {
+                                ProductId = basket.ProductId,
+                                Count = basket.Count
+                            };
+
+                            BasketVMs.Add(BasketVM);
+                        }
+
+                        basketCookie = JsonConvert.SerializeObject(BasketVMs);
+
+                        HttpContext.Response.Cookies.Append("basket", basketCookie);
+                    }
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
 
             AppUser appUser = new AppUser
             {
@@ -65,13 +165,7 @@ namespace Back_End_Project.Controllers
 
             result = await _userManager.AddToRoleAsync(appUser, "Member");
 
-            return RedirectToAction("Home", "Index");
-        }
-
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -89,7 +183,7 @@ namespace Back_End_Project.Controllers
 
             if (appUser.IsAdmin)
             {
-                ModelState.AddModelError("", "Email Or Password Is InCorrect");
+                ModelState.AddModelError("", "Email or Password is wrong!");
                 return View(loginVM);
             }
 
@@ -300,15 +394,15 @@ namespace Back_End_Project.Controllers
         //{
         //    AppUser appUser = new AppUser
         //    {
-        //        Name = "Super",
-        //        Surname = "Admin",
-        //        UserName = "SuperAdmin",
-        //        Email = "vasifja@code.edu.az"
+        //        Name = "Admin",
+        //        SurName = "Admin",
+        //        UserName = "Admin",
+        //        Email = "Admin@admin"
         //    };
 
         //    appUser.IsAdmin = true;
 
-        //    await _userManager.CreateAsync(appUser, "SuperAdmin@12345");
+        //    await _userManager.CreateAsync(appUser, "Admin@123");
 
         //    await _userManager.AddToRoleAsync(appUser, "SuperAdmin");
 

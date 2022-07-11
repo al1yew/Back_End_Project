@@ -1,0 +1,27 @@
+﻿@model LoginVM
+
+<div asp-validation-summary="ModelOnly"></div>
+<form method="post" asp-controller="Account" asp-action="Login">
+    <div class="single-input-item">
+        <input asp-for="Email" placeholder="Email or Username" required />
+        <span class="text-black-50 text-danger" asp-validation-for="Email"></span>
+    </div>
+    <div class="single-input-item">
+        <input asp-for="Password" placeholder="Enter your Password" required />
+        <span class="text-black-50 text-danger" asp-validation-for="Password"></span>
+    </div>
+    <div class="single-input-item">
+        <div class="login-reg-form-meta d-flex align-items-center justify-content-between">
+            <div class="remember-meta">
+                <div class="custom-control custom-checkbox">
+                    <input asp-for="RememberMe" type="checkbox" class="custom-control-input" id="rememberMe">
+                    <label asp-for="RememberMe" class="custom-control-label" for="rememberMe">Remember Me</label>
+                </div>
+            </div>
+            <a asp-controller="Account" asp-action="ForgotPassword" class="forget-pwd">Forget Password?</a>
+        </div>
+    </div>
+    <div class="single-input-item">
+        <button type="submit" class="btn">Login</button>
+    </div>
+</form>

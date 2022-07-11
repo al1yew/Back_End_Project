@@ -310,6 +310,16 @@
             links[i].classList.remove('active')
         }
     }
+
+
+    //----------------------------------------------- Account Orders toggle table
+
+    $(document).on('show.bs.collapse', '.accordian-body', function () {
+        $(this).closest("table")
+            .find(".collapse.in")
+            .not(this)
+        //.collapse('toggle')
+    })
 });
 
 

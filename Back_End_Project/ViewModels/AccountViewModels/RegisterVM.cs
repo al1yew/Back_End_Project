@@ -32,5 +32,7 @@ namespace Back_End_Project.ViewModels.AccountViewModels
         [Compare(nameof(Password))]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
+        public bool RememberMe { get; set; }
+
     }
 }
