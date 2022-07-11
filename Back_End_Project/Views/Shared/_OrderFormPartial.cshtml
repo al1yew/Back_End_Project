@@ -1,1 +1,68 @@
 ﻿@model Order
+
+<form method="post" id="orderform" asp-controller="Order" asp-action="CheckOut">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="single-input-item">
+                <label asp-for="Name" for="f_name" class="required">Name</label>
+                <input asp-for="Name" id="f_name" placeholder="Name" required />
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="single-input-item">
+                <label asp-for="SurName" for="l_name" class="required">Last Name</label>
+                <input asp-for="SurName" id="l_name" placeholder="Surname" required />
+            </div>
+        </div>
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="Email" for="email" class="required">Email Address</label>
+        <input asp-for="Email" id="email" placeholder="Email Address" required />
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="CompanyName" for="com-name">Company Name</label>
+        <input asp-for="CompanyName" id="com-name" placeholder="Company Name" />
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="Country" for="country">Country</label>
+        <input asp-for="Country" id="country" placeholder="Country" />
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="Address1" for="street-address" class="required mt-20">Street address</label>
+        <input asp-for="Address1" type="text" id="street-address" placeholder="Street address Line 1" required />
+    </div>
+
+    <div class="single-input-item">
+        <input asp-for="Address2" type="text" placeholder="Street address Line 2 (Optional)" />
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="City" for="town" class="required">City</label>
+        <input asp-for="City" id="town" placeholder="City" required />
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="State" for="state">State</label>
+        <input asp-for="State" id="state" placeholder="State / Divition" />
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="ZipCode" for="postcode" class="required">Postcode / ZIP</label>
+        <input asp-for="ZipCode" id="postcode" placeholder="Postcode / ZIP" required />
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="Phone" for="phone">Phone</label>
+        <input asp-for="Phone" id="phone" placeholder="Phone" />
+    </div>
+
+    <div class="single-input-item">
+        <label for="ordernote">Order Note</label>
+        <textarea name="ordernote" id="ordernote" cols="30" rows="3" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+    </div>
+</form>

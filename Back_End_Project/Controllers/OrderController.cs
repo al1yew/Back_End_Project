@@ -1,6 +1,7 @@
 ﻿using Back_End_Project.DAL;
 using Back_End_Project.Enums;
 using Back_End_Project.Models;
+using Back_End_Project.ViewModels.AccountViewModels;
 using Back_End_Project.ViewModels.OrderViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -39,10 +40,13 @@ namespace Back_End_Project.Controllers
                 Email = appUser.Email
             };
 
+            LoginVM loginVM = new LoginVM();
+
             OrderVM orderVM = new OrderVM
             {
                 Order = order,
-                Baskets = baskets
+                Baskets = baskets,
+                LoginVM = loginVM
             };
 
             return View(orderVM);

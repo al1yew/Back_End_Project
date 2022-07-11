@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 //v indekse nujno popravit (say), sdelat sliderrange, on doljen otprravlat v metod po buttonu, ix mojno vzat v js
 //i fetchanut ix kak dva rezultata, maxprice i minprice, i ya doljen sortirovat ix s pomoshyu etix dvux cen
-//sdelat normalnie produkti nakonecto
-//sdelat pagination,
-//detail page slider ne rabotaet ya v custom js zakinul vse ego slick slider kodi
 //koqda delayesh pagination, posle togo kak vibral kategoriyu, i perekluchayeshsa na vtoruyu stranicku, on pochemu to sbrasivayet 
 //kategorii i dayet zanovo vse
+//detail page xochu shto b s inputa value mojno bilo vpisivat rukoy
+//v header defaulte v klasse basketelementscount nado vpisat kolvo productov v baskete
+//product detail stroka 67 s viewbagami, ix iskat v basketcontrollere
 namespace Back_End_Project.Controllers
 {
     public class ProductController : Controller

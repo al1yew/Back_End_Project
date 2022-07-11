@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 //sdelat wishlist, compare, oba s limitom
 //vezde proverat esli user is admin poslat ego nax
+//u kajdogo appuser doljni bit svoi payment details i adress1, adress2 itd, kotorie budut v Profile html v menu adresi i Payment
 namespace Back_End_Project.Controllers
 {
     public class AccountController : Controller

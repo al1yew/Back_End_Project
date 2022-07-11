@@ -303,6 +303,7 @@
     let links = $('.header-menu-for-tabmenu')
 
     for (var i = 0; i < links.length; i++) {
+        console.log("djas")
         let hrefpath = links[i].children[0].getAttribute('href').split('/')
         if (hrefpath[1].toLowerCase() == path[1].toLowerCase()) {
             links[i].classList.add('active')
@@ -322,6 +323,43 @@
     })
 });
 
+
+
+
+//----------------------------------------------- GLOBAL GLOBAL GLOBAL --------------------------------------
+
+
+//----------------------------------------------- Tabmenu Navbar
+
+let path = window.location.pathname
+path = path.split('/')
+let links = $('.header-menu-for-tabmenu')
+
+for (var i = 0; i < links.length; i++) {
+    let hrefpath = links[i].children[0].getAttribute('href').split('/')
+    if (hrefpath[1].toLowerCase() == path[1].toLowerCase()) {
+        links[i].classList.add('active')
+    } else {
+        links[i].classList.remove('active')
+    }
+}
+
+
+//----------------------------------------------- product details slider active
+
+$('.product-large-slider').slick({
+    fade: true,
+    arrows: false,
+    asNavFor: '.pro-nav'
+});
+
+
+$('.pro-nav').slick({
+    slidesToShow: 4,
+    asNavFor: '.product-large-slider',
+    arrows: false,
+    focusOnSelect: true
+});
 
 /*
 //--------------------------------------WRITTEN IN GLOBAL-----------------------------------
@@ -496,22 +534,5 @@ $(document).ready(function () {
         ]
     });
 
-
-
-    // prodct details slider active
-    $('.product-large-slider').slick({
-        fade: true,
-        arrows: false,
-        asNavFor: '.pro-nav'
-    });
-
-
-    // product details slider nav active
-    $('.pro-nav').slick({
-        slidesToShow: 4,
-        asNavFor: '.product-large-slider',
-        arrows: false,
-        focusOnSelect: true
-    });
 });
 */

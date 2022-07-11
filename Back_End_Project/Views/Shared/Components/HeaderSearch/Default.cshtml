@@ -1,5 +1,4 @@
 ﻿@model HeaderSearchVM
-
 <!-- Computer header-->
 
 <header class="header-area">
@@ -65,28 +64,28 @@
                                 <!-- main menu navbar start -->
                                 <nav class="desktop-menu">
                                     <ul>
-                                        <li class="active">
+                                        <li id="home" class="active header-menu-for-tabmenu home">
                                             <a asp-controller="Home" asp-action="Index">Home </i></a>
                                         </li>
-                                        <li>
+                                        <li id="product" class="header-menu-for-tabmenu product">
                                             <a asp-controller="Product" asp-action="Index">Shop </i></a>
                                         </li>
-                                        <li>
+                                        <li id="basket" class="header-menu-for-tabmenu basket">
                                             <a asp-controller="Basket" asp-action="Index">Cart </a>
                                         </li>
-                                        <li>
+                                        <li id="compare" class="header-menu-for-tabmenu compare">
                                             <a asp-controller="Compare" asp-action="Index">Compare </a>
                                         </li>
-                                        <li>
+                                        <li id="wishlist" class="header-menu-for-tabmenu wishlist">
                                             <a asp-controller="Wishlist" asp-action="Index">Wishlist </a>
                                         </li>
-                                        <li>
+                                        <li id="blog" class="header-menu-for-tabmenu blog">
                                             <a asp-controller="Blog" asp-action="Index">Blog </a>
                                         </li>
-                                        <li>
+                                        <li id="contact" class="header-menu-for-tabmenu contact">
                                             <a asp-controller="Contact" asp-action="Index">Contact us</a>
                                         </li>
-                                        <li>
+                                        <li id="about" class="header-menu-for-tabmenu about">
                                             <a asp-controller="About" asp-action="Index">About</a>
                                         </li>
                                     </ul>
@@ -113,19 +112,17 @@
                                         <ul class="dropdown-list">
                                             @if (User.Identity.IsAuthenticated)
                                             {
-                                                <li><a asp-controller="Account" asp-action="Profile">@User.Identity.Name</a></li>
-                                                <li><a asp-controller="Account" asp-action="Logout">Log Out</a></li>
-                                            }
-                                            else
-                                            {
-                                                <li><a style="font-size:20px" asp-controller="Account" asp-action="LoginRegister">Sign in</a></li>
-                                            }
+                                <li><a asp-controller="Account" asp-action="Profile">@User.Identity.Name</a></li>
+                                                <li><a asp-controller="Account" asp-action="Logout">Log Out</a></li> }
+                                                            else
+                                                            {
+                                                <li><a style="font-size:20px" asp-controller="Account" asp-action="LoginRegister">Sign in</a></li>}
                                         </ul>
                                     </li>
                                     <li>
                                         <a class="minicart-btn">
                                             <i class="ion-bag"></i>
-                                            <div class="notification basketelementscount">@Model.BasketVMs.Count()</div>
+                                            s<div class="notification basketelementscount">@Model.BasketVMs.Count()</div>
                                         </a>
                                     </li>
                                 </ul>
@@ -240,13 +237,11 @@
                             <div class="dropdown-menu" aria-labelledby="myaccount">
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <a class="dropdown-item" asp-controller="Account" asp-action="Profile">@User.Identity.Name</a>
-                                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Log Out</a>
-                                }
-                                else
-                                {
-                                    <a style="font-size:20px" class="dropdown-item" asp-controller="Account" asp-action="LoginRegister">Sign in</a>
-                                }
+                    <a class="dropdown-item" asp-controller="Account" asp-action="Profile">@User.Identity.Name</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Log Out</a> }
+                                                else
+                                                {
+                                    <a style="font-size:20px" class="dropdown-item" asp-controller="Account" asp-action="LoginRegister">Sign in</a>}
                             </div>
                         </div>
                     </li>
@@ -298,7 +293,6 @@
                 </form>
                 <div class="search-body" style="width:100%">
                     <ul class="list-group" style="z-index: 500; width: 100%; padding: 30px; background-color: transparent; height: 500px; overflow-y: scroll;">
-                        
                     </ul>
                 </div>
             </div>

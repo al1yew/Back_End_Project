@@ -62,8 +62,13 @@
                                     </p>
                                     <div class="quantity-cart-box d-flex align-items-center mb-20">
                                         <div class="quantity">
-                                            <div class="pro-qty"><input type="text" value="1"></div>
+                                            <div class="pro-qty">
+                                                <a asp-controller="Basket" asp-action="UpdateCount" asp-route-id="@Model.Product.Id" class="dec qtybtn decrease">-</a>
+                                                <input type="text" value="@(ViewBag.BasketCountForProductDetail > 0 ? ViewBag.BasketCountForProductDetail : 1)">
+                                                <a asp-controller="Basket" asp-action="UpdateCount" asp-route-id="@Model.Product.Id" class="inc qtybtn increase">+</a>
+                                            </div>
                                         </div>
+                                        
                                         <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@Model.Product.Id" class="btn btn-default addtobasket">Add To Cart</a>
                                     </div>
                                     <div class="availability mb-20">

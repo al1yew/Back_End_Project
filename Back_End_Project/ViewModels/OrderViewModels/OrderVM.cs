@@ -1,4 +1,5 @@
 ﻿using Back_End_Project.Models;
+using Back_End_Project.ViewModels.AccountViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace Back_End_Project.ViewModels.OrderViewModels
     {
         public Order Order { get; set; }
         public List<Basket> Baskets { get; set; }
+        public LoginVM LoginVM { get; set; }
     }
 }

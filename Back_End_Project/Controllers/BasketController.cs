@@ -67,6 +67,8 @@ namespace Back_End_Project.Controllers
             if (basketVMs.Exists(bvm => bvm.ProductId == id))
             {
                 basketVMs.Find(bvm => bvm.ProductId == id).Count++;
+
+                //ViewBag.basketcountforproductdetail = basketVMs.Find(bvm => bvm.ProductId == id).Count;
             }
             else
             {
@@ -153,6 +155,8 @@ namespace Back_End_Project.Controllers
                         if (dbBasket != null)
                         {
                             dbBasket.Count = basketVM.Count;
+
+                            //ViewBag.BasketCountForProductDetail = dbBasket.Count;
 
                             await _context.SaveChangesAsync();
                         }
