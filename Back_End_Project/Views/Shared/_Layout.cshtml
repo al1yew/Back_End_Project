@@ -54,6 +54,11 @@
         <input type="hidden" id="successInput" value="@TempData["success"]" />
     }
 
+    @if (TempData["info"] != null)
+    {
+        <input type="hidden" id="infoinput" value="@TempData["info"]" />
+    }
+
     @await Component.InvokeAsync("HeaderSearch", settings)
 
     @RenderBody()

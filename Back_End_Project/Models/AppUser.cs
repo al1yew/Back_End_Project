@@ -28,6 +28,7 @@ namespace Back_End_Project.Models
         //relations many to many
         public List<Basket> Baskets { get; set; }
         public IEnumerable<Order> Orders { get; set; }
+        public List<Wishlist> Wishlists { get; set; }
 
     }
 }

@@ -19,7 +19,7 @@
                 <span class="price-old"><del>$@product.DiscountPrice</del></span>
             </div>
             <div class="product-action-link">
-                <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                <a asp-controller="Wishlist" asp-action="AddToWishlist" asp-route-id="@product.Id" class="addtowishlist" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
                 <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@product.Id" data-toggle="tooltip" title="Add To Cart" class="addtobasket"><i class="ion-bag addtobasket"></i></a>
                 <a data-toggle="modal" data-target="#quick_view" asp-controller="Product" asp-action="DetailModal" asp-route-id="@product.Id" class="detailmodal">
                     <span data-toggle="tooltip"
@@ -48,7 +48,7 @@
                 @product.Description
             </p>
             <div class="product-link-2 position-static">
-                <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                <a asp-controller="Wishlist" asp-action="AddToWishlist" asp-route-id="@product.Id" class="addtowishlist" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
                 <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@product.Id" data-toggle="tooltip" title="Add To Cart" class="addtobasket"><i class="ion-bag addtobasket"></i></a>
                 <a data-toggle="modal" data-target="#quick_view" asp-controller="Product" asp-action="DetailModal" asp-route-id="@product.Id" class="detailmodal">
                     <span data-toggle="tooltip"

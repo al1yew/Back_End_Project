@@ -271,6 +271,26 @@
     })
 
 
+    //----------------------------------------------- Add to wishlist
+
+    $(document).on("click", ".addtowishlist", function (e) {
+
+        e.preventDefault();
+
+        let url = $(this).attr('href');
+
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $(".tbodywishlist").html(data);
+            })
+
+    })
+
+
+
+
+
     //----------------------------------------------- Toastr
 
     toastr.options = {
@@ -294,6 +314,29 @@
     if ($('#successInput').val().length) {
         toastr["success"]($('#successInput').val(), $('#successInput').val().split(' ')[0])
     }
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-bottom-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "1000",
+        "extendedTimeOut": "500",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+    if ($('#infoinput').val().length) {
+        toastr["info"]($('#infoinput').val(), $('#infoinput').val().split(' ')[0])
+    }
+    //-------------------------------------------------------------------------------------------
 
 
     //----------------------------------------------- Tabmenu Navbar

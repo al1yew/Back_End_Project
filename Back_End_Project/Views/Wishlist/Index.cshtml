@@ -1,0 +1,67 @@
+﻿@model List<WishlistVM>
+
+<main>
+    <!-- breadcrumb area start -->
+    <div class="breadcrumb-area bg-img" data-bg="assets/img/banner/breadcrumb-banner.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap text-center">
+                        <nav aria-label="breadcrumb">
+                            <h1 class="breadcrumb-title">Wishlist</h1>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+    <!-- wishlist main wrapper start -->
+    <div class="wishlist-main-wrapper section-padding">
+        <div class="container custom-container">
+            <!-- Wishlist Page Content Start -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Wishlist Table Area -->
+                    <div class="cart-table table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="pro-thumbnail">Photo</th>
+                                    <th class="pro-title">Product</th>
+                                    <th class="pro-price">Price</th>
+                                    <th class="pro-quantity">Stock Status</th>
+                                    <th class="pro-subtotal">Add to Cart</th>
+                                    <th class="pro-remove">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody class="tbodywishlist">
+                                @foreach (WishlistVM wishlistVM in Model)
+                                {
+                                    <tr>
+                                        <td class="pro-thumbnail">
+                                            <a href="#">
+                                                <img class="img-fluid" src="assets/img/product/@wishlistVM.Image"/>
+                                            </a>
+                                        </td>
+                                        <td class="pro-title"><a asp-controller="Product" asp-action="Detail" asp-route-id="@wishlistVM.ProductId">@wishlistVM.Name</a></td>
+                                        <td class="pro-price"><span>$@wishlistVM.Price</span></td>
+                                        <td class="pro-quantity"><span class="@(wishlistVM.IsAvailable ? "text-success" : "text-danger")">@(wishlistVM.IsAvailable ? "In Stock" : "Out Of Stock")</span></td>
+                                        <td class="pro-subtotal"><a asp-controller="Basket" asp-action="AddToBasket" class="sqr-btn text-white">Add to Cart</a></td>
+                                        <td class="pro-remove"><a asp-controller="Wishlist" asp-action="DeleteFromWishlist"><i class="fa fa-trash-o"></i></a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Wishlist Page Content End -->
+        </div>
+    </div>
+    <!-- wishlist main wrapper end -->
+</main>

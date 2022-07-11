@@ -236,7 +236,7 @@
                                         <span class="price-old"><del>$@item.Price</del></span>
                                     </div>
                                     <div class="product-action-link">
-                                        <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                        <a asp-controller="Wishlist" asp-action="AddToWishlist" asp-route-id="@item.Id" class="addtowishlist" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
                                         <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@item.Id" data-toggle="tooltip" title="Add To Cart" class="addtobasket"><i class="ion-bag"></i></a>
                                         <a data-toggle="modal" data-target="#quick_view" asp-controller="Product" asp-action="DetailModal" asp-route-id="@item.Id" class="detailmodal">
                                             <span data-toggle="tooltip"
