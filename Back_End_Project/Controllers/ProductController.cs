@@ -17,9 +17,10 @@ using System.Threading.Tasks;
 //v header defaulte v klasse basketelementscount nado vpisat kolvo productov v baskete
 //product detail stroka 67 s viewbagami, ix iskat v basketcontrollere
 
-//VSE METODI SORTBY UBRAT!!!! V FOREACH DAT ASP-ROUTE-CATEGORYID ILI ASP-ROUTE-COLORID ITD I PRINIMAT IX VSEH V INDEKSE if(null deyilse)
-//gedsin mene getirsin queryni
+//proverit sortirovku v indekse vse do edinogo
+//sortby search v custom js ya nemnogo zamenil, v footere popravil brands i categories, dal im asp-route
 
+//sprosit u neqo pagination i viewbagi
 
 namespace Back_End_Project.Controllers
 {
@@ -31,13 +32,14 @@ namespace Back_End_Project.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? sortby, int sortbycount, int page = 1)
+        public async Task<IActionResult> Index(int? sortby, int? categoryId, int? brandId, string searchValue, int? colorId, int? sizeId, int sortbycount, int page = 1)
         {
             IQueryable<Product> products = _context.Products
             .Include(p => p.Category)
             .Include(p => p.ProductToColors).ThenInclude(p => p.Color)
             .Include(p => p.ProductToSizes).ThenInclude(p => p.Size)
             .AsQueryable();
+
             #region pitalsa sdelat sortby
 
             //if (sortby != null)
@@ -70,17 +72,61 @@ namespace Back_End_Project.Controllers
             //}
 
             //ViewBag.Sortby = sortby;
+            //ViewBag.Select = 5;
             #endregion
 
-            ViewBag.Select = 5;
+            if (categoryId != null)
+            {
+                products = _context.Products
+                    .Where(p => p.CategoryId == categoryId);
+
+                ViewBag.CategoriesForProductsPage = products;
+            }
+
+            if (brandId != null)
+            {
+                products = _context.Products
+                    .Where(p => p.BrandId == brandId);
+
+                ViewBag.BrandsForProductsPage = products;
+            }
+
+            if (searchValue != null)
+            {
+                products = _context.Products
+                .Where(p => p.Name.ToLower().Contains(searchValue.ToLower()) ||
+                p.Brand.Name.ToLower().Contains(searchValue.ToLower()) ||
+                p.Category.Name.ToLower().Contains(searchValue.ToLower()) ||
+                p.Description.ToLower().Contains(searchValue.ToLower()) ||
+                p.FirstText.ToLower().Contains(searchValue.ToLower()) ||
+                p.SecondText.ToLower().Contains(searchValue.ToLower()));
+
+                ViewBag.HeaderSearchForProductsPage = products;
+            }
+
+            if (colorId != null)
+            {
+                products = _context.ProductToColors
+                   .Include(x => x.Product).Where(e => e.ColorId == colorId).Select(e => e.Product);
+
+                ViewBag.ColorForProductsPage = products;
+            }
+
+            if (sizeId != null)
+            {
+                products = _context.ProductToSizes
+                    .Include(x => x.Product).Where(e => e.SizeId == sizeId).Select(e => e.Product);
+
+                ViewBag.SizeForProductsPage = products;
+            }
 
             ProductVM productVM = new ProductVM
             {
-                Products = PaginationList<Product>.Create(products, page, sortbycount),
+                Products = PaginationList<Product>.Create(products, page, 5),
                 Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
-                Sizes = await _context.Sizes.ToListAsync(),
-                Colors = await _context.Colors.ToListAsync(),
-                Categories = await _context.Categories.Include(c=>c.Products).ToListAsync()
+                Sizes = await _context.Sizes.Include(c => c.ProductToSizes).ThenInclude(pc => pc.Product).ToListAsync(),
+                Colors = await _context.Colors.Include(c => c.ProductToColors).ThenInclude(pc => pc.Product).ToListAsync(),
+                Categories = await _context.Categories.Include(c => c.Products).ToListAsync()
             };
 
             return View(productVM);
@@ -140,214 +186,6 @@ namespace Back_End_Project.Controllers
                 .ToListAsync();
 
             return PartialView("_SearchPartial", products);
-        }
-
-        public async Task<IActionResult> SortByCategory(int? id, int sortbycount, int page = 1)
-        {
-            if (sortbycount <= 0)
-            {
-                sortbycount = 5;
-            }
-
-            ViewBag.Sortby = sortbycount;
-
-            if (id == null)
-            {
-                IQueryable<Product> products = _context.Products.AsQueryable();
-
-                ProductVM productVM = new ProductVM
-                {
-                    Products = PaginationList<Product>.Create(products, page, sortbycount),
-                    Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
-                    Sizes = await _context.Sizes.ToListAsync(),
-                    Colors = await _context.Colors.ToListAsync(),
-                    Categories = await _context.Categories.ToListAsync()
-                };
-
-                return View("Index", productVM);
-            }
-            else
-            {
-                IQueryable<Product> products = _context.Products
-                    .Where(p => p.CategoryId == id)
-                    .AsQueryable();
-
-                ProductVM productVM = new ProductVM
-                {
-                    Products = PaginationList<Product>.Create(products, page, sortbycount),
-                    Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
-                    Sizes = await _context.Sizes.ToListAsync(),
-                    Colors = await _context.Colors.ToListAsync(),
-                    Categories = await _context.Categories.ToListAsync()
-                };
-
-                return View("Index", productVM);
-            }
-
-        }
-
-        public async Task<IActionResult> SortByBrand(int? id, int sortbycount, int page = 1)
-        {
-            if (sortbycount <= 0)
-            {
-                sortbycount = 5;
-            }
-
-            ViewBag.Sortby = sortbycount;
-
-            if (id == null)
-            {
-                IQueryable<Product> products =  _context.Products.AsQueryable();
-
-                ProductVM productVM = new ProductVM
-                {
-                    Products = PaginationList<Product>.Create(products, page, sortbycount),
-                    Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
-                    Sizes = await _context.Sizes.ToListAsync(),
-                    Colors = await _context.Colors.ToListAsync(),
-                    Categories = await _context.Categories.ToListAsync()
-                };
-
-                return View("Index", productVM);
-            }
-            else
-            {
-                IQueryable<Product> products =  _context.Products
-                    .Where(p => p.BrandId == id)
-                    .AsQueryable();
-
-                ProductVM productVM = new ProductVM
-                {
-                    Products = PaginationList<Product>.Create(products, page, sortbycount),
-                    Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
-                    Sizes = await _context.Sizes.ToListAsync(),
-                    Colors = await _context.Colors.ToListAsync(),
-                    Categories = await _context.Categories.ToListAsync()
-                };
-
-                return View("Index", productVM);
-            }
-        }
-
-        public async Task<IActionResult> SortByColor(int? id, int sortbycount, int page = 1)
-        {
-            if (sortbycount <= 0)
-            {
-                sortbycount = 5;
-            }
-
-            ViewBag.Sortby = sortbycount;
-
-            if (id == null)
-            {
-                IQueryable<Product> products = _context.Products.AsQueryable();
-
-                ProductVM productVM = new ProductVM
-                {
-                    Products = PaginationList<Product>.Create(products, page, sortbycount),
-                    Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
-                    Sizes = await _context.Sizes.ToListAsync(),
-                    Colors = await _context.Colors.ToListAsync(),
-                    Categories = await _context.Categories.ToListAsync()
-                };
-
-                return View("Index", productVM);
-            }
-            else
-            {
-                IQueryable<Product> products =  _context.ProductToColors
-                    .Include(x => x.Product).Where(e => e.ColorId == id).Select(e => e.Product)
-                    .AsQueryable();
-
-                ProductVM productVM = new ProductVM
-                {
-                    Products = PaginationList<Product>.Create(products, page, sortbycount),
-                    Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
-                    Sizes = await _context.Sizes.ToListAsync(),
-                    Colors = await _context.Colors.ToListAsync(),
-                    Categories = await _context.Categories.ToListAsync()
-                };
-
-                return View("Index", productVM);
-            }
-        }
-
-        public async Task<IActionResult> SortBySize(int? id, int sortbycount, int page = 1)
-        {
-            if (sortbycount <= 0)
-            {
-                sortbycount = 5;
-            }
-
-            ViewBag.Sortby = sortbycount;
-
-            if (id == null)
-            {
-                IQueryable<Product> products = _context.Products.AsQueryable();
-
-                ProductVM productVM = new ProductVM
-                {
-                    Products = PaginationList<Product>.Create(products, page, sortbycount),
-                    Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
-                    Sizes = await _context.Sizes.ToListAsync(),
-                    Colors = await _context.Colors.ToListAsync(),
-                    Categories = await _context.Categories.ToListAsync()
-                };
-
-                return View("Index", productVM);
-            }
-            else
-            {
-                IQueryable<Product> products =  _context.ProductToSizes
-                    .Include(x => x.Product).Where(e => e.SizeId == id).Select(e => e.Product)
-                    .AsQueryable();
-
-                ProductVM productVM = new ProductVM
-                {
-                    Products = PaginationList<Product>.Create(products, page, sortbycount),
-                    Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
-                    Sizes = await _context.Sizes.ToListAsync(),
-                    Colors = await _context.Colors.ToListAsync(),
-                    Categories = await _context.Categories.ToListAsync()
-                };
-
-                return View("Index", productVM);
-            }
-        }
-
-        public async Task<IActionResult> SortBySearch(string sortbysearch, int sortbycount, int page = 1)
-        {
-            if (sortbycount <= 0)
-            {
-                sortbycount = 5;
-            }
-
-            ViewBag.Sortby = sortbycount;
-
-            if (sortbysearch == null)
-            {
-                return View("Index");
-            }
-
-            IQueryable<Product> products = _context.Products
-                .Where(p => p.Name.ToLower().Contains(sortbysearch.ToLower()) ||
-                p.Brand.Name.ToLower().Contains(sortbysearch.ToLower()) ||
-                p.Category.Name.ToLower().Contains(sortbysearch.ToLower()) ||
-                p.Description.ToLower().Contains(sortbysearch.ToLower()) ||
-                p.FirstText.ToLower().Contains(sortbysearch.ToLower()) ||
-                p.SecondText.ToLower().Contains(sortbysearch.ToLower()))
-                .AsQueryable();
-
-            ProductVM productVM = new ProductVM
-            {
-                Products = PaginationList<Product>.Create(products, page, sortbycount),
-                Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
-                Sizes = await _context.Sizes.ToListAsync(),
-                Colors = await _context.Colors.ToListAsync(),
-                Categories = await _context.Categories.ToListAsync()
-            };
-
-            return View("Index", productVM);
         }
     }
 }

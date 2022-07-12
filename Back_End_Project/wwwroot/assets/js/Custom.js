@@ -154,7 +154,7 @@
 
         let url = $(this).data('url');
 
-        url = url + '?SortBySearch=' + inputvalue;
+        url = url + '?searchValue=' + inputvalue;
 
         console.log(window.location.href)
 

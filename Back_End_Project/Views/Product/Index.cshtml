@@ -1,4 +1,5 @@
 ﻿@model ProductVM
+
 <!-- main wrapper start -->
 <main>
     <!-- breadcrumb area start -->
@@ -36,9 +37,10 @@
                                 <ul class="color-list">
                                     @foreach (var item in Model.Categories)
                                     {
-                        <li>
-                            <a asp-controller="Product" asp-action="SortByCategory" asp-route-id="@item.Id">@item.Name<span>@item.Products.Where(p=>p.CategoryId == item.Id).ToList().Count()</span></a>
-                        </li>}
+                                        <li>
+                                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@item.Id">@item.Name<span>(@item.Products.Where(p=>p.CategoryId == item.Id).ToList().Count())</span></a>
+                                        </li>
+                                    }
                                 </ul>
                             </div>
                         </div>
@@ -74,7 +76,7 @@
                                     @foreach (var item in Model.Colors.Take(6))
                                     {
                         <li style="cursor:pointer">
-                            <a asp-controller="Product" asp-action="SortByColor" asp-route-id="@item.Id">@item.Name<span>(say)</span></a>
+                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-colorId="@item.Id">@item.Name<span>(@item.ProductToColors.Where(pc => pc.ColorId == item.Id).ToList().Count())</span></a>
                         </li>
 }
                                 </ul>
@@ -91,7 +93,7 @@
                                     @foreach (var item in Model.Sizes.Take(6))
                                     {
                         <li>
-                            <a asp-controller="Product" asp-action="SortBySize" asp-route-id="@item.Id">@item.Name<span>(say)</span></a>
+                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-sizeId="@item.Id">@item.Name<span>(@item.ProductToSizes.Where(pc => pc.SizeId == item.Id).ToList().Count())</span></a>
                         </li>}
                                 </ul>
                             </div>
