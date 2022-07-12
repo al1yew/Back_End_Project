@@ -2,60 +2,62 @@
 
 @foreach (Product product in Model)
 {
-<div class="col-lg-4 col-sm-6">
-    <!-- product grid item start -->
-    <div class="product-item mb-53">
-        <div class="product-thumb">
-            <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">
-                <img src="~/assets/img/product/@product.Image" alt="">
-            </a>
-        </div>
-        <div class="product-content">
-            <h5 class="product-name">
-                <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">@product.Name</a>
-            </h5>
-            <div class="price-box">
-                <span class="price-regular">$@product.Price</span>
-                <span class="price-old"><del>$@product.DiscountPrice</del></span>
-            </div>
-            <div class="product-action-link">
-                <a asp-controller="Wishlist" asp-action="AddToWishlist" asp-route-id="@product.Id" class="addtowishlist" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@product.Id" data-toggle="tooltip" title="Add To Cart" class="addtobasket"><i class="ion-bag addtobasket"></i></a>
-                <a data-toggle="modal" data-target="#quick_view" asp-controller="Product" asp-action="DetailModal" asp-route-id="@product.Id" class="detailmodal">
-                    <span data-toggle="tooltip"
-                          title="Quick View"><i class="ion-ios-eye-outline"></i></span>
+    <div class="col-lg-4 col-sm-6">
+        <!-- product grid item start -->
+        <div class="product-item mb-53">
+            <div class="product-thumb">
+                <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">
+                    <img src="~/assets/img/product/@product.Image" alt="">
                 </a>
             </div>
-        </div>
-    </div>
-    <!-- product grid item end -->
-    <!-- product list item start -->
-    <div class="product-list-item mb-30">
-        <div class="product-thumb">
-            <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">
-                <img src="~/assets/img/product/@product.Image" alt="product thumb">
-            </a>
-        </div>
-        <div class="product-content-list">
-            <h5 class="product-name">
-                <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">@product.Name</a>
-            </h5>
-            <div class="price-box">
-                <span class="price-regular">$@product.Price</span>
-                <span class="price-old"><del>$@product.DiscountPrice</del></span>
+            <div class="product-content">
+                <h5 class="product-name">
+                    <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">@product.Name</a>
+                </h5>
+                <div class="price-box">
+                    <span class="price-regular">$@product.Price</span>
+                    <span class="price-old"><del>$@product.DiscountPrice</del></span>
+                    <a asp-controller="Compare" asp-action="AddToCompare" asp-route-id="@product.Id" class="addtocompare" data-toggle="tooltip" title="Compare"><i class="fa-solid fa-code-compare"></i>COMPARE</a>
+                </div>
+                <div class="product-action-link">
+                    <a asp-controller="Wishlist" asp-action="AddToWishlist" asp-route-id="@product.Id" class="addtowishlist" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                    <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@product.Id" data-toggle="tooltip" title="Add To Cart" class="addtobasket"><i class="ion-bag addtobasket"></i></a>
+                    <a data-toggle="modal" data-target="#quick_view" asp-controller="Product" asp-action="DetailModal" asp-route-id="@product.Id" class="detailmodal">
+                        <span data-toggle="tooltip"
+                              title="Quick View"><i class="ion-ios-eye-outline"></i></span>
+                    </a>
+                </div>
             </div>
-            <p>
-                @product.Description
-            </p>
-            <div class="product-link-2 position-static">
-                <a asp-controller="Wishlist" asp-action="AddToWishlist" asp-route-id="@product.Id" class="addtowishlist" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@product.Id" data-toggle="tooltip" title="Add To Cart" class="addtobasket"><i class="ion-bag addtobasket"></i></a>
-                <a data-toggle="modal" data-target="#quick_view" asp-controller="Product" asp-action="DetailModal" asp-route-id="@product.Id" class="detailmodal">
-                    <span data-toggle="tooltip"
-                          title="Quick View"><i class="ion-ios-eye-outline"></i></span>
+        </div>
+        <!-- product grid item end -->
+        <!-- product list item start -->
+        <div class="product-list-item mb-30">
+            <div class="product-thumb">
+                <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">
+                    <img src="~/assets/img/product/@product.Image" alt="product thumb">
                 </a>
             </div>
+            <div class="product-content-list">
+                <h5 class="product-name">
+                    <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">@product.Name</a>
+                </h5>
+                <div class="price-box">
+                    <span class="price-regular">$@product.Price</span>
+                    <span class="price-old"><del>$@product.DiscountPrice</del></span>
+                </div>
+                <p>
+                    @product.Description
+                </p>
+                <div class="product-link-2 position-static">
+                    <a asp-controller="Wishlist" asp-action="AddToWishlist" asp-route-id="@product.Id" class="addtowishlist" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                    <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@product.Id" data-toggle="tooltip" title="Add To Cart" class="addtobasket"><i class="ion-bag addtobasket"></i></a>
+                    <a data-toggle="modal" data-target="#quick_view" asp-controller="Product" asp-action="DetailModal" asp-route-id="@product.Id" class="detailmodal">
+                        <span data-toggle="tooltip"
+                              title="Quick View"><i class="ion-ios-eye-outline"></i></span>
+                    </a>
+                    <a asp-controller="Compare" asp-action="AddToCompare" asp-route-id="@product.Id" class="addtocompare" data-toggle="tooltip" title="Compare"><i class="fa-solid fa-code-compare"></i></a>
+                </div>
+            </div>
         </div>
-    </div>
-    <!-- product list item start -->
-</div>}
+        <!-- product list item start -->
+    </div>}

@@ -111,24 +111,66 @@ namespace Back_End_Project.Controllers
                 await _context.SaveChangesAsync();
             }
 
+            TempData["info"] = "Product is added in Wishlist!";
+
             wishlist = JsonConvert.SerializeObject(wishlistVMs);
 
             HttpContext.Response.Cookies.Append("wishlist", wishlist);
 
-            return View("Index", await _getWishlistItems(wishlistVMs));
+            return PartialView("_WishlistPartial", await _getWishlistItems(wishlistVMs));
         }
 
-        public async Task<IActionResult> DeleteFromWishlist()
+        public async Task<IActionResult> DeleteFromWishlist(int? id)
         {
-            return View();
+            if (id == null) return BadRequest();
+
+            if (!await _context.Products.AnyAsync(p => p.Id == id)) return NotFound();
+
+            string wishlist = HttpContext.Request.Cookies["wishlist"];
+
+            if (string.IsNullOrWhiteSpace(wishlist)) return BadRequest();
+
+            List<WishlistVM> wishlistVMs = JsonConvert.DeserializeObject<List<WishlistVM>>(wishlist);
+
+            WishlistVM wishlistVM = wishlistVMs.Find(b => b.ProductId == id);
+
+            if (wishlistVM == null) return NotFound();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                AppUser appUser = await _userManager.Users.Include(u => u.Wishlists).FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+                if (appUser.Wishlists != null && appUser.Wishlists.Count() > 0)
+                {
+                    Wishlist dbWishlist = appUser.Wishlists.FirstOrDefault(b => b.ProductId == id);
+
+                    if (dbWishlist != null)
+                    {
+                        appUser.Wishlists.Remove(dbWishlist);
+                        _context.Wishlists.Remove(dbWishlist);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+            }
+
+            wishlistVMs.Remove(wishlistVM);
+
+            TempData["info"] = "Product is deleted from Wishlist!";
+
+            wishlist = JsonConvert.SerializeObject(wishlistVMs);
+
+            Response.Cookies.Append("wishlist", wishlist);
+
+            return PartialView("_WishlistPartial", await _getWishlistItems(wishlistVMs));
         }
 
         private async Task<List<WishlistVM>> _getWishlistItems(List<WishlistVM> wishlistVMs)
         {
-            //if (User.Identity.IsAuthenticated)
-            //{
-            //    AppUser appUser = await _userManager.Users.Include(u => u.Baskets).FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
-            //}
+            if (User.Identity.IsAuthenticated)
+            {
+                AppUser appUser = await _userManager.Users.Include(u => u.Wishlists).FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+            }
+            //prover eto
 
             foreach (WishlistVM item in wishlistVMs)
             {
@@ -138,6 +180,7 @@ namespace Back_End_Project.Controllers
                 item.Price = dbProduct.DiscountPrice > 0 ? dbProduct.DiscountPrice : dbProduct.Price;
                 item.Tax = dbProduct.Tax;
                 item.Image = dbProduct.Image;
+                item.IsAvailable = dbProduct.IsAvailable;
             }
 
             return wishlistVMs;

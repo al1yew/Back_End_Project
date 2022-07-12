@@ -1,0 +1,76 @@
+﻿@model List<CompareVM>
+
+
+<tbody>
+    <tr>
+        <td class="first-column">Product</td>
+        @foreach (CompareVM compareVM in Model)
+        {
+            <td class="product-image-title">
+                <a asp-controller="Product" asp-action="Detail" asp-route-id="@compareVM.ProductId" class="image">
+                    <img class="img-fluid" src="assets/img/product/@compareVM.Image" alt="Compare Product">
+                </a>
+                <a asp-controller="Product" asp-action="SortByCategory" asp-route-id="@compareVM.CategoryId" class="category">@compareVM.CategoryName</a>
+            </td>
+        }
+    </tr>
+    <tr>
+        <td class="first-column">Description</td>
+        @foreach (CompareVM compareVM in Model)
+        {
+            <td class="pro-desc">
+                <p>@compareVM.Description</p>
+            </td>
+        }
+    </tr>
+    <tr>
+        <td class="first-column">Price</td>
+        @foreach (CompareVM compareVM in Model)
+        {
+            <td class="pro-price">$@compareVM.Price</td>
+        }
+    </tr>
+    @*<tr>
+        <td class="first-column">Color</td>
+        @foreach (CompareVM compareVM in Model)
+        {
+            <td class="pro-color">@compareVM.Product.ProductToColors.Where(x => x.ColorId == compareVM.ProductId).Select(x => x.Product)</td>
+        }
+    </tr>*@
+    <tr>
+        <td class="first-column">Stock</td>
+        @foreach (CompareVM compareVM in Model)
+        {
+            <td class="pro-stock" style="@(compareVM.IsAvailable ? "text-success" : "text-danger")">@(compareVM.IsAvailable ? "In Stock" : "Out Of Stock") </td>
+        }
+    </tr>
+    <tr>
+        <td class="first-column">Add to cart</td>
+        @foreach (CompareVM compareVM in Model)
+        {
+            <td><a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@compareVM.ProductId" class="btn addtobasket">Add to Cart</a></td>
+        }
+    </tr>
+    <tr>
+        <td class="first-column">Rating</td>
+        @foreach (CompareVM compareVM in Model)
+        {
+            <td class="pro-ratting">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-o"></i>
+            </td>
+        }
+    </tr>
+    <tr>
+        <td class="first-column">Remove</td>
+        @foreach (CompareVM compareVM in Model)
+        {
+            <td class="pro-remove">
+                <a asp-controller="Compare" asp-action="DeleteFromCompare" asp-route-id="@compareVM.ProductId" class="deletefromcompare"><i class="fa fa-trash-o"></i></a>
+            </td>
+        }
+    </tr>
+</tbody>

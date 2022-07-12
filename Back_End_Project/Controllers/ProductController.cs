@@ -16,6 +16,11 @@ using System.Threading.Tasks;
 //detail page xochu shto b s inputa value mojno bilo vpisivat rukoy
 //v header defaulte v klasse basketelementscount nado vpisat kolvo productov v baskete
 //product detail stroka 67 s viewbagami, ix iskat v basketcontrollere
+
+//VSE METODI SORTBY UBRAT!!!! V FOREACH DAT ASP-ROUTE-CATEGORYID ILI ASP-ROUTE-COLORID ITD I PRINIMAT IX VSEH V INDEKSE if(null deyilse)
+//gedsin mene getirsin queryni
+
+
 namespace Back_End_Project.Controllers
 {
     public class ProductController : Controller
@@ -342,7 +347,5 @@ namespace Back_End_Project.Controllers
 
             return View("Index", productVM);
         }
-
-
     }
 }

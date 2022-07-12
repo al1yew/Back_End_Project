@@ -1,0 +1,16 @@
+﻿@model List<WishlistVM>
+
+@foreach (WishlistVM wishlistVM in Model)
+{
+<tr>
+    <td class="pro-thumbnail">
+        <a asp-controller="Product" asp-action="Detail" asp-route-id="@wishlistVM.ProductId">
+            <img class="img-fluid" src="assets/img/product/@wishlistVM.Image" />
+        </a>
+    </td>
+    <td class="pro-title"><a asp-controller="Product" asp-action="Detail" asp-route-id="@wishlistVM.ProductId">@wishlistVM.Name</a></td>
+    <td class="pro-price"><span>$@wishlistVM.Price</span></td>
+    <td class="pro-quantity"><span class="@(wishlistVM.IsAvailable ? "text-success" : "text-danger")">@(wishlistVM.IsAvailable ? "In Stock" : "Out Of Stock")</span></td>
+    <td class="pro-subtotal"><a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@wishlistVM.ProductId" class="sqr-btn text-white addtobasket">Add to Cart</a></td>
+    <td class="pro-remove"><a asp-controller="Wishlist" asp-action="DeleteFromWishlist" asp-route-id="@wishlistVM.ProductId" class="deletefromwishlist"><i class="fa fa-trash-o "></i></a></td>
+</tr>}

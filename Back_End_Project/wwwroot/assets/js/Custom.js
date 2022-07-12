@@ -184,7 +184,7 @@
             })
     })
 
-    //----------------------------------------------- Delete to basket
+    //----------------------------------------------- Delete from basket
 
     $(document).on('click', '.deletefrombasket', function (e) {
         e.preventDefault();
@@ -274,7 +274,6 @@
     //----------------------------------------------- Add to wishlist
 
     $(document).on("click", ".addtowishlist", function (e) {
-
         e.preventDefault();
 
         let url = $(this).attr('href');
@@ -288,6 +287,44 @@
     })
 
 
+    //----------------------------------------------- Delete from wishlist
+
+    $(document).on('click', '.deletefromwishlist', function (e) {
+        e.preventDefault();
+        fetch($(this).attr('href'))
+            .then(res => res.text())
+            .then(data => {
+                $('.tbodywishlist').html(data);
+            })
+    })
+
+
+    //----------------------------------------------- Add to compare
+
+    $(document).on("click", ".addtocompare", function (e) {
+        e.preventDefault();
+        console.log("hello")
+
+        let url = $(this).attr('href');
+
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $(".comparedata").html(data);
+            })
+    })
+
+
+    //----------------------------------------------- Delete from compare
+
+    $(document).on('click', '.deletefromcompare', function (e) {
+        e.preventDefault();
+        fetch($(this).attr('href'))
+            .then(res => res.text())
+            .then(data => {
+                $('.comparedata').html(data);
+            })
+    })
 
 
 
