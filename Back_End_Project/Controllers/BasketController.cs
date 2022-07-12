@@ -10,7 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-//nado shto bi on obnovlal cifrku v headere nad Basket ikonkoy
+//nado shto bi on obnovlal cifrku v headere nad Basket ikonkoy i eshe nado umet uvelicivat i umenshat kolvo tovara is modala,
+//iz product detaila, i iz basket indeksa, k tomu je nado shto b inputa regem yazanda da ishlesin, eto budet custom.js funkciya, gde budet 
+//on keyup funkciya shto b on schitival znacneie inputa, delal cifru iz etogo i potom delal Fetch v UpdateCount
 
 namespace Back_End_Project.Controllers
 {

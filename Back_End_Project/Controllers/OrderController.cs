@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+//koqda adres zad pishet nado shto b proveral pravilno, zastalal pisat pravilno, esli shto daval error shto zapolni
 namespace Back_End_Project.Controllers
 {
     [Authorize(Roles = "Member")]

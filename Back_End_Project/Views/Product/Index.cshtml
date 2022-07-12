@@ -37,7 +37,7 @@
                                     @foreach (var item in Model.Categories)
                                     {
                         <li>
-                            <a asp-controller="Product" asp-action="SortByCategory" asp-route-id="@item.Id">@item.Name<span>(say)</span></a>
+                            <a asp-controller="Product" asp-action="SortByCategory" asp-route-id="@item.Id">@item.Name<span>@item.Products.Where(p=>p.CategoryId == item.Id).ToList().Count()</span></a>
                         </li>}
                                 </ul>
                             </div>

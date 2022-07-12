@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+//smotri komenti vnizu problema s temp data i s cvetami produktov
 namespace Back_End_Project.Controllers
 {
     public class CompareController : Controller
@@ -65,6 +65,7 @@ namespace Back_End_Project.Controllers
                 if (compareVMs.Exists(w => w.ProductId == id))
                 {
                     TempData["info"] = "This product is already in Compare list!";
+                    //ishlemir
                 }
                 else
                 {
@@ -115,7 +116,7 @@ namespace Back_End_Project.Controllers
             compareVMs.Remove(compareVM);
 
             TempData["info"] = "Product is deleted from CompareList!";
-
+            //ishlemir
             comparelist = JsonConvert.SerializeObject(compareVMs);
 
             Response.Cookies.Append("comparelist", comparelist);

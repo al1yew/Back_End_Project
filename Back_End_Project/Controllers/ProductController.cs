@@ -38,37 +38,39 @@ namespace Back_End_Project.Controllers
             .Include(p => p.ProductToColors).ThenInclude(p => p.Color)
             .Include(p => p.ProductToSizes).ThenInclude(p => p.Size)
             .AsQueryable();
+            #region pitalsa sdelat sortby
 
-            if (sortby != null)
-            {
-                if (sortby == 1)
-                {
-                    products.ToList().Sort();
-                }
-                else if (sortby == 2)
-                {
-                    products.ToList().Reverse();
-                }
-                else if (sortby == 3)
-                {
-                    products.ToList().OrderByDescending(c => c.Price);
-                }
-                else if (sortby == 4)
-                {
-                    products.ToList().Sort((a, b) => b.Price.CompareTo(a.Price));
-                }
-                else if (sortby == 5)
-                {
-                    products.ToList().Sort((a, b) => a.Price.CompareTo(b.Price));
-                }
-            }
+            //if (sortby != null)
+            //{
+            //    if (sortby == 1)
+            //    {
+            //        products.ToList().Sort();
+            //    }
+            //    else if (sortby == 2)
+            //    {
+            //        products.ToList().Reverse();
+            //    }
+            //    else if (sortby == 3)
+            //    {
+            //        products.ToList().OrderByDescending(c => c.Price);
+            //    }
+            //    else if (sortby == 4)
+            //    {
+            //        products.ToList().Sort((a, b) => b.Price.CompareTo(a.Price));
+            //    }
+            //    else if (sortby == 5)
+            //    {
+            //        products.ToList().Sort((a, b) => a.Price.CompareTo(b.Price));
+            //    }
+            //}
 
-            if (sortbycount <= 0)
-            {
-                sortbycount = 5;
-            }
+            //if (sortbycount <= 0)
+            //{
+            //    sortbycount = 5;
+            //}
 
-            ViewBag.Sortby = sortby;
+            //ViewBag.Sortby = sortby;
+            #endregion
 
             ViewBag.Select = 5;
 
@@ -78,7 +80,7 @@ namespace Back_End_Project.Controllers
                 Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
                 Sizes = await _context.Sizes.ToListAsync(),
                 Colors = await _context.Colors.ToListAsync(),
-                Categories = await _context.Categories.ToListAsync()
+                Categories = await _context.Categories.Include(c=>c.Products).ToListAsync()
             };
 
             return View(productVM);

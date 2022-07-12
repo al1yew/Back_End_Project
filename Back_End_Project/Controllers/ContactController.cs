@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 
 // v forme v stranicke index nujno prinesti ima familie Usera, esli on est, esli ego net zastavit ego napisat
-
+//eto budet relation mejdu appuser i Table Comment, u kajdogo usera budet komment , budet text, budet appuserId itd
 namespace Back_End_Project.Controllers
 {
     public class ContactController : Controller
