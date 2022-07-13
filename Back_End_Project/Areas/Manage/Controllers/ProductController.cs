@@ -370,7 +370,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
             ProductImage productImage = await _context.ProductImages.FirstOrDefaultAsync(p => p.Id == id);
 
             if (productImage == null) return NotFound();
-
+             
             Product product = await _context.Products.Include(p => p.ProductImages).FirstOrDefaultAsync(p => p.Id == productImage.ProductId);
 
             _context.ProductImages.Remove(productImage);
