@@ -1,5 +1,4 @@
 ﻿
-
 $(document).ready(function () {
     $(document).on('click', '.deleteBtn', function (e) {
         e.preventDefault();
@@ -30,6 +29,7 @@ $(document).ready(function () {
         })
     })
 
+
     $(document).on('click', '.restoreBtn', function (e) {
         e.preventDefault();
 
@@ -49,7 +49,7 @@ $(document).ready(function () {
                 fetch(url)
                     .then(res => {
                         if (res.status == 400) {
-                            //alert("mumkun olmadi");
+                            
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
@@ -73,6 +73,23 @@ $(document).ready(function () {
         })
     })
 
+    //----------------------------------------------- product details slider active
+
+    $('.product-large-slider').slick({
+        fade: true,
+        arrows: false,
+        asNavFor: '.pro-nav'
+    });
+    console.log("dsa")
+    $('.pro-nav').slick({
+        slidesToShow: 4,
+        asNavFor: '.product-large-slider',
+        arrows: false,
+        focusOnSelect: true
+    });
+
+    //------------------------------------------------
+
 
     $(document).on('click', '.deleteproductimage', function (e) {
         e.preventDefault();
@@ -83,7 +100,6 @@ $(document).ready(function () {
                 $('.productimages').html(data);
             })
     });
-
 
 
     if ($('.isMaininput').is(":checked")) {
@@ -143,7 +159,10 @@ $(document).ready(function () {
     })
 
 
+    
 
+
+    //----------------------------------------------- Toastr
 
     toastr.options = {
         "closeButton": true,
@@ -166,4 +185,9 @@ $(document).ready(function () {
     if ($('#successInput').val().length) {
         toastr["success"]($('#successInput').val(), $('#successInput').val().split(' ')[0])
     }
+
 })
+
+
+
+//----------------------------------------------- GLOBAL GLOBAL GLOBAL --------------------------------------

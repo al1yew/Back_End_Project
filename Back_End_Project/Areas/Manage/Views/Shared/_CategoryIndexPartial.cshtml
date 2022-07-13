@@ -21,7 +21,7 @@
             no++;
             <tr>
                 <td class="col-lg-1">@no</td>
-                <td class="col-lg-1"><img class="img-fluid" src="~/assets/images/@category.Image" /></td>
+                <td class="col-lg-1"><img class="img-fluid" src="~/assets/img/product/@category.Image" /></td>
                 <td class="col-lg-3">@category.Name</td>
                 <td>@(category.IsMain ? "Main Category"  :"Sub Category")</td>
                 <td class="col-lg-1" style="color:@(category.IsDeleted ? "red" : "green")">@(category.IsDeleted ? "Deleted" : "Active")</td>
@@ -32,12 +32,12 @@
                     @if (category.IsDeleted)
                     {
                         <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="Category"
-                           asp-action="Restore" asp-route-id="@category.Id" asp-route-status="@ViewBag.Status">Restore</a>
+                           asp-action="Restore" asp-route-id="@category.Id" asp-route-type="@ViewBag.Type" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
                     }
                     else
                     {
                         <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="Category"
-                           asp-action="Delete" asp-route-id="@category.Id" asp-route-status="@ViewBag.Status">Delete</a>
+                           asp-action="Delete" asp-route-id="@category.Id" asp-route-type="@ViewBag.Type" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
                     }
                 </td>
             </tr>

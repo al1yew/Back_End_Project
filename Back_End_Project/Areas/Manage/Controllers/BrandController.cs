@@ -12,8 +12,9 @@ using System.Threading.Tasks;
 
 namespace Back_End_Project.Areas.Manage.Controllers
 {
+    //koqda udalayesh ili restore delayesh brand on pcm to page deayet 1, xotya v root napisano 2 
     [Area("Manage")]
-    [Authorize(Roles = "SuperAdmin, Admin")]
+    //[Authorize(Roles = "SuperAdmin, Admin")]
     public class BrandController : Controller
     {
         private readonly AppDbContext _context;
@@ -23,7 +24,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int? status, int page = 1)
+        public IActionResult Index(int? status, int select, int page = 1)
         {
             IQueryable<Brand> query = _context.Brands;
 
@@ -31,19 +32,24 @@ namespace Back_End_Project.Areas.Manage.Controllers
             {
                 if (status == 1)
                 {
-                    query = query.Where(b => b.IsDeleted);
+                    query = query.Where(p => p.IsDeleted);
                 }
                 else if (status == 2)
                 {
-                    query = query.Where(b => !b.IsDeleted);
+                    query = query.Where(p => !p.IsDeleted);
                 }
             }
 
-            int itemCount = int.Parse(_context.Settings.FirstOrDefault(s => s.Key == "PageItemsCount").Value);
+            if (select <= 0)
+            {
+                select = 5;
+            }
+
+            ViewBag.Select = select;
 
             ViewBag.Status = status;
 
-            return View(PaginationList<Brand>.Create(query, page, itemCount));
+            return View(PaginationList<Brand>.Create(query, page, select));
         }
 
         [HttpGet]
@@ -107,6 +113,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
             dbBrand.Name = brand.Name;
             dbBrand.IsUpdated = true;
             dbBrand.UpdatedAt = DateTime.UtcNow.AddHours(4);
+
             await _context.SaveChangesAsync();
 
             TempData["success"] = "Brand Is Updated";
@@ -114,7 +121,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Delete(int? id, int? status, int page)
+        public async Task<IActionResult> Delete(int? id, int? status, int select, int page)
         {
             if (id == null) return BadRequest();
 
@@ -143,14 +150,19 @@ namespace Back_End_Project.Areas.Manage.Controllers
                 }
             }
 
-            int itemCount = int.Parse(_context.Settings.FirstOrDefault(s => s.Key == "PageItemsCount").Value);
+            if (select <= 0)
+            {
+                select = 5;
+            }
+
+            ViewBag.Select = select;
 
             ViewBag.Status = status;
 
-            return PartialView("_BrandIndexPartial", PaginationList<Brand>.Create(query, page, itemCount));
+            return PartialView("_BrandIndexPartial", PaginationList<Brand>.Create(query, page, select));
         }
 
-        public async Task<IActionResult> Restore(int? id, int? status, int page)
+        public async Task<IActionResult> Restore(int? id, int? status, int select, int page)
         {
             if (id == null) return BadRequest();
 
@@ -177,11 +189,16 @@ namespace Back_End_Project.Areas.Manage.Controllers
                 }
             }
 
+            if (select <= 0)
+            {
+                select = 5;
+            }
+
+            ViewBag.Select = select;
+
             ViewBag.Status = status;
 
-            int pageCount = int.Parse(_context.Settings.FirstOrDefault(s => s.Key == "PageItemsCount").Value);
-
-            return PartialView("_BrandIndexPartial", PaginationList<Brand>.Create(query, page, pageCount));
+            return PartialView("_BrandIndexPartial", PaginationList<Brand>.Create(query, page, select));
         }
     }
 }

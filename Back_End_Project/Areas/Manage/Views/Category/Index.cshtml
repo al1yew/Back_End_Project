@@ -1,6 +1,5 @@
 ﻿@model PaginationList<Category>
 
-
 <div class="row justify-content-between">
     <div class="col-lg-2">
         <h1>Categories</h1>
@@ -8,12 +7,29 @@
     <div class="col-lg-6">
         <form>
             <div class="row justify-content-center">
-                <div class="col-lg-4 align-items-center py-2">
+                <div class="col-lg-2 align-items-center py-2">
+                    <label class="form-label">Type:</label>
+                    <select name="type" class="form-select" aria-label="Default select example">
+                        <option selected="@(ViewBag.Type == 0 ? "true" : "false")" value="0">All</option>
+                        <option selected="@(ViewBag.Type == 1 ? "true" : "false")" value="1">Sub</option>
+                        <option selected="@(ViewBag.Type == 2 ? "true" : "false")" value="2">Main</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 align-items-center py-2">
                     <label class="form-label">Sort By</label>
                     <select name="status" class="form-select" aria-label="Default select example">
                         <option selected="@(ViewBag.Status == 0 ? "true" : "false")" value="0">All</option>
                         <option selected="@(ViewBag.Status == 1 ? "true" : "false")" value="1">Deleted</option>
                         <option selected="@(ViewBag.Status == 2 ? "true" : "false")" value="2">Active</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 align-items-center py-2">
+                    <label class="form-label">Select:</label>
+                    <select name="select" class="form-select" aria-label="Default select example">
+                        <option selected="@(ViewBag.Select == 5 ? "true" : "false")" value="5">5</option>
+                        <option selected="@(ViewBag.Select == 10 ? "true" : "false")" value="10">10</option>
+                        <option selected="@(ViewBag.Select == 15 ? "true" : "false")" value="15">15</option>
+                        <option selected="@(ViewBag.Select == 20 ? "true" : "false")" value="20">20</option>
                     </select>
                 </div>
                 <div class="col-lg-2">
@@ -35,21 +51,20 @@
 
 <div class="row justify-content-center w-100">
     <ul class="pagination ">
-
         @if (Model.HasPrev)
         {
-            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="1">@("<<")</a></li>
+            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-type="@ViewBag.Type"  asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status" asp-route-page="1">@("<<")</a></li>
 
-            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Page-1)">@("<")</a></li>
+            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-type="@ViewBag.Type"  asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Page-1)">@("<")</a></li>
         }
         @for (int i = 1; i <= Model.PageCount; i++)
         {
-            <li class="page-item @(Model.Page == i ? "active":"")"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@i">@i</a></li>
+            <li class="page-item @(Model.Page == i ? "active":"")"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-type="@ViewBag.Type"  asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status" asp-route-page="@i">@i</a></li>
         }
         @if (Model.HasNext)
         {
-            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Page+1)">@(">")</a></li>
-            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@Model.PageCount">@(">>")</a></li>
+            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-type="@ViewBag.Type"  asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Page+1)">@(">")</a></li>
+            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-type="@ViewBag.Type"  asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status" asp-route-page="@Model.PageCount">@(">>")</a></li>
         }
     </ul>
 </div>

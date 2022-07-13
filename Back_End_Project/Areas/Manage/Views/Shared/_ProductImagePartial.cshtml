@@ -6,10 +6,10 @@
     foreach (ProductImage productImage in Model)
     {
         <div class="col-lg-1">
-            <a class="close deleteproductimage" asp-area="manage" asp-controller="product" asp-action="deleteimage" asp-route-id="@productImage.Id">
+            <a class="close deleteproductimage" asp-area="Manage" asp-controller="Product" asp-action="DeleteImage" asp-route-id="@productImage.Id">
                 <span>&times;</span>
             </a>
-            <img class="img-fluid" src="~/assets/images/@productImage.Image">
+            <img class="img-fluid" src="~/assets/img/product-slider-imgs/@productImage.Image">
         </div>
     }
 }

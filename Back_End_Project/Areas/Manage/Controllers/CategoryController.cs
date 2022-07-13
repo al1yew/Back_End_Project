@@ -12,11 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+//check file length 15000 piat kak to nekrasivo poetomu nado pomenat extesion
+//dla vsex etix viewbag napisat otdelniy metd kuda budu svoy list otpravlat, i on mena spaset ot tekrarciliga
 namespace Back_End_Project.Areas.Manage.Controllers
 {
     [Area("Manage")]
-    [Authorize(Roles = "SuperAdmin, Admin")]
+    //[Authorize(Roles = "SuperAdmin, Admin")]
     public class CategoryController : Controller
     {
         private readonly AppDbContext _context;
@@ -27,7 +28,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
             _env = env;
         }
 
-        public IActionResult Index(int? status, int page = 1)
+        public IActionResult Index(int? status, int? type, int select, int page = 1)
         {
             IQueryable<Category> query = _context.Categories;
 
@@ -43,11 +44,30 @@ namespace Back_End_Project.Areas.Manage.Controllers
                 }
             }
 
-            int itemCount = int.Parse(_context.Settings.FirstOrDefault(s => s.Key == "PageItemsCount").Value);
+            if (type != null && type > 0)
+            {
+                if (type == 1)
+                {
+                    query = query.Where(c => !c.IsMain);
+                }
+                else if (type == 2)
+                {
+                    query = query.Where(c => c.IsMain);
+                }
+            }
+
+            if (select <= 0)
+            {
+                select = 5;
+            }
+
+            ViewBag.Select = select;
 
             ViewBag.Status = status;
 
-            return View(PaginationList<Category>.Create(query, page, itemCount));
+            ViewBag.Type = type;
+
+            return View(PaginationList<Category>.Create(query, page, select));
         }
 
         [HttpGet]
@@ -68,7 +88,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
             {
                 if (category.Photo == null)
                 {
-                    ModelState.AddModelError("File", "Image is required in main category");
+                    ModelState.AddModelError("Photo", "Image is required in main category");
                     return View();
                 }
             }
@@ -89,19 +109,22 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
             if (category.Photo != null)
             {
-                if (!category.Photo.CheckContentType("image/jpeg"))
+                if (!category.Photo.CheckContentType("image/jpeg")
+                    && !category.Photo.CheckContentType("image/jpg")
+                    && !category.Photo.CheckContentType("image/png")
+                    && !category.Photo.CheckContentType("image/gif"))
                 {
-                    ModelState.AddModelError("File", "You can choose only JPG(JPEG) format!");
+                    ModelState.AddModelError("File", "You can choose only Image format!");
                     return View();
                 }
 
-                if (category.Photo.CheckFileLength(15))
+                if (category.Photo.CheckFileLength(15000))
                 {
-                    ModelState.AddModelError("File", "File must be 15kb at most!");
+                    ModelState.AddModelError("File", "File must be 15MB at most!");
                     return View();
                 }
 
-                category.Image = await category.Photo.CreateAsync(_env, "assets", "images");
+                category.Image = await category.Photo.CreateAsync(_env, "assets", "img", "product");
             }
 
             category.Name = category.Name.Trim();
@@ -159,19 +182,22 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
             if (category.Photo != null)
             {
-                if (!category.Photo.CheckContentType("image/jpeg"))
+                if (!category.Photo.CheckContentType("image/jpeg")
+                    && !category.Photo.CheckContentType("image/jpg")
+                    && !category.Photo.CheckContentType("image/png")
+                    && !category.Photo.CheckContentType("image/gif"))
                 {
-                    ModelState.AddModelError("File", "You can choose only JPG(JPEG) format!");
+                    ModelState.AddModelError("Photo", "You can choose only Image format!");
                     return View();
                 }
 
-                if (category.Photo.CheckFileLength(15))
+                if (category.Photo.CheckFileLength(15000))
                 {
-                    ModelState.AddModelError("File", "File must be 15kb at most!");
+                    ModelState.AddModelError("File", "File must be 15MB at most!");
                     return View();
                 }
 
-                FileHelper.DeleteFile(_env, dbCategory.Image, "assets", "images");
+                FileHelper.DeleteFile(_env, dbCategory.Image, "assets", "images", "product");
 
                 dbCategory.Image = await category.Photo.CreateAsync(_env, "assets", "images");
             }
@@ -186,7 +212,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Delete(int? id, int? status, int page)
+        public async Task<IActionResult> Delete(int? id, int? status, int? type, int select, int page = 1)
         {
             if (id == null) return BadRequest();
 
@@ -224,14 +250,33 @@ namespace Back_End_Project.Areas.Manage.Controllers
                 }
             }
 
+            if (type != null && type > 0)
+            {
+                if (type == 1)
+                {
+                    query = query.Where(c => !c.IsMain);
+                }
+                else if (type == 2)
+                {
+                    query = query.Where(c => c.IsMain);
+                }
+            }
+
+            if (select <= 0)
+            {
+                select = 5;
+            }
+
+            ViewBag.Select = select;
+
             ViewBag.Status = status;
 
-            int pageCount = int.Parse(_context.Settings.FirstOrDefault(s => s.Key == "PageItemsCount").Value);
+            ViewBag.Type = type;
 
-            return PartialView("_CategoryIndexPartial", PaginationList<Category>.Create(query, page, pageCount));
+            return PartialView("_CategoryIndexPartial", PaginationList<Category>.Create(query, page, select));
         }
 
-        public async Task<IActionResult> Restore(int? id, int? status, int page)
+        public async Task<IActionResult> Restore(int? id, int? status, int? type, int select, int page = 1)
         {
             if (id == null) return BadRequest();
 
@@ -263,12 +308,30 @@ namespace Back_End_Project.Areas.Manage.Controllers
                 }
             }
 
+            if (type != null && type > 0)
+            {
+                if (type == 1)
+                {
+                    query = query.Where(c => !c.IsMain);
+                }
+                else if (type == 2)
+                {
+                    query = query.Where(c => c.IsMain);
+                }
+            }
+
+            if (select <= 0)
+            {
+                select = 5;
+            }
+
+            ViewBag.Select = select;
+
             ViewBag.Status = status;
 
-            int pageCount = int.Parse(_context.Settings.FirstOrDefault(s => s.Key == "PageItemsCount").Value);
+            ViewBag.Type = type;
 
-            return PartialView("_CategoryIndexPartial", PaginationList<Category>.Create(query, page, pageCount));
+            return PartialView("_CategoryIndexPartial", PaginationList<Category>.Create(query, page, select));
         }
-
     }
 }

@@ -14,7 +14,8 @@ using Back_End_Project.Extensions;
 namespace Back_End_Project.Areas.Manage.Controllers
 {
     [Area("Manage")]
-    //prosmotret vse v manage i pozirit nesostikovki
+    //v update xochu shto b fotki toje prinosil mne, i ne zastavlal mena ix vibirat, esli oni est
+    //detail slider ne rabotayet
     public class ProductController : Controller
     {
         private readonly IWebHostEnvironment _env;
@@ -58,6 +59,12 @@ namespace Back_End_Project.Areas.Manage.Controllers
             return View(PaginationList<Product>.Create(query, page, select));
         }
 
+        public async Task<IActionResult> Detail(int? id)
+        {
+            return View(await _context.Products.Include(p => p.ProductImages).FirstOrDefaultAsync(p => p.Id == id));
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -99,8 +106,8 @@ namespace Back_End_Project.Areas.Manage.Controllers
                 return View();
             }
 
-            if (product.Image != null)
-            {//burda content type duzeldmek gesheng olsun
+            if (product.Photo != null)
+            {
                 if (!product.Photo.CheckContentType("image/jpeg")
                     && !product.Photo.CheckContentType("image/jpg")
                     && !product.Photo.CheckContentType("image/png")
@@ -147,7 +154,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
                     ProductImage productImage = new ProductImage
                     {
-                        Image = await file.CreateAsync(_env, "assets", "images", "product-slider-imgs")
+                        Image = await file.CreateAsync(_env, "assets", "img", "product-slider-imgs")
                     };
 
                     productImages.Add(productImage);
@@ -159,13 +166,15 @@ namespace Back_End_Project.Areas.Manage.Controllers
             product.Name = product.Name.Trim();
 
             await _context.Products.AddAsync(product);
+
+            product.CreatedAt = DateTime.UtcNow.AddHours(4);
+
             await _context.SaveChangesAsync();
 
             TempData["success"] = "Product Is Created!";
 
             return RedirectToAction("Index");
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Update(int? id)
@@ -263,7 +272,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
                     ProductImage productImage = new ProductImage
                     {
-                        Image = await file.CreateAsync(_env, "assets", "images", "product-slider-imgs")
+                        Image = await file.CreateAsync(_env, "assets", "img", "product-slider-imgs")
                     };
 
                     productImages.Add(productImage);
@@ -273,6 +282,8 @@ namespace Back_End_Project.Areas.Manage.Controllers
             }
 
             dbProduct.Name = product.Name.Trim();
+            dbProduct.UpdatedAt = DateTime.UtcNow.AddHours(4);
+            dbProduct.IsUpdated = true;
 
             await _context.SaveChangesAsync();
 
@@ -285,7 +296,10 @@ namespace Back_End_Project.Areas.Manage.Controllers
         {
             if (id == null) return BadRequest();
 
-            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
+            Product product = await _context.Products
+                .Include(p => p.ProductToColors).ThenInclude(p => p.Color)
+                .Include(p => p.ProductToSizes).ThenInclude(p => p.Size)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null) return NotFound();
 
@@ -324,7 +338,10 @@ namespace Back_End_Project.Areas.Manage.Controllers
         {
             if (id == null) return BadRequest();
 
-            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            Product product = await _context.Products
+                .Include(p => p.ProductToColors).ThenInclude(p => p.Color)
+                .Include(p => p.ProductToSizes).ThenInclude(p => p.Size)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null) return NotFound();
 
@@ -370,7 +387,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
             ProductImage productImage = await _context.ProductImages.FirstOrDefaultAsync(p => p.Id == id);
 
             if (productImage == null) return NotFound();
-             
+
             Product product = await _context.Products.Include(p => p.ProductImages).FirstOrDefaultAsync(p => p.Id == productImage.ProductId);
 
             _context.ProductImages.Remove(productImage);

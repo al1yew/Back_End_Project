@@ -33,16 +33,18 @@
                 <td class="col-lg-2"><a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id" asp-area="Manage">@product.Name</a></td>
                 <td class="col-lg-1">$@product.DiscountPrice/$@product.Price</td>
                 <td class="col-lg-1">
-                    @foreach (var item in product.ProductToColors.Where(p => p.ProductId == product.Id))
+                    @*@foreach (var item in product.ProductToColors.Where(p => p.ProductId == product.Id))
                     {
                         <p>@item.Color.Name</p>
-                    }
+                    }*@
+                    Red, Blue, Green
                 </td>
                 <td class="col-lg-1">
-                    @foreach (var item in product.ProductToSizes.Where(p => p.ProductId == product.Id))
+                    @*@foreach (var item in product.ProductToSizes.Where(p => p.ProductId == product.Id))
                     {
                         <p>@item.Size.Name</p>
-                    }
+                    }*@
+                    S, M, L, XL
                 </td>
                 <td class="col-lg-1" style="color:@(product.IsDeleted ? "red" : "green")">@(product.IsDeleted ? "Deleted" : "Active")</td>
                 <td class="col-lg-1">

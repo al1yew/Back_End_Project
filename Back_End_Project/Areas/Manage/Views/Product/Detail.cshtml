@@ -1,0 +1,58 @@
+﻿@model Product
+
+<!-- main wrapper start -->
+<main>
+    <div class="product-details-wrapper section-padding">
+        <div class="container custom-container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- product details inner end -->
+                    <div class="product-details-inner">
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <div class="product-large-slider mb-20">
+                                    @foreach (var item in Model.ProductImages)
+                                    {
+                                        <div class="pro-large-img img-zoom">
+                                            <img src="~/assets/img/product/@item.Image" alt="" />
+                                        </div>
+                                    }
+                                </div>
+                                <div class="pro-nav slick-row-5">
+                                    @foreach (var item in Model.ProductImages)
+                                    {
+                                        <div class="pro-nav-thumb">
+                                            <img src="~/assets/img/product/@item.Image" />
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="product-details-des">
+                                    <h3 class="pro-det-title">@Model.Name</h3>
+                                    <div class="pro-review">
+                                        <span><a href="#tab-one">Reviews: @Model.ReviewCount</a></span>
+                                    </div>
+                                    <div class="price-box">
+                                        <span class="price-regular">$@Model.DiscountPrice</span>
+                                        <span class="price-old"><del>$@Model.Price</del></span>
+                                    </div>
+                                    <p>
+                                        @Model.Description
+                                    </p>
+                                    <div class="availability mb-20">
+                                        <h5 class="title @(Model.Count > 0 ?"text-success":"text-danger")"> Availability :</h5>
+                                        <span class="value">@(Model.Count > 0 ? "In Stock" : "Out Of Stock") </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- product details inner end -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- product details wrapper end -->
+</main>
+<!-- main wrapper end -->
