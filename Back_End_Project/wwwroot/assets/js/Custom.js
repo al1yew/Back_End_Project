@@ -83,6 +83,9 @@
     });
 
 
+
+
+
     //----------------------------------------------- Blog Search
 
     $(".blog-search").keyup(function () {
@@ -141,6 +144,9 @@
     });
 
 
+
+
+
     //----------------------------------------------- Main Header Search For products
 
     $(".search-button-product").click(function (e) {
@@ -168,6 +174,8 @@
             window.location.href = url
         }
     });
+
+
 
 
     //----------------------------------------------- Add to basket
@@ -271,6 +279,8 @@
     })
 
 
+
+
     //----------------------------------------------- Add to wishlist
 
     $(document).on("click", ".addtowishlist", function (e) {
@@ -299,6 +309,8 @@
     })
 
 
+
+
     //----------------------------------------------- Add to compare
 
     $(document).on("click", ".addtocompare", function (e) {
@@ -325,6 +337,43 @@
                 $('.comparedata').html(data);
             })
     })
+
+
+
+    //----------------------------------------------- Getting value of sortbycount from select option in products (shop page) index page
+
+    //console.log("dasda")
+    //$("#hellolar").change(function () {
+    //    console.log($(this).val());
+    //    console.log("salam")
+    //});
+
+
+    //$('#hellolar').change(function () {
+
+    //    var select = document.getElementById('hellolar');
+    //    var value = select.options[select.selectedIndex].value;
+    //    console.log(value)
+    //});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     //----------------------------------------------- Toastr

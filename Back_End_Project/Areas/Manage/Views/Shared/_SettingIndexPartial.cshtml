@@ -1,0 +1,19 @@
+﻿@model IDictionary<string, string>
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Key</td>
+        <td>@item.Value</td>
+        <td>
+            <div class="">
+                <a class="Updatebtn btn btn-primary" >Update</a>
+            </div>
+            <div class="d-none">
+                <form class="updateForm" asp-area="manage" asp-controller="setting" asp-action="update">
+                    <input name="@item.Key" value="@item.Value" />
+                    <button class="btn btn-primary settingUpdatebtn">Update</button>
+                </form>
+            </div>
+        </td>
+    </tr>
+}

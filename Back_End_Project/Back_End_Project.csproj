@@ -27,6 +27,7 @@
     <None Include="Areas\Manage\Views\Product\Create.cshtml" />
     <None Include="Areas\Manage\Views\Product\Index.cshtml" />
     <None Include="Areas\Manage\Views\Product\Update.cshtml" />
+    <None Include="Areas\Manage\Views\Setting\Index.cshtml" />
     <None Include="wwwroot\manage\img\undraw_posting_photo.svg" />
     <None Include="wwwroot\manage\img\undraw_profile.svg" />
     <None Include="wwwroot\manage\img\undraw_profile_1.svg" />

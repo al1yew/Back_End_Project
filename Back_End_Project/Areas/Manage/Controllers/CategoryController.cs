@@ -14,6 +14,8 @@ using System.Linq;
 using System.Threading.Tasks;
 //check file length 15000 piat kak to nekrasivo poetomu nado pomenat extesion
 //dla vsex etix viewbag napisat otdelniy metd kuda budu svoy list otpravlat, i on mena spaset ot tekrarciliga
+//poprobuy sdelat tak shto b vo vsex nix posle update i posle create vozvrashal na tu je pagination stranicku, na kotroy bil
+//takje sdelat tak shto bi posle najatiya na FIlter i obnoveniya stranici on mne ne menal to shto pokazivayetsa v okoshke select optiona
 namespace Back_End_Project.Areas.Manage.Controllers
 {
     [Area("Manage")]
@@ -133,6 +135,8 @@ namespace Back_End_Project.Areas.Manage.Controllers
             await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
 
+            TempData["success"] = "Category is created";
+
             return RedirectToAction("Index");
         }
 
@@ -209,6 +213,8 @@ namespace Back_End_Project.Areas.Manage.Controllers
             dbCategory.UpdatedAt = DateTime.UtcNow.AddHours(4);
             await _context.SaveChangesAsync();
 
+            TempData["success"] = "Category is updated";
+
             return RedirectToAction("Index");
         }
 
@@ -273,6 +279,8 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
             ViewBag.Type = type;
 
+            TempData["success"] = "Category is deleted";
+
             return PartialView("_CategoryIndexPartial", PaginationList<Category>.Create(query, page, select));
         }
 
@@ -330,6 +338,8 @@ namespace Back_End_Project.Areas.Manage.Controllers
             ViewBag.Status = status;
 
             ViewBag.Type = type;
+            
+            TempData["success"] = "Category is restored";
 
             return PartialView("_CategoryIndexPartial", PaginationList<Category>.Create(query, page, select));
         }

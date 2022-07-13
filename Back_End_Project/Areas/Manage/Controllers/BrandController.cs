@@ -159,6 +159,8 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
             ViewBag.Status = status;
 
+            TempData["success"] = "Brand is deleted";
+
             return PartialView("_BrandIndexPartial", PaginationList<Brand>.Create(query, page, select));
         }
 
@@ -197,6 +199,8 @@ namespace Back_End_Project.Areas.Manage.Controllers
             ViewBag.Select = select;
 
             ViewBag.Status = status;
+
+            TempData["success"] = "Brand is restored";
 
             return PartialView("_BrandIndexPartial", PaginationList<Brand>.Create(query, page, select));
         }

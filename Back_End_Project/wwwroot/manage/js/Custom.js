@@ -1,5 +1,7 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
+
+    //----------------------------------------------- Delete element
+
     $(document).on('click', '.deleteBtn', function (e) {
         e.preventDefault();
 
@@ -29,6 +31,8 @@ $(document).ready(function () {
         })
     })
 
+
+    //----------------------------------------------- Restore element
 
     $(document).on('click', '.restoreBtn', function (e) {
         e.preventDefault();
@@ -73,23 +77,8 @@ $(document).ready(function () {
         })
     })
 
-    //----------------------------------------------- product details slider active
 
-    $('.product-large-slider').slick({
-        fade: true,
-        arrows: false,
-        asNavFor: '.pro-nav'
-    });
-    console.log("dsa")
-    $('.pro-nav').slick({
-        slidesToShow: 4,
-        asNavFor: '.product-large-slider',
-        arrows: false,
-        focusOnSelect: true
-    });
-
-    //------------------------------------------------
-
+    //----------------------------------------------- Product Update view, products productimages delete process
 
     $(document).on('click', '.deleteproductimage', function (e) {
         e.preventDefault();
@@ -101,6 +90,8 @@ $(document).ready(function () {
             })
     });
 
+
+    //----------------------------------------------- Category toggle class when it is main or child
 
     if ($('.isMaininput').is(":checked")) {
         $('.imagecontainer').removeClass('d-none');
@@ -122,12 +113,17 @@ $(document).ready(function () {
     })
 
 
+    //----------------------------------------------- Settings table update button, opening input
+
     $(document).on('click', '.Updatebtn', function (e) {
         e.preventDefault();
-        console.log("test");
+
         $(this).parent().addClass('d-none');
         $(this).parent().next().removeClass('d-none');
     })
+
+
+    //----------------------------------------------- Settings table update button, sending data to Update action
 
     $(document).on('click', '.settingUpdatebtn', function (e) {
         e.preventDefault();
@@ -136,8 +132,6 @@ $(document).ready(function () {
 
         let key = $(this).prev().attr('name');
         let value = $(this).prev().val();
-        console.log(key)
-        console.log(value)
 
         let bodyObj = {
             key: key,
@@ -157,10 +151,6 @@ $(document).ready(function () {
                 $('.settingContainer').html(data)
             })
     })
-
-
-    
-
 
     //----------------------------------------------- Toastr
 
@@ -191,3 +181,18 @@ $(document).ready(function () {
 
 
 //----------------------------------------------- GLOBAL GLOBAL GLOBAL --------------------------------------
+
+//----------------------------------------------- Product details slider active
+
+$('.product-large-slider').slick({
+    fade: true,
+    arrows: false,
+    asNavFor: '.pro-nav'
+});
+console.log("dsa")
+$('.pro-nav').slick({
+    slidesToShow: 4,
+    asNavFor: '.product-large-slider',
+    arrows: false,
+    focusOnSelect: true
+});

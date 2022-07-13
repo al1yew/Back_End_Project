@@ -40,55 +40,16 @@ namespace Back_End_Project.Controllers
             .Include(p => p.ProductToSizes).ThenInclude(p => p.Size)
             .AsQueryable();
 
-            #region pitalsa sdelat sortby
-
-            //if (sortby != null)
-            //{
-            //    if (sortby == 1)
-            //    {
-            //        products.ToList().Sort();
-            //    }
-            //    else if (sortby == 2)
-            //    {
-            //        products.ToList().Reverse();
-            //    }
-            //    else if (sortby == 3)
-            //    {
-            //        products.ToList().OrderByDescending(c => c.Price);
-            //    }
-            //    else if (sortby == 4)
-            //    {
-            //        products.ToList().Sort((a, b) => b.Price.CompareTo(a.Price));
-            //    }
-            //    else if (sortby == 5)
-            //    {
-            //        products.ToList().Sort((a, b) => a.Price.CompareTo(b.Price));
-            //    }
-            //}
-
-            //if (sortbycount <= 0)
-            //{
-            //    sortbycount = 5;
-            //}
-
-            //ViewBag.Sortby = sortby;
-            //ViewBag.Select = 5;
-            #endregion
-
             if (categoryId != null)
             {
                 products = _context.Products
                     .Where(p => p.CategoryId == categoryId);
-
-                ViewBag.CategoriesForProductsPage = products;
             }
 
             if (brandId != null)
             {
                 products = _context.Products
                     .Where(p => p.BrandId == brandId);
-
-                ViewBag.BrandsForProductsPage = products;
             }
 
             if (searchValue != null)
@@ -100,34 +61,64 @@ namespace Back_End_Project.Controllers
                 p.Description.ToLower().Contains(searchValue.ToLower()) ||
                 p.FirstText.ToLower().Contains(searchValue.ToLower()) ||
                 p.SecondText.ToLower().Contains(searchValue.ToLower()));
-
-                ViewBag.HeaderSearchForProductsPage = products;
             }
 
             if (colorId != null)
             {
                 products = _context.ProductToColors
                    .Include(x => x.Product).Where(e => e.ColorId == colorId).Select(e => e.Product);
-
-                ViewBag.ColorForProductsPage = products;
             }
 
             if (sizeId != null)
             {
                 products = _context.ProductToSizes
                     .Include(x => x.Product).Where(e => e.SizeId == sizeId).Select(e => e.Product);
+            }
 
-                ViewBag.SizeForProductsPage = products;
+            if (sortby != null && sortby > 0)
+            {
+                if (sortby == 1)
+                {
+                    products.ToList().Sort();
+                }
+                else if (sortby == 2)
+                {
+                    products.ToList().Reverse();
+                }
+                else if (sortby == 3)
+                {
+                    //products.ToList().OrderByDescending(c => c.Price);
+                    products.ToList().Sort((a, b) => b.Price.CompareTo(a.Price));
+                }
+                else if (sortby == 4)
+                {
+                    products.ToList().Sort((a, b) => a.Price.CompareTo(b.Price));
+                }
+            }
+
+            if (sortbycount <= 0)
+            {
+                sortbycount = 5;
             }
 
             ProductVM productVM = new ProductVM
             {
-                Products = PaginationList<Product>.Create(products, page, 5),
+                Products = PaginationList<Product>.Create(products, page, sortbycount),
                 Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
                 Sizes = await _context.Sizes.Include(c => c.ProductToSizes).ThenInclude(pc => pc.Product).ToListAsync(),
                 Colors = await _context.Colors.Include(c => c.ProductToColors).ThenInclude(pc => pc.Product).ToListAsync(),
                 Categories = await _context.Categories.Include(c => c.Products).ToListAsync()
             };
+
+            ViewBag.CategoriesForProductsPage = categoryId;
+            ViewBag.BrandsForProductsPage = brandId;
+            //ViewBag.HeaderSearchForProductsPage = searchValue;  chunki header search onsuzda butun produktlari getirir
+            ViewBag.ColorForProductsPage = colorId;
+            ViewBag.SizeForProductsPage = sizeId;
+            ViewBag.Sortby = sortby;
+            ViewBag.Select = sortbycount;
+
+            //asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select"
 
             return View(productVM);
         }
