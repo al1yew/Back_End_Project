@@ -12,14 +12,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-//check file length 15000 piat kak to nekrasivo poetomu nado pomenat extesion
+//check file length 15000 pisat kak to nekrasivo poetomu nado pomenat extesion
 //dla vsex etix viewbag napisat otdelniy metd kuda budu svoy list otpravlat, i on mena spaset ot tekrarciliga
 //poprobuy sdelat tak shto b vo vsex nix posle update i posle create vozvrashal na tu je pagination stranicku, na kotroy bil
 //takje sdelat tak shto bi posle najatiya na FIlter i obnoveniya stranici on mne ne menal to shto pokazivayetsa v okoshke select optiona
 namespace Back_End_Project.Areas.Manage.Controllers
 {
+    [Authorize(Roles = "SuperAdmin, Admin")]
     [Area("Manage")]
-    //[Authorize(Roles = "SuperAdmin, Admin")]
     public class CategoryController : Controller
     {
         private readonly AppDbContext _context;

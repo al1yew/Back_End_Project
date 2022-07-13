@@ -1,0 +1,36 @@
+﻿@model PaginationList<Order>
+@{
+    int no = Model.ItemsCount * (Model.Page - 1);
+}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>FullName</th>
+            <th>Product Count</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Total Price</th>
+            <th>Setting</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Order order in Model)
+        {
+            no++;
+
+        <tr>
+            <td>@no</td>
+            <td>@order.Name @order.SurName</td>
+            <td>@order.OrderItems.Sum(oi => oi.Count)</td>
+            <td>@order.OrderStatus</td>
+            <td>@order.CreatedAt?.ToString("dd-MM-yyyy")</td>
+            <td>@order.TotalPrice</td>
+            <td>
+                <a class="btn btn-warning" asp-area="manage" asp-controller="order" asp-action="update" asp-route-id="@order.Id">Update</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

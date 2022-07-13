@@ -15,6 +15,10 @@ using System.Threading.Tasks;
 //vezde proverat esli user is admin poslat ego nax
 //u kajdogo appuser doljni bit svoi payment details i adress1, adress2 itd, kotorie budut v Profile html v menu adresi i v menu Payment
 //on sam proverayet kto zaregan poetomu pofiq esli admin v logine, on vse ravno izza [authorize(roles = member)] 
+//nelza zaregatsa esli takoy user uje est - eto nado sdelat v register metode vnizu
+//eto est v admin panele znacit ya napisal hazir v usercontroller
+//product page ispravit
+//napisat update dla adminov, tipa lubogo usera mojno sdelat adminom po jelaniyu, tipa esli useru ne oxota zaxodit na manage itd, esli eto knsh pravilno i realno
 namespace Back_End_Project.Controllers
 {
     public class AccountController : Controller

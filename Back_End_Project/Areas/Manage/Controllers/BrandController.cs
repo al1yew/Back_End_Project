@@ -14,7 +14,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
 {
     //koqda udalayesh ili restore delayesh brand on pcm to page deayet 1, xotya v root napisano 2 
     [Area("Manage")]
-    //[Authorize(Roles = "SuperAdmin, Admin")]
+    [Authorize(Roles = "SuperAdmin, Admin")]
     public class BrandController : Controller
     {
         private readonly AppDbContext _context;

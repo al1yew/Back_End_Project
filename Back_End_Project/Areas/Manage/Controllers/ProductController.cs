@@ -11,10 +11,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Back_End_Project.Helper;
 using Back_End_Project.Extensions;
+using Microsoft.AspNetCore.Authorization;
+
 namespace Back_End_Project.Areas.Manage.Controllers
 {
+    [Authorize(Roles = "SuperAdmin, Admin")]
     [Area("Manage")]
-    //v update xochu shto b fotki toje prinosil mne, i ne zastavlal mena ix vibirat, esli oni est
     //detail slider ne rabotayet
     public class ProductController : Controller
     {

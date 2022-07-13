@@ -1,6 +1,7 @@
 ﻿using Back_End_Project.Areas.Manage.ViewModels.SettingViewModels;
 using Back_End_Project.DAL;
 using Back_End_Project.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Back_End_Project.Areas.Manage.Controllers
 {
+    [Authorize(Roles = "SuperAdmin, Admin")]
     [Area("manage")]
     public class SettingController : Controller
     {
