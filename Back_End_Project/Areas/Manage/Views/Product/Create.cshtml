@@ -1,0 +1,98 @@
+﻿@model Product
+
+@{ SelectList selectCategoriesItems = new SelectList(ViewBag.Categories, nameof(Category.Id), nameof(Category.Name));
+    SelectList selectBrandsItems = new SelectList(ViewBag.BrandsForProducts, nameof(Brand.Id), nameof(Brand.Name)); }
+
+
+<h1>Create Product</h1>
+
+<div class="my-3 row justify-content-center">
+    <div class="col-lg-11">
+        <form class="row justify-content-between" method="post" enctype="multipart/form-data">
+            <div class="col-lg-12  form-group">
+                <label asp-for="Name" class="form-label"> Product Name</label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 pr-2 form-group">
+                <label class="form-label" asp-for="CategoryId">Category</label>
+                <select asp-for="CategoryId" class="form-control" asp-items="@selectCategoriesItems">
+                    <option value="">Select Category</option>
+                </select>
+                <span class="text-danger" asp-validation-for="CategoryId"></span>
+            </div>
+            <div class="col-lg-6 pl-2 form-group">
+                <label class="form-label" asp-for="BrandId">Brand</label>
+                <select asp-for="BrandId" class="form-control" asp-items="@selectBrandsItems">
+                    <option value="">Select Brand</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BrandId"></span>
+            </div>
+            <div class="col-lg-6 pr-2 mb-3 form-group">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" class="form-control">
+                <span class="text-danger" asp-validation-for="Price"></span>
+            </div>
+            <div class="col-lg-6 pl-2 mb-3 form-group">
+                <label asp-for="DiscountPrice" class="form-label">Discount Price</label>
+                <input asp-for="DiscountPrice" class="form-control">
+                <span class="text-danger" asp-validation-for="DiscountPrice"></span>
+            </div>
+            <div class="col-lg-6 pr-2 mb-3 form-group">
+                <label asp-for="Tax" class="form-label"></label>
+                <input asp-for="Tax" class="form-control">
+                <span class="text-danger" asp-validation-for="Tax"></span>
+            </div>
+            <div class="col-lg-6 pl-2 mb-3 form-group">
+                <label asp-for="Count" class="form-label"></label>
+                <input asp-for="Count" class="form-control">
+                <span class="text-danger" asp-validation-for="Count"></span>
+            </div>
+            <div class="col-lg-12  mb-3 form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                <span class="text text-danger" asp-validation-for="Description"></span>
+            </div>
+            <div class="col-lg-12  mb-3 form-group">
+                <label asp-for="FirstText">First text in product detail page</label>
+                <textarea asp-for="FirstText" class="form-control" rows="3"></textarea>
+                <span class="text text-danger" asp-validation-for="FirstText"></span>
+            </div>
+            <div class="col-lg-12  mb-3 form-group">
+                <label asp-for="SecondText">Second text in product detail page</label>
+                <textarea asp-for="SecondText" class="form-control" rows="3"></textarea>
+                <span class="text text-danger" asp-validation-for="SecondText"></span>
+            </div>
+            <div class="col-lg-12 row">
+                <div class="col-lg-3 ml-3 form-check">
+                    <input asp-for="IsTopSeller" class="form-check-input isMaininput">
+                    <label asp-for="IsTopSeller" class="form-check-label">Is it top seller?</label>
+                </div>
+                <div class="form-check">
+                    <input asp-for="IsAvailable" class="form-check-input isMaininput">
+                    <label class="form-check-label" asp-for="IsAvailable">Is it available?</label>
+                </div>
+                <div class="col-lg-3 ml-3 form-check">
+                    <input asp-for="IsNew" class="form-check-input isMaininput">
+                    <label asp-for="IsNew" class="form-check-label">Is it New?</label>
+                </div>
+            </div>
+            <div class="form-group col-lg-6">
+                <label asp-for="Photo"></label>
+                <input asp-for="Photo" class="form-control" placeholder="Main Photo">
+                <span class="text text-danger" asp-validation-for="Photo"></span>
+            </div>
+            <div class="form-group col-lg-6">
+                <label asp-for="Files">Select Multiple Files</label>
+                <input asp-for="Files" class="form-control" placeholder="Files">
+                <span class="text text-danger" asp-validation-for="Files"></span>
+            </div>
+            <button type="submit" class="ml-2 btn btn-primary">Create</button>
+        </form>
+    </div>
+</div>
+
+@section Script
+{
+    <partial name="_ValidationPartial">
+}

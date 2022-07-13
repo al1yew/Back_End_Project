@@ -1,0 +1,15 @@
+﻿@model List<ProductImage>
+@{ SelectList selectCategoriesItems = new SelectList(ViewBag.Categories, nameof(Category.Id), nameof(Category.Name));
+    SelectList selectBrandsItems = new SelectList(ViewBag.BrandsForProducts, nameof(Brand.Id), nameof(Brand.Name)); }
+@if (Model != null)
+{
+    foreach (ProductImage productImage in Model)
+    {
+        <div class="col-lg-1">
+            <a class="close deleteproductimage" asp-area="manage" asp-controller="product" asp-action="deleteimage" asp-route-id="@productImage.Id">
+                <span>&times;</span>
+            </a>
+            <img class="img-fluid" src="~/assets/images/@productImage.Image">
+        </div>
+    }
+}

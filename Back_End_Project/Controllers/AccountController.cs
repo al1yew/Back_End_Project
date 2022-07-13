@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 //vezde proverat esli user is admin poslat ego nax
 //u kajdogo appuser doljni bit svoi payment details i adress1, adress2 itd, kotorie budut v Profile html v menu adresi i v menu Payment
+//on sam proverayet kto zaregan poetomu pofiq esli admin v logine, on vse ravno izza [authorize(roles = member)] 
 namespace Back_End_Project.Controllers
 {
     public class AccountController : Controller

@@ -1,0 +1,46 @@
+﻿@model PaginationList<Category>
+@{
+    int no = Model.ItemsCount * (Model.Page - 1);
+}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th class="col-lg-1">№</th>
+            <th class="col-lg-1">Image</th>
+            <th class="col-lg-3">Name</th>
+            <th class="col-lg-1">Category Type</th>
+            <th class="col-lg-1">Status</th>
+            <th class="col-lg-1">Update</th>
+            <th class="col-lg-1">Delete/Restore</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Category category in Model)
+        {
+            no++;
+            <tr>
+                <td class="col-lg-1">@no</td>
+                <td class="col-lg-1"><img class="img-fluid" src="~/assets/images/@category.Image" /></td>
+                <td class="col-lg-3">@category.Name</td>
+                <td>@(category.IsMain ? "Main Category"  :"Sub Category")</td>
+                <td class="col-lg-1" style="color:@(category.IsDeleted ? "red" : "green")">@(category.IsDeleted ? "Deleted" : "Active")</td>
+                <td class="col-lg-1">
+                    <a class="btn btn-warning" asp-area="Manage" asp-controller="Category" asp-action="Update" asp-route-id="@category.Id">Update</a>
+                </td>
+                <td class="col-lg-1">
+                    @if (category.IsDeleted)
+                    {
+                        <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="Category"
+                           asp-action="Restore" asp-route-id="@category.Id" asp-route-status="@ViewBag.Status">Restore</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="Category"
+                           asp-action="Delete" asp-route-id="@category.Id" asp-route-status="@ViewBag.Status">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

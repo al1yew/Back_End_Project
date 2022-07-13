@@ -1,0 +1,55 @@
+﻿@model PaginationList<Category>
+
+
+<div class="row justify-content-between">
+    <div class="col-lg-2">
+        <h1>Categories</h1>
+    </div>
+    <div class="col-lg-6">
+        <form>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 align-items-center py-2">
+                    <label class="form-label">Sort By</label>
+                    <select name="status" class="form-select" aria-label="Default select example">
+                        <option selected="@(ViewBag.Status == 0 ? "true" : "false")" value="0">All</option>
+                        <option selected="@(ViewBag.Status == 1 ? "true" : "false")" value="1">Deleted</option>
+                        <option selected="@(ViewBag.Status == 2 ? "true" : "false")" value="2">Active</option>
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-primary" type="submit">Filter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-1">
+        <a class="btn btn-success" asp-area="Manage" asp-controller="Category" asp-action="Create">Create</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 tblContent">
+        @await Html.PartialAsync("_CategoryIndexPartial", Model)
+    </div>
+</div>
+
+<div class="row justify-content-center w-100">
+    <ul class="pagination ">
+
+        @if (Model.HasPrev)
+        {
+            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="1">@("<<")</a></li>
+
+            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Page-1)">@("<")</a></li>
+        }
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            <li class="page-item @(Model.Page == i ? "active":"")"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@i">@i</a></li>
+        }
+        @if (Model.HasNext)
+        {
+            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Page+1)">@(">")</a></li>
+            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Category" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@Model.PageCount">@(">>")</a></li>
+        }
+    </ul>
+</div>

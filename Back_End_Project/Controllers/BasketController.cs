@@ -124,6 +124,8 @@ namespace Back_End_Project.Controllers
             HttpContext.Response.Cookies.Append("basket", basket);
 
             return PartialView("_BasketPartial", await _getBasketItemAsync(basketVMs));
+
+            //return Json(BasketVM.count) i fetch delayem res.json() i datu set delayem vnutr notification klassa vnutri header componenta
         }
 
         public async Task<IActionResult> UpdateCount(int? id, int count)

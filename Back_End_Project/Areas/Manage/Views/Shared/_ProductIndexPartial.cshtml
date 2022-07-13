@@ -1,0 +1,73 @@
+﻿@model PaginationList<Product>
+
+@{
+    int no = Model.ItemsCount * (Model.Page - 1);
+}
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Product image</th>
+            <th>Product Category</th>
+            <th>Product's Brand</th>
+            <th>Product Name</th>
+            <th>Discount Price/ Real Price</th>
+            <th>Colors</th>
+            <th>Sizes</th>
+            <th>Status</th>
+            <th>Update</th>
+            <th>Clear/Restore</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (Product product in Model)
+        {
+            no++;
+            <tr>
+                <td class="col-lg-1">@no</td>
+                <td class="col-lg-1"><img src="~/assets/img/product/@product.Image" class="img-fluid" /></td>
+                <td class="col-lg-1">@product.Category.Name</td>
+                <td class="col-lg-1">@product.Brand.Name</td>
+                <td class="col-lg-2"><a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id" asp-area="Manage">@product.Name</a></td>
+                <td class="col-lg-1">$@product.DiscountPrice/$@product.Price</td>
+                <td class="col-lg-1">
+                    @foreach (var item in product.ProductToColors.Where(p => p.ProductId == product.Id))
+                    {
+                        <p>@item.Color.Name</p>
+                    }
+                </td>
+                <td class="col-lg-1">
+                    @foreach (var item in product.ProductToSizes.Where(p => p.ProductId == product.Id))
+                    {
+                        <p>@item.Size.Name</p>
+                    }
+                </td>
+                <td class="col-lg-1" style="color:@(product.IsDeleted ? "red" : "green")">@(product.IsDeleted ? "Deleted" : "Active")</td>
+                <td class="col-lg-1">
+                    @if (product.IsDeleted == false)
+                    {
+                        <a class="btn btn-warning" asp-controller="Product" asp-action="Update" asp-area="Manage" asp-route-id="@product.Id">Update</a>
+                    }
+                    else
+                    {
+                        <p class="test text-danger" style="font-size:14px;">Restore for Update!</p>
+                    }
+                </td>
+                <td class="col-lg-1">
+                    @if (product.IsDeleted)
+                    {
+                        <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="Product"
+                           asp-action="Restore" asp-route-id="@product.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="Product"
+                           asp-action="Delete" asp-route-id="@product.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

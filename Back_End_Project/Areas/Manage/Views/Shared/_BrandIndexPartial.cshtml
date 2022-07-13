@@ -1,0 +1,42 @@
+﻿@model PaginationList<Brand>
+@{
+    int no = Model.ItemsCount * (Model.Page - 1);
+    }
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th class="col-lg-1">№</th>
+            <th class="col-lg-3">Name</th>
+            <th class="col-lg-1">Status</th>
+            <th class="col-lg-1">Update</th>
+            <th class="col-lg-1">Delete/Restore</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Brand brand in Model)
+        {
+            no++;
+            <tr>
+                <td class="col-lg-1">@no</td>
+                <td class="col-lg-3">@brand.Name</td>
+                <td class="col-lg-1" style="color:@(brand.IsDeleted ? "red" : "green")">@(brand.IsDeleted ? "Deleted" : "Active")</td>
+                <td class="col-lg-1">
+                    <a class="btn btn-warning" asp-area="Manage" asp-controller="Brand" asp-action="Update" asp-route-id="@brand.Id">Update</a>
+                </td>
+                <td class="col-lg-1">
+                    @if (brand.IsDeleted)
+                    {
+                        <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="Brand"
+                           asp-action="Restore" asp-route-id="@brand.Id" asp-route-status="@ViewBag.Status">Restore</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="Brand" 
+                        asp-action="Delete" asp-route-id="@brand.Id" asp-route-status="@ViewBag.Status">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

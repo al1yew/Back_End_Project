@@ -1,0 +1,23 @@
+﻿@*@model Brand
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h1>Update</h1>
+
+<div class=" row justify-content-center">
+    <div class="col-lg-8">
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="BrandName" class="form-label">New updated name for selected brand name</label>
+                <input asp-for="BrandName" class="form-control">
+                <span class="text-danger" asp-validation-for="BrandName"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>
+
+@section Script{
+    <partial name="_ValidationPartial">
+}*@
