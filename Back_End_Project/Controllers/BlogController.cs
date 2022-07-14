@@ -8,10 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-//v index v categories vrode gde (say) shto to polucilos sprosit u ucitela
 //v detail sdelat form, voprosi doljni idti v admin panel, ottuda nado umet otvechat, mojno skinut v partial 
 //koqda delayesh pagination, posle togo kak vibral kategoriyu, i perekluchayeshsa na vtoruyu stranicku, on pochemu to sbrasivayet 
-//kategorii i dayet zanovo vse
+//kategorii i dayet zanovo vse, sdelat kak v product
+
 namespace Back_End_Project.Controllers
 {
     public class BlogController : Controller

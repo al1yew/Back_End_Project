@@ -113,10 +113,12 @@
                                             @if (User.Identity.IsAuthenticated)
                                             {
                                 <li><a asp-controller="Account" asp-action="Profile">@User.Identity.Name</a></li>
-                                                <li><a asp-controller="Account" asp-action="Logout">Log Out</a></li> }
-                                                            else
-                                                            {
-                                                <li><a style="font-size:20px" asp-controller="Account" asp-action="LoginRegister">Sign in</a></li>}
+                                                <li><a asp-controller="Account" asp-action="Logout">Log Out</a></li>
+ }
+                                            else
+                                            {
+                                <li><a style="font-size:20px" asp-controller="Account" asp-action="LoginRegister">Sign in</a></li>
+}
                                         </ul>
                                     </li>
                                     <li>
@@ -239,9 +241,9 @@
                                 {
                     <a class="dropdown-item" asp-controller="Account" asp-action="Profile">@User.Identity.Name</a>
                                     <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Log Out</a> }
-                                                else
-                                                {
-                                    <a style="font-size:20px" class="dropdown-item" asp-controller="Account" asp-action="LoginRegister">Sign in</a>}
+                                else
+                                {
+                    <a style="font-size:20px" class="dropdown-item" asp-controller="Account" asp-action="LoginRegister">Sign in</a>}
                             </div>
                         </div>
                     </li>
@@ -289,7 +291,7 @@
             <div class="offcanvas-search-box d-flex flex-column ">
                 <form class="d-flex bdr-bottom w-100" method="post">
                     <input type="text" class="input-search" data-url="http://localhost:15866/Product/Search" placeholder="Search entire storage here...">
-                    <a asp-controller="Product" asp-action="Index" data-url="http://localhost:15866/Product/Index" class="search-button-product search-btn"><i class="ion-ios-search-strong"></i>search</a>
+                    <a asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select" data-url="http://localhost:15866/Product/Index" class="search-button-product search-btn"><i class="ion-ios-search-strong"></i>search</a>
                 </form>
                 <div class="search-body" style="width:100%">
                     <ul class="list-group" style="z-index: 500; width: 100%; padding: 30px; background-color: transparent; height: 500px; overflow-y: scroll;">

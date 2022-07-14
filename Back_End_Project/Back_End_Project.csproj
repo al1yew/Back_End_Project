@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Areas\Manage\Views\User\Create.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Areas\Manage\Views\Account\Login.cshtml" />
     <None Include="Areas\Manage\Views\Brand\Create.cshtml" />
     <None Include="Areas\Manage\Views\Brand\Index.cshtml" />
@@ -33,7 +29,6 @@
     <None Include="Areas\Manage\Views\Product\Index.cshtml" />
     <None Include="Areas\Manage\Views\Product\Update.cshtml" />
     <None Include="Areas\Manage\Views\Setting\Index.cshtml" />
-    <None Include="Areas\Manage\Views\User\Create.cshtml" />
     <None Include="Areas\Manage\Views\User\Index.cshtml" />
     <None Include="Areas\Manage\Views\User\ResetPassword.cshtml" />
     <None Include="wwwroot\manage\img\undraw_posting_photo.svg" />

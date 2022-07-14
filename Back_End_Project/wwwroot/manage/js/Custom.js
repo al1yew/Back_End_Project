@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿
+$(document).ready(function () {
 
     //----------------------------------------------- Delete element
 
@@ -180,19 +181,3 @@
 
 
 
-//----------------------------------------------- GLOBAL GLOBAL GLOBAL --------------------------------------
-
-//----------------------------------------------- Product details slider active
-
-$('.product-large-slider').slick({
-    fade: true,
-    arrows: false,
-    asNavFor: '.pro-nav'
-});
-console.log("dsa")
-$('.pro-nav').slick({
-    slidesToShow: 4,
-    asNavFor: '.product-large-slider',
-    arrows: false,
-    focusOnSelect: true
-});

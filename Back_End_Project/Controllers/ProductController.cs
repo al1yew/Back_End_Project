@@ -37,24 +37,23 @@ namespace Back_End_Project.Controllers
             IQueryable<Product> products = _context.Products
             .Include(p => p.Category)
             .Include(p => p.ProductToColors).ThenInclude(p => p.Color)
-            .Include(p => p.ProductToSizes).ThenInclude(p => p.Size)
-            .AsQueryable();
+            .Include(p => p.ProductToSizes).ThenInclude(p => p.Size);
 
             if (categoryId != null)
             {
-                products = _context.Products
+                products = products
                     .Where(p => p.CategoryId == categoryId);
             }
 
             if (brandId != null)
             {
-                products = _context.Products
+                products = products
                     .Where(p => p.BrandId == brandId);
             }
 
             if (searchValue != null)
             {
-                products = _context.Products
+                products = products
                 .Where(p => p.Name.ToLower().Contains(searchValue.ToLower()) ||
                 p.Brand.Name.ToLower().Contains(searchValue.ToLower()) ||
                 p.Category.Name.ToLower().Contains(searchValue.ToLower()) ||
@@ -79,20 +78,19 @@ namespace Back_End_Project.Controllers
             {
                 if (sortby == 1)
                 {
-                    products.ToList().Sort();
+                    products = products.OrderBy(c => c.Name);
                 }
                 else if (sortby == 2)
                 {
-                    products.ToList().Reverse();
+                    products = products.OrderByDescending(c => c.Name);
                 }
                 else if (sortby == 3)
                 {
-                    //products.ToList().OrderByDescending(c => c.Price);
-                    products.ToList().Sort((a, b) => b.Price.CompareTo(a.Price));
+                    products = products.OrderBy(c => c.Price);
                 }
                 else if (sortby == 4)
                 {
-                    products.ToList().Sort((a, b) => a.Price.CompareTo(b.Price));
+                    products = products.OrderByDescending(c => c.Price);
                 }
             }
 
@@ -112,7 +110,7 @@ namespace Back_End_Project.Controllers
 
             ViewBag.CategoriesForProductsPage = categoryId;
             ViewBag.BrandsForProductsPage = brandId;
-            //ViewBag.HeaderSearchForProductsPage = searchValue;  chunki header search onsuzda butun produktlari getirir
+            ViewBag.HeaderSearchForProductsPage = searchValue;
             ViewBag.ColorForProductsPage = colorId;
             ViewBag.SizeForProductsPage = sizeId;
             ViewBag.Sortby = sortby;

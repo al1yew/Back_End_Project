@@ -30,5 +30,6 @@ namespace Back_End_Project.Areas.Manage.ViewModels.UserViewModels
         [StringLength(255)]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

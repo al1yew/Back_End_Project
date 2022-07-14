@@ -32,6 +32,24 @@
                 <input asp-for="Phone" class="form-control">
                 <span class="text-danger" asp-validation-for="Phone"></span>
             </div>
+            <div class="col-lg-3 ml-3 form-check">
+                <input asp-for="IsAdmin" class="form-check-input isMaininput">
+                <label asp-for="IsAdmin" class="form-check-label">Is admin?</label>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="single-input-item">
+                        <input asp-for="Password" placeholder="Enter your Password" required />
+                        <span class="text-black-50 text-danger" asp-validation-for="Password"></span>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="single-input-item">
+                        <input asp-for="ConfirmPassword" placeholder="Repeat your Password" required />
+                        <span class="text-black-50 text-danger" asp-validation-for="ConfirmPassword"></span>
+                    </div>
+                </div>
+            </div>
             <button type="submit" class="btn btn-primary">Create</button>
         </form>
     </div>

@@ -38,7 +38,7 @@
                                     @foreach (var item in Model.Categories)
                                     {
                                         <li>
-                                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@item.Id" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage">@item.Name<span>(@item.Products.Where(p=>p.CategoryId == item.Id).ToList().Count())</span></a>
+                                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@item.Id" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.Products.Where(p=>p.CategoryId == item.Id).ToList().Count())</span></a>
                                         </li>
                                     }
                                 </ul>
@@ -76,7 +76,7 @@
                                     @foreach (var item in Model.Colors.Take(6))
                                     {
                                         <li style="cursor:pointer">
-                                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage">@item.Name<span>(@item.ProductToColors.Where(pc => pc.ColorId == item.Id).ToList().Count())</span></a>
+                                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.ProductToColors.Where(pc => pc.ColorId == item.Id).ToList().Count())</span></a>
                                         </li>
                                     }
                                 </ul>
@@ -93,7 +93,7 @@
                                     @foreach (var item in Model.Sizes.Take(6))
                                     {
                         <li>
-                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage">@item.Name<span>(@item.ProductToSizes.Where(pc => pc.SizeId == item.Id).ToList().Count())</span></a>
+                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.ProductToSizes.Where(pc => pc.SizeId == item.Id).ToList().Count())</span></a>
                         </li>}
                                 </ul>
                             </div>
@@ -143,7 +143,7 @@
                                                 <option selected="@(ViewBag.Sortby == 1 ? "true" : "false")" value="1">Name (A - Z)</option>
                                                 <option selected="@(ViewBag.Sortby == 2 ? "true" : "false")" value="2">Name (Z - A)</option>
                                                 <option selected="@(ViewBag.Sortby == 3 ? "true" : "false")" value="3">Price (Low &gt; High)</option>
-                                                <option selected="@(ViewBag.Sortby == 4 ? "true" : "false")" value="3">Price (High &gt; Low)</option>
+                                                <option selected="@(ViewBag.Sortby == 4 ? "true" : "false")" value="4">Price (High &gt; Low)</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-2">

@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 using Back_End_Project.Areas.Manage.ViewModels.AccountViewModels;
 using Microsoft.EntityFrameworkCore;
 using Back_End_Project.Areas.Manage.ViewModels.UserViewModels;
-
+//useri admin etmek ve admini user etmek, ROLES deyishmelidi!!!! isadmin ile ish bitmir!
+//navbarda users tablesi var, onu gostermemek uchun user.identity.isinrole true false qaytarir, eto nado proverit
 namespace Back_End_Project.Areas.Manage.Controllers
 {
     [Area("Manage")]
@@ -29,7 +30,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
             _signInManager = signInManager;
         }
 
-        public IActionResult Index(int? status, int select, int page = 1)
+        public IActionResult Index(int? status, int select, int role, int page = 1)
         {
             IQueryable<AppUser> query = _userManager.Users.Where(u => u.UserName != User.Identity.Name);
 
@@ -50,9 +51,23 @@ namespace Back_End_Project.Areas.Manage.Controllers
                 select = 5;
             }
 
+            if (role != null && role > 0)
+            {
+                if (role == 1)
+                {
+                    query = query.Where(b => b.IsAdmin);
+                }
+                else if (role == 2)
+                {
+                    query = query.Where(b => !b.IsAdmin);
+                }
+            }
+
             ViewBag.Select = select;
 
             ViewBag.Status = status;
+
+            ViewBag.Role = role;
 
             return View(PaginationList<AppUser>.Create(query, page, select));
         }
@@ -108,7 +123,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateUserVM createUserVM)
+        public async Task<IActionResult> Create(CreateUserVM createUserVM, int role, int select, int page = 1)
         {
             if (!ModelState.IsValid) return View();
 
@@ -117,7 +132,8 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
             if (dbAppUser != null && appUsers.Any(a => a.UserName == createUserVM.UserName))
             {
-                ModelState.AddModelError("", "User exists");
+                ModelState.AddModelError("", "Admin exists");
+                return View();
             }
 
             AppUser user = new AppUser
@@ -125,7 +141,8 @@ namespace Back_End_Project.Areas.Manage.Controllers
                 Name = createUserVM.Name,
                 SurName = createUserVM.SurName,
                 UserName = createUserVM.UserName,
-                Email = createUserVM.Email
+                Email = createUserVM.Email,
+                IsAdmin = createUserVM.IsAdmin
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, createUserVM.Password);
@@ -140,11 +157,99 @@ namespace Back_End_Project.Areas.Manage.Controllers
                 return View();
             }
 
-            result = await _userManager.AddToRoleAsync(user, "Admin");
+            if (createUserVM.IsAdmin)
+            {
+                result = await _userManager.AddToRoleAsync(user, "Admin");
+            }
+            else
+            {
+                result = await _userManager.AddToRoleAsync(user, "Member");
+            }
 
-            await _signInManager.SignInAsync(user, true);
+            IQueryable<AppUser> query = _userManager.Users.Where(u => u.UserName != User.Identity.Name);
 
-            return View("Index");
+            if (select <= 0)
+            {
+                select = 5;
+            }
+
+            ViewBag.Select = select;
+
+            ViewBag.Role = role;
+
+            return View("Index", PaginationList<AppUser>.Create(query, page, select));
+        }
+
+        public async Task<IActionResult> Delete(string? id, int select, int role, int page = 1)
+        {
+            AppUser appUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (appUser == null) return NotFound();
+
+            appUser.IsDeleted = true;
+            appUser.DeletedAt = DateTime.UtcNow.AddHours(4);
+
+            await _context.SaveChangesAsync();
+
+            IQueryable<AppUser> query = _userManager.Users.Where(u => u.UserName != User.Identity.Name);
+
+            if (select <= 0)
+            {
+                select = 5;
+            }
+
+            if (role != null && role > 0)
+            {
+                if (role == 1)
+                {
+                    query = query.Where(b => b.IsAdmin);
+                }
+                else if (role == 2)
+                {
+                    query = query.Where(b => !b.IsAdmin);
+                }
+            }
+
+            ViewBag.Select = select;
+
+            ViewBag.Role = role;
+
+            return PartialView("_UserIndexPartial", PaginationList<AppUser>.Create(query, page, select));
+        }
+
+        public async Task<IActionResult> Restore(string? id, int select, int role, int page = 1)
+        {
+            AppUser appUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (appUser == null) return NotFound();
+
+            appUser.IsDeleted = false;
+            appUser.DeletedAt = null;
+
+            await _context.SaveChangesAsync();
+
+            IQueryable<AppUser> query = _userManager.Users.Where(u => u.UserName != User.Identity.Name);
+
+            if (select <= 0)
+            {
+                select = 5;
+            }
+
+            if (role != null && role > 0)
+            {
+                if (role == 1)
+                {
+                    query = query.Where(b => b.IsAdmin);
+                }
+                else if (role == 2)
+                {
+                    query = query.Where(b => !b.IsAdmin);
+                }
+            }
+
+            ViewBag.Select = select;
+
+            return PartialView("_UserIndexPartial", PaginationList<AppUser>.Create(query, page, select));
         }
     }
 }

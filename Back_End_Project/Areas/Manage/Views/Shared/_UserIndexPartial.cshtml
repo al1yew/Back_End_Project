@@ -18,39 +18,36 @@
         @foreach (AppUser appUser in Model)
         {
             no++;
-        <tr>
-            <td class="col-lg-1">@no</td>
-            <td class="col-lg-3">@appUser.UserName</td>
-            <td class="col-lg-1" style="color:@(appUser.IsDeleted ? "red" : "green")">@(appUser.IsDeleted ? "Deleted" : "Active")</td>
-            <td class="col-lg-1">
-                @if (appUser.IsAdmin)
-                {
-                <p class="text-success text">Admin</p>
-                }
-                else
-                {
-                <p class="text-danger text">User</p>
-                }
-            </td>
-            <td class="col-lg-1">
+            <tr>
+                <td class="col-lg-1">@no</td>
+                <td class="col-lg-3">@appUser.UserName</td>
+                <td class="col-lg-1" style="color:@(appUser.IsDeleted ? "red" : "green")">@(appUser.IsDeleted ? "Deleted" : "Active")</td>
+                <td class="col-lg-1">
                     @if (appUser.IsAdmin)
                     {
-                        <a class="btn btn-primary" asp-area="Manage" asp-controller="User" asp-action="ResetPassword" asp-route-id="@appUser.Id">Reset Password</a>
+                        <p class="text-success text">Admin</p>
                     }
-            </td>
-            <td class="col-lg-1">
-                @if (appUser.IsDeleted)
-                {
-                    <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="User"
-                       asp-action="Restore" asp-route-id="@appUser.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
-                }
-                else
-                {
-                    <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="User"
-                       asp-action="Delete" asp-route-id="@appUser.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
-                }
-            </td>
-        </tr>
+                    else
+                    {
+                        <p class="text-danger text">User</p>
+                    }
+                </td>
+                <td class="col-lg-1">
+                    <a class="btn btn-primary" asp-area="Manage" asp-controller="User" asp-action="ResetPassword" asp-route-id="@appUser.Id">Reset Password</a>
+                </td>
+                <td class="col-lg-1">
+                    @if (appUser.IsDeleted)
+                    {
+                        <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="User"
+                           asp-action="Restore" asp-route-id="@appUser.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="User"
+                           asp-action="Delete" asp-route-id="@appUser.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
+                    }
+                </td>
+            </tr>
         }
     </tbody>
 </table>

@@ -10,39 +10,30 @@
                     <div class="product-details-inner">
                         <div class="row">
                             <div class="col-lg-5">
-                                <div class="product-large-slider mb-20">
+                                <div class="product-large-slider mb-20 row justify-content-between">
                                     @foreach (var item in Model.ProductImages)
                                     {
-                                        <div class="pro-large-img img-zoom">
+                                        <div class="pro-large-img img-zoom mb-2">
                                             <img src="~/assets/img/product/@item.Image" alt="" />
-                                        </div>
-                                    }
-                                </div>
-                                <div class="pro-nav slick-row-5">
-                                    @foreach (var item in Model.ProductImages)
-                                    {
-                                        <div class="pro-nav-thumb">
-                                            <img src="~/assets/img/product/@item.Image" />
                                         </div>
                                     }
                                 </div>
                             </div>
                             <div class="col-lg-7">
                                 <div class="product-details-des">
-                                    <h3 class="pro-det-title">@Model.Name</h3>
+                                    <h3 class="pro-det-title"> Name : @Model.Name</h3>
                                     <div class="pro-review">
-                                        <span><a href="#tab-one">Reviews: @Model.ReviewCount</a></span>
+                                        <p>Reviews count: @Model.ReviewCount</p>
                                     </div>
                                     <div class="price-box">
-                                        <span class="price-regular">$@Model.DiscountPrice</span>
-                                        <span class="price-old"><del>$@Model.Price</del></span>
+                                        <span class="price-regular">Discount price: $@Model.DiscountPrice</span>
+                                        <span class="price-old">Price: <del>$@Model.Price</del></span>
                                     </div>
-                                    <p>
+                                    <p>Description
                                         @Model.Description
                                     </p>
                                     <div class="availability mb-20">
-                                        <h5 class="title @(Model.Count > 0 ?"text-success":"text-danger")"> Availability :</h5>
-                                        <span class="value">@(Model.Count > 0 ? "In Stock" : "Out Of Stock") </span>
+                                        <h5 class="title @(Model.Count > 0 ?"text-success":"text-danger")"> Availability : @(Model.Count > 0 ? "In Stock" : "Out Of Stock")</h5>
                                     </div>
                                 </div>
                             </div>
