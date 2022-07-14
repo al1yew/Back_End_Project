@@ -11,16 +11,12 @@ using System.Threading.Tasks;
 
 //v indekse nujno popravit (say), sdelat sliderrange, on doljen otprravlat v metod po buttonu, ix mojno vzat v js
 //i fetchanut ix kak dva rezultata, maxprice i minprice, i ya doljen sortirovat ix s pomoshyu etix dvux cen
-//koqda delayesh pagination, posle togo kak vibral kategoriyu, i perekluchayeshsa na vtoruyu stranicku, on pochemu to sbrasivayet 
-//kategorii i dayet zanovo vse
+
 //detail page xochu shto b s inputa value mojno bilo vpisivat rukoy
 //v header defaulte v klasse basketelementscount nado vpisat kolvo productov v baskete
 //product detail stroka 67 s viewbagami, ix iskat v basketcontrollere
 
-//proverit sortirovku v indekse vse do edinogo
 //sortby search v custom js ya nemnogo zamenil, v footere popravil brands i categories, dal im asp-route
-
-//sprosit u neqo pagination i viewbagi
 
 namespace Back_End_Project.Controllers
 {
@@ -36,6 +32,7 @@ namespace Back_End_Project.Controllers
         {
             IQueryable<Product> products = _context.Products
             .Include(p => p.Category)
+            .Include(p=> p.Brand)
             .Include(p => p.ProductToColors).ThenInclude(p => p.Color)
             .Include(p => p.ProductToSizes).ThenInclude(p => p.Size);
 
@@ -105,7 +102,8 @@ namespace Back_End_Project.Controllers
                 Settings = await _context.Settings.ToDictionaryAsync(x => x.Key, x => x.Value),
                 Sizes = await _context.Sizes.Include(c => c.ProductToSizes).ThenInclude(pc => pc.Product).ToListAsync(),
                 Colors = await _context.Colors.Include(c => c.ProductToColors).ThenInclude(pc => pc.Product).ToListAsync(),
-                Categories = await _context.Categories.Include(c => c.Products).ToListAsync()
+                Categories = await _context.Categories.Include(c => c.Products).ToListAsync(),
+                Brands = await _context.Brands.Include(b=>b.Products).ToListAsync()
             };
 
             ViewBag.CategoriesForProductsPage = categoryId;

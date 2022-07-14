@@ -1,5 +1,4 @@
 ﻿@model ProductVM
-
 <!-- main wrapper start -->
 <main>
     <!-- breadcrumb area start -->
@@ -38,7 +37,24 @@
                                     @foreach (var item in Model.Categories)
                                     {
                                         <li>
-                                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@item.Id" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.Products.Where(p=>p.CategoryId == item.Id).ToList().Count())</span></a>
+                                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@item.Id" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.Products.Where(p => p.CategoryId == item.Id).ToList().Count())</span></a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- single sidebar end -->
+                        <!-- single sidebar start -->
+                        <div class="sidebar-single">
+                            <div class="sidebar-title">
+                                <h3>Brands</h3>
+                            </div>
+                            <div class="sidebar-body">
+                                <ul class="color-list">
+                                    @foreach (var item in Model.Brands)
+                                    {
+                                        <li>
+                                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@item.Id" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.Products.Where(p => p.BrandId == item.Id).ToList().Count())</span></a>
                                         </li>
                                     }
                                 </ul>
@@ -54,7 +70,7 @@
                                 <div class="price-range-wrap">
                                     <div class="price-range" data-min="20" data-max="400"></div>
                                     <div class="range-slider">
-                                        <form action="#">
+                                        <form method="post">
                                             <div class="price-input">
                                                 <label for="amount">Price: </label>
                                                 <input type="text" id="amount">
@@ -92,9 +108,10 @@
                                 <ul class="size-list">
                                     @foreach (var item in Model.Sizes.Take(6))
                                     {
-                        <li>
-                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.ProductToSizes.Where(pc => pc.SizeId == item.Id).ToList().Count())</span></a>
-                        </li>}
+                                        <li>
+                                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.ProductToSizes.Where(pc => pc.SizeId == item.Id).ToList().Count())</span></a>
+                                        </li>
+                                    }
                                 </ul>
                             </div>
                         </div>
@@ -126,24 +143,24 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-9 col-lg-9 col-md-9 order-1 order-md-2">
-                                    <form class="top-bar-right">
+                                    <form class="top-bar-right" asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">
                                         <div class="product-short col-lg-4">
                                             <p>Show: </p>
-                                            <select class="sortbycountproduct" id="hellolar" name="sortbycount">
-                                                <option selected="@(ViewBag.Select == 5 ? "true" : "false")" value="5">5</option>
-                                                <option selected="@(ViewBag.Select == 10 ? "true" : "false")" value="10">10</option>
-                                                <option selected="@(ViewBag.Select == 15 ? "true" : "false")" value="15">15</option>
-                                                <option selected="@(ViewBag.Select == 20 ? "true" : "false")" value="20">20</option>
+                                            <select class="sortbycountproduct" name="sortbycount">
+                                                <option selected value="5">5</option>
+                                                <option value="10">10</option>
+                                                <option value="15">15</option>
+                                                <option value="20">20</option>
                                             </select>
                                         </div>
                                         <div class="product-short col-lg-4">
                                             <p>Sort By:</p>
                                             <select class="nice-select sortbyproduct" name="sortby">
-                                                <option selected="@(ViewBag.Sortby == 0 ? "true" : "false")" value="0">All</option>
-                                                <option selected="@(ViewBag.Sortby == 1 ? "true" : "false")" value="1">Name (A - Z)</option>
-                                                <option selected="@(ViewBag.Sortby == 2 ? "true" : "false")" value="2">Name (Z - A)</option>
-                                                <option selected="@(ViewBag.Sortby == 3 ? "true" : "false")" value="3">Price (Low &gt; High)</option>
-                                                <option selected="@(ViewBag.Sortby == 4 ? "true" : "false")" value="4">Price (High &gt; Low)</option>
+                                                <option selected value="0">All</option>
+                                                <option value="1">Name (A - Z)</option>
+                                                <option value="2">Name (Z - A)</option>
+                                                <option value="3">Price (Low &gt; High)</option>
+                                                <option value="4">Price (High &gt; Low)</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-2">
@@ -154,33 +171,48 @@
                             </div>
                         </div>
                         <!-- shop product top wrap start -->
+
+
                         <!-- product item list start -->
                         <div class="shop-product-wrap list-view row mbn-50 product-content-container">
                             @await Html.PartialAsync("_ProductIndexPartial", Model.Products)
                         </div>
                         <!-- product item list end -->
+
+
                         <!-- start pagination area -->
                         <div class="paginatoin-area text-center mt-45">
                             <ul class="pagination-box">
                                 @if (Model.Products.HasPrev)
                                 {
-                                    <li class="page-item"><a class="page-link" asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select"
- asp-route-page="1">@("<<")</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select"
+                                           asp-route-page="1">@("<<")</a>
+                                    </li>
 
-                                    <li class="page-item"><a class="page-link"  asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select"
- asp-route-page="@(Model.Products.Page-1)">@("<")</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select"
+                                           asp-route-page="@(Model.Products.Page-1)">@("<")</a>
+                                    </li>
                                 }
                                 @for (int i = 1; i <= Model.Products.PageCount; i++)
                                 {
-                                    <li class="page-item @(Model.Products.Page == i ? "active":"")"><a class="page-link" asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select"
- asp-route-page="@i">@i</a></li>
+                                    <li class="page-item @(Model.Products.Page == i ? "active":"")">
+                                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select"
+                                           asp-route-page="@i">@i</a>
+                                    </li>
                                 }
                                 @if (Model.Products.HasNext)
                                 {
-                                    <li class="page-item"><a class="page-link"  asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select"
- asp-route-page="@(Model.Products.Page+1)">@(">")</a></li>
-                                    <li class="page-item"><a class="page-link" asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select"
- asp-route-page="@Model.Products.PageCount">@(">>")</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select"
+                                           asp-route-page="@(Model.Products.Page+1)">@(">")</a>
+                                    </li>
+
+                                    <li class="page-item">
+                                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select"
+                                           asp-route-page="@Model.Products.PageCount">@(">>")</a>
+                                    </li>
                                 }
                             </ul>
                         </div>

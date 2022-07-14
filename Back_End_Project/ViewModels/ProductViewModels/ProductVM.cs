@@ -13,5 +13,6 @@ namespace Back_End_Project.ViewModels.ProductViewModels
         public List<Color> Colors { get; set; }
         public List<Size> Sizes { get; set; }
         public List<Category> Categories { get; set; }
+        public List<Brand> Brands { get; set; }
     }
 }

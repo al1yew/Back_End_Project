@@ -17,7 +17,7 @@
                 <div class="price-box">
                     <span class="price-regular">$@product.Price</span>
                     <span class="price-old"><del>$@product.DiscountPrice</del></span>
-                    <a asp-controller="Compare" asp-action="AddToCompare" asp-route-id="@product.Id" class="addtocompare" data-toggle="tooltip" title="Compare"><i class="fa-solid fa-code-compare"></i>COMPARE</a>
+                    <a asp-controller="Compare" asp-action="AddToCompare" asp-route-id="@product.Id" class="addtocompare" data-toggle="tooltip" title="Compare"><i class="fa-solid fa-code-compare"></i></a>
                 </div>
                 <div class="product-action-link">
                     <a asp-controller="Wishlist" asp-action="AddToWishlist" asp-route-id="@product.Id" class="addtowishlist" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
