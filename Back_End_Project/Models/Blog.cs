@@ -29,7 +29,7 @@ namespace Back_End_Project.Models
 
         public string BottomText { get; set; }
 
-
+        public int CommentsCount { get; set; }
 
 
         //photos
@@ -46,8 +46,8 @@ namespace Back_End_Project.Models
         public BlogAuthor BlogAuthor { get; set; }
         public int BlogAuthorId { get; set; }
 
+
         //relations with blog
         public List<BlogComment> BlogComments { get; set; }
-
     }
 }

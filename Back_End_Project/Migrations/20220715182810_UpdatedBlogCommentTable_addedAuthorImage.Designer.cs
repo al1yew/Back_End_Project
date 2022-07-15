@@ -4,14 +4,16 @@ using Back_End_Project.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Back_End_Project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220715182810_UpdatedBlogCommentTable_addedAuthorImage")]
+    partial class UpdatedBlogCommentTable_addedAuthorImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,8 +240,14 @@ namespace Back_End_Project.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AppUserId")
+                    b.Property<string>("AdminName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AdminUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(255)")
@@ -264,49 +272,11 @@ namespace Back_End_Project.Migrations
                     b.Property<bool>("HasResponse")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsParentComment")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Website")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BlogId");
-
-                    b.ToTable("BlogComments");
-                });
-
-            modelBuilder.Entity("Back_End_Project.Models.BlogCommentReply", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AdminImage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AdminName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AdminUserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BlogCommentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BlogId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsChildComment")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsParentComment")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ResponseText")
                         .HasColumnType("nvarchar(max)");
@@ -314,14 +284,15 @@ namespace Back_End_Project.Migrations
                     b.Property<DateTime?>("ResponseTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserImage")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("BlogCommentId");
+                    b.HasIndex("AdminUserId");
 
-                    b.ToTable("BlogCommentReplies");
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("BlogComments");
                 });
 
             modelBuilder.Entity("Back_End_Project.Models.BlogTag", b =>
@@ -792,7 +763,7 @@ namespace Back_End_Project.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -815,6 +786,8 @@ namespace Back_End_Project.Migrations
                         .HasMaxLength(2048);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("ProductId");
 
@@ -1093,18 +1066,17 @@ namespace Back_End_Project.Migrations
 
             modelBuilder.Entity("Back_End_Project.Models.BlogComment", b =>
                 {
+                    b.HasOne("Back_End_Project.Models.AppUser", "AdminUser")
+                        .WithMany()
+                        .HasForeignKey("AdminUserId");
+
+                    b.HasOne("Back_End_Project.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
                     b.HasOne("Back_End_Project.Models.Blog", "Blog")
                         .WithMany("BlogComments")
                         .HasForeignKey("BlogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Back_End_Project.Models.BlogCommentReply", b =>
-                {
-                    b.HasOne("Back_End_Project.Models.BlogComment", "BlogComment")
-                        .WithMany("BlogCommentReplies")
-                        .HasForeignKey("BlogCommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1173,6 +1145,10 @@ namespace Back_End_Project.Migrations
 
             modelBuilder.Entity("Back_End_Project.Models.ProductReview", b =>
                 {
+                    b.HasOne("Back_End_Project.Models.AppUser", "AppUser")
+                        .WithMany("ProductReviews")
+                        .HasForeignKey("AppUserId");
+
                     b.HasOne("Back_End_Project.Models.Product", "Product")
                         .WithMany("ProductReviews")
                         .HasForeignKey("ProductId")

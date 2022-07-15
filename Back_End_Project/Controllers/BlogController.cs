@@ -2,23 +2,29 @@
 using Back_End_Project.Models;
 using Back_End_Project.ViewModels;
 using Back_End_Project.ViewModels.BlogViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-//v detail sdelat form, voprosi doljni idti v admin panel, ottuda nado umet otvechat, mojno skinut v partial 
-
+//pochemu to v detail kategorii i tagi prinosit tupo vse podrad
+//razberis s reply metodom
 namespace Back_End_Project.Controllers
 {
     public class BlogController : Controller
     {
         private readonly AppDbContext _context;
-        public BlogController(AppDbContext context)
+        private readonly UserManager<AppUser> _userManager;
+
+        public BlogController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
         public async Task<IActionResult> Index(int? tagid, int? authorid, string searchvalue, int sortbycount, int? categoryId, int page = 1)
         {
             IQueryable<Blog> blogs = _context.Blogs
@@ -80,6 +86,7 @@ namespace Back_End_Project.Controllers
 
             return View(blogVM);
         }
+
         public async Task<IActionResult> Detail(int? id)
         {
             if (id == null) return BadRequest();
@@ -93,17 +100,120 @@ namespace Back_End_Project.Controllers
 
             if (blog == null) return NotFound();
 
+            //AppUser appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name && !u.IsAdmin);
+
+            //BlogCommentVM blogCommentVM = new BlogCommentVM
+            //{
+            //    Email = appUser.Email,
+            //    AuthorName = appUser.Name,
+            //};
+
+            CommentReplyVM commentReplyVM = new CommentReplyVM
+            {
+                BlogCommentReplies = await _context.BlogCommentReplies.Where(b => b.BlogComment.BlogId == id).ToListAsync(),
+                BlogComments = await _context.BlogComments.Where(b => b.BlogId == id).ToListAsync(),
+                BlogCommentVM = new BlogCommentVM()
+            };
+
             BlogDetailVM blogVM = new BlogDetailVM
             {
                 Blog = blog,
-                Blogs = await _context.Blogs
-                .Include(b => b.BlogCategory)
-                .Include(b => b.BlogTag)
-                .ToListAsync()
+                Blogs = await _context.Blogs.Include(b => b.BlogCategory).Include(b => b.BlogTag).ToListAsync(),
+                //BlogCommentVM = appUser == null ? new BlogCommentVM() : blogCommentVM,
+                BlogCommentVM = new BlogCommentVM(),
+                CommentReplyVM = commentReplyVM
             };
+
+            ViewBag.BlogId = id;
 
             return View(blogVM);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddBlogComment(BlogCommentVM blogCommentVM, int id)
+        {
+            if (!ModelState.IsValid) return Redirect($"http://localhost:15866/Blog/Detail/{id}");
+
+            if (id == null && id <= 0) return NotFound();
+
+            AppUser appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name && !u.IsAdmin);
+
+            BlogComment blogComment = new BlogComment
+            {
+                Author = appUser == null ? blogCommentVM.AuthorName : appUser.Name,
+                CreatedAt = DateTime.UtcNow.AddHours(4),
+                Comment = blogCommentVM.Comment,
+                Email = appUser == null ? blogCommentVM.Email : appUser.Email,
+                AuthorImage = appUser == null ? null : appUser.Image,
+                BlogId = id,
+                AppUserId = appUser == null ? null : appUser.Id,
+                IsParentComment = true,
+            };
+
+            //cox gozel situaciyadan cixdim ternary ile :DDD
+            Blog blog = await _context.Blogs.FirstOrDefaultAsync(p => p.Id == id);
+
+            blog.CommentsCount++;
+
+            await _context.BlogComments.AddAsync(blogComment);
+            await _context.SaveChangesAsync();
+
+            return Redirect($"http://localhost:15866/Blog/Detail/{id}");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> AddCommentReply(int? id)
+        {
+            BlogComment blogComment = await _context.BlogComments.FirstOrDefaultAsync(x => x.Id == id);
+
+            ViewBag.BlogComment = blogComment.Id;
+
+            return PartialView("_CommentReplyPartial", new BlogCommentVM());
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddCommentReply(BlogCommentVM blogCommentVM, int id, int blogId)
+        {
+            if (!ModelState.IsValid) return Redirect($"http://localhost:15866/Blog/Detail/{id}");
+
+            if (id == null && id <= 0) return NotFound();
+
+            BlogComment blogComment = await _context.BlogComments.FirstOrDefaultAsync(bc => bc.Id == id);
+
+            if (blogComment == null) return NotFound();
+
+            Blog blog = await _context.Blogs.FirstOrDefaultAsync(p => p.Id == blogComment.BlogId);
+
+            if (blog == null) return NotFound();
+
+            AppUser appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+            BlogCommentReply blogCommentReply = new BlogCommentReply
+            {
+                AdminImage = appUser != null && appUser.IsAdmin ? appUser.Image : null,
+                AdminName = appUser != null && appUser.IsAdmin ? appUser.Name : null,
+                IsChildComment = true,
+                UserImage = appUser != null && !appUser.IsAdmin ? appUser.Image : null,
+                Name = appUser != null && !appUser.IsAdmin ? appUser.Name : blogCommentVM.AuthorName,
+                ResponseTime = DateTime.UtcNow.AddHours(4),
+                ResponseText = blogCommentVM.Comment,
+                AdminUserId = appUser != null && appUser.IsAdmin ? appUser.Id : null,
+                AppUserId = appUser != null && !appUser.IsAdmin ? appUser.Id : null,
+                BlogCommentId = id
+            };
+            //cox gozel situaciyadan cixdim ternary ile :DDD bele gozel body olmayib hec
+
+            blog.CommentsCount++;
+            blogComment.HasResponse = true;
+
+            await _context.BlogCommentReplies.AddAsync(blogCommentReply);
+            await _context.SaveChangesAsync();
+
+            return Redirect($"http://localhost:15866/Blog/Detail/{blogId}");
+        }
+
         public async Task<IActionResult> BlogSearch(string blogsearch)
         {
             List<Blog> blogs = await _context.Blogs

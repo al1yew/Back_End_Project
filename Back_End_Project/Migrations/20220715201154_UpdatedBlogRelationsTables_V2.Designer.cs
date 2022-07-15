@@ -4,14 +4,16 @@ using Back_End_Project.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Back_End_Project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220715201154_UpdatedBlogRelationsTables_V2")]
+    partial class UpdatedBlogRelationsTables_V2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,29 +295,17 @@ namespace Back_End_Project.Migrations
                     b.Property<string>("AdminUserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("BlogCommentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BlogId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsChildComment")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ResponseText")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ResponseTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("UserImage")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

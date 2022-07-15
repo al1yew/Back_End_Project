@@ -1,10 +1,5 @@
 ﻿$(document).ready(function () {
 
-    //----------------------------------------------- Blog page Authors slider
-
-    $('.author-slider').slick();
-
-
     //----------------------------------------------- Product Modal
 
     $(".detailmodal").click(function (e) {
@@ -84,6 +79,10 @@
 
 
 
+
+    //----------------------------------------------- Blog page Authors slider
+
+    $('.author-slider').slick();
 
 
     //----------------------------------------------- Blog Search
@@ -340,6 +339,79 @@
 
 
 
+
+    //----------------------------------------------- Tabmenu Navbar
+
+    let path = window.location.pathname
+    path = path.split('/')
+    let links = $('.header-menu-for-tabmenu')
+
+    for (var i = 0; i < links.length; i++) {
+        console.log("djas")
+        let hrefpath = links[i].children[0].getAttribute('href').split('/')
+        if (hrefpath[1].toLowerCase() == path[1].toLowerCase()) {
+            links[i].classList.add('active')
+        } else {
+            links[i].classList.remove('active')
+        }
+    }
+
+
+    //----------------------------------------------- Account Orders toggle table
+
+    $(document).on('show.bs.collapse', '.accordian-body', function () {
+        $(this).closest("table")
+            .find(".collapse.in")
+            .not(this)
+        //.collapse('toggle')
+    })
+
+
+    //----------------------------------------------- Account Profile image delete function
+
+    $(document).on("click", ".deleteprofileimage", function (e) {
+        e.preventDefault();
+
+        let url = $(this).attr('href');
+
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $(".minicart-inner-content").html(data);
+            })
+    })
+
+
+    //----------------------------------------------- Blog comment reply button - adding inputs
+
+    $(document).on("click", ".replybuttonforinputs", function (e) {
+        e.preventDefault();
+
+        let url = $(this).attr('href');
+        console.log(url)
+
+        $('.replybtnforremove').addClass('d-none')
+
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $(".replyinputs").html(data);
+            })
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //----------------------------------------------- Getting value of sortbycount from select option in products (shop page) index page
 
     //console.log("dasda")
@@ -424,46 +496,7 @@
     //-------------------------------------------------------------------------------------------
 
 
-    //----------------------------------------------- Tabmenu Navbar
-
-    let path = window.location.pathname
-    path = path.split('/')
-    let links = $('.header-menu-for-tabmenu')
-
-    for (var i = 0; i < links.length; i++) {
-        console.log("djas")
-        let hrefpath = links[i].children[0].getAttribute('href').split('/')
-        if (hrefpath[1].toLowerCase() == path[1].toLowerCase()) {
-            links[i].classList.add('active')
-        } else {
-            links[i].classList.remove('active')
-        }
-    }
-
-
-    //----------------------------------------------- Account Orders toggle table
-
-    $(document).on('show.bs.collapse', '.accordian-body', function () {
-        $(this).closest("table")
-            .find(".collapse.in")
-            .not(this)
-        //.collapse('toggle')
-    })
-
-
-    //----------------------------------------------- Account Profile image delete function
-
-    $(document).on("click", ".deleteprofileimage", function (e) {
-        e.preventDefault();
-
-        let url = $(this).attr('href');
-
-        fetch(url)
-            .then(res => res.text())
-            .then(data => {
-                $(".minicart-inner-content").html(data);
-            })
-    })
+    
 
 
 

@@ -11,8 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 using System.Threading.Tasks;
+//color id size id yerine tag id elemek zor olardi
 
-//delat sliderrange, on doljen otprravlat v metod po buttonu, ix mojno vzat v js
+//sdelat sliderrange, on doljen otprravlat v metod po buttonu, ix mojno vzat v js
 //i fetchanut ix kak dva rezultata, maxprice i minprice, i ya doljen sortirovat ix s pomoshyu etix dvux cen
 //eto sdelano v detail page s pomoshyu rating 
 
@@ -21,6 +22,7 @@ using System.Threading.Tasks;
 //product detail stroka 67 s viewbagami, ix iskat v basketcontrollere
 
 //detail page related products modal ishlemir
+//footer linkleri duzelt sagda
 
 namespace Back_End_Project.Controllers
 {
@@ -143,6 +145,8 @@ namespace Back_End_Project.Controllers
                 .Include(p => p.ProductInformation)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
+            if (product == null) return NotFound();
+
             ProductReviewVM productReviewVM = new ProductReviewVM
             {
                 Name = appUser.Name,
@@ -157,8 +161,6 @@ namespace Back_End_Project.Controllers
                 ProductReviewVM = productReviewVM,
                 ProductReviews = await _context.ProductReviews.Where(pr => pr.ProductId == id).ToListAsync()
             };
-
-            if (product == null) return NotFound();
 
             ViewBag.ProductId = id;
 

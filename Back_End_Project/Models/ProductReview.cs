@@ -19,13 +19,14 @@ namespace Back_End_Project.Models
         [StringLength(2048)]
         public string ReviewText { get; set; }
 
+        public string AppUserId { get; set; }
+
         public int Rating { get; set; }
+
 
         //relations
         public Product Product { get; set; }
         public int ProductId { get; set; }
-        public AppUser AppUser { get; set; }
-        public string AppUserId { get; set; }
 
 
         //for date

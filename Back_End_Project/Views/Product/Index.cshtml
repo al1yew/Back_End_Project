@@ -37,7 +37,7 @@
                                     @foreach (var item in Model.Categories)
                                     {
                                         <li>
-                                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@item.Id" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.Products.Where(p => p.CategoryId == item.Id).ToList().Count())</span></a>
+                                            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="@item.Id" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.Products.Where(p => p.CategoryId == item.Id).ToList().Count())</span></a>
                                         </li>
                                     }
                                 </ul>
@@ -54,7 +54,7 @@
                                     @foreach (var item in Model.Brands)
                                     {
                                         <li>
-                                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@item.Id" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.Products.Where(p => p.BrandId == item.Id).ToList().Count())</span></a>
+                                            <a asp-controller="Product" asp-action="Index"asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@item.Id" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.Products.Where(p => p.BrandId == item.Id).ToList().Count())</span></a>
                                         </li>
                                     }
                                 </ul>
@@ -83,7 +83,7 @@
                         </div>
                         <!-- single sidebar end -->
                         <!-- single sidebar start -->
-                        <div class="sidebar-single">
+                        @*<div class="sidebar-single">
                             <div class="sidebar-title">
                                 <h3>color</h3>
                             </div>
@@ -92,15 +92,15 @@
                                     @foreach (var item in Model.Colors.Take(6))
                                     {
                                         <li style="cursor:pointer">
-                                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.ProductToColors.Where(pc => pc.ColorId == item.Id).ToList().Count())</span></a>
+                                            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.ProductToColors.Where(pc => pc.ColorId == item.Id).ToList().Count())</span></a>
                                         </li>
                                     }
                                 </ul>
                             </div>
-                        </div>
+                        </div>*@
                         <!-- single sidebar end -->
                         <!-- single sidebar start -->
-                        <div class="sidebar-single">
+                        @*<div class="sidebar-single">
                             <div class="sidebar-title">
                                 <h3>size</h3>
                             </div>
@@ -109,12 +109,12 @@
                                     @foreach (var item in Model.Sizes.Take(6))
                                     {
                                         <li>
-                                            <a asp-controller="Product" asp-action="Index" asp-route-id="@item.Id" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.ProductToSizes.Where(pc => pc.SizeId == item.Id).ToList().Count())</span></a>
+                                            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="@ViewBag.CategoriesForProductsPage" asp-route-brandId="@ViewBag.BrandsForProductsPage" asp-route-searchValue="@ViewBag.HeaderSearchForProductsPage" asp-route-colorId="@ViewBag.ColorForProductsPage" asp-route-sizeId="@ViewBag.SizeForProductsPage" asp-route-sortby="@ViewBag.Sortby" asp-route-sortbycount="@ViewBag.Select">@item.Name<span>(@item.ProductToSizes.Where(pc => pc.SizeId == item.Id).ToList().Count())</span></a>
                                         </li>
                                     }
                                 </ul>
                             </div>
-                        </div>
+                        </div>*@
                         <!-- single sidebar end -->
                         <!-- single sidebar start -->
                         <div class="sidebar-single">

@@ -32,9 +32,5 @@ namespace Back_End_Project.Models
         public List<Basket> Baskets { get; set; }
         public IEnumerable<Order> Orders { get; set; }
         public List<Wishlist> Wishlists { get; set; }
-
-
-        //relations one to many
-        public List<ProductReview> ProductReviews { get; set; }
     }
 }

@@ -55,7 +55,7 @@ namespace Back_End_Project.DAL
         public DbSet<BlogCategory> BlogCategories { get; set; }
         public DbSet<BlogTag> BlogTags { get; set; }
         public DbSet<BlogAuthor> BlogAuthors { get; set; }
-
+        public DbSet<BlogCommentReply> BlogCommentReplies { get; set; }
 
         //relations many to many PRODUCT
         public DbSet<ProductToColor> ProductToColors { get; set; }

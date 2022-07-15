@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Back_End_Project.ViewModels.BlogViewModels
 {
-    public class BlogDetailVM
+    public class CommentReplyVM
     {
-        public Blog Blog { get; set; }
-        public List<Blog> Blogs { get; set; }
+        public List<BlogComment> BlogComments { get; set; }
+        public List<BlogCommentReply> BlogCommentReplies { get; set; }
         public BlogCommentVM BlogCommentVM { get; set; }
-        public CommentReplyVM CommentReplyVM { get; set; }
     }
 }
