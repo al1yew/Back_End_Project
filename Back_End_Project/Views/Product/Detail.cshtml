@@ -107,8 +107,7 @@
                                                         <ul>
                                                             @foreach (var item in Model.Product.ProductInformation)
                                                             {
-                                                <li>@item.Text</li>
-}
+                                                <li>@item.Text</li>}
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -138,65 +137,17 @@
                                             </table>
                                         </div>
                                         <div class="tab-pane fade" id="tab_three">
-                                            <form action="#" class="review-form">
-                                                <h5>@Model.Product.ReviewCount reviews for <span>@Model.Product.Name</span></h5>
-                                                <div class="total-reviews">
-                                                    <div class="rev-avatar">
-                                                        <img src="~/assets/img/about/@*Sdes budet avatar dla appuser*@" alt="">
-                                                    </div>
-                                                    <div class="review-box">
-                                                        <div class="ratings">
-                                                            <span class="good"><i class="fa fa-star"></i></span>
-                                                            <span class="good"><i class="fa fa-star"></i></span>
-                                                            <span class="good"><i class="fa fa-star"></i></span>
-                                                            <span class="good"><i class="fa fa-star"></i></span>
-                                                            <span><i class="fa fa-star"></i></span>
-                                                        </div>
-                                                        <div class="post-author">
-                                                            <p><span>@*Sdes budet ima dla appuser*@ -</span> @*Sdes budet data pablisha dla appuser*@</p>
-                                                        </div>
-                                                        <p>Aliquam fringilla euismod risus ac bibendum. Sed sit amet sem varius ante feugiat lacinia. Nunc ipsum nulla, vulputate ut venenatis vitae, malesuada ut mi. Quisque iaculis, dui congue placerat pretium, augue erat accumsan lacus</p>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="col">
-                                                        <label class="col-form-label"><span class="text-danger">*</span> Your Name</label>
-                                                        <input type="text" class="form-control" required>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="col">
-                                                        <label class="col-form-label"><span class="text-danger">*</span> Your Email</label>
-                                                        <input type="email" class="form-control" required>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="col">
-                                                        <label class="col-form-label"><span class="text-danger">*</span> Your Review</label>
-                                                        <textarea class="form-control" required></textarea>
-                                                        <div class="help-block pt-10"><span class="text-danger">Note:</span> HTML is not translated!</div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="col">
-                                                        <label class="col-form-label"><span class="text-danger">*</span> Rating</label>
-                                                        &nbsp;&nbsp;&nbsp; Bad&nbsp;
-                                                        <input type="radio" value="1" name="rating">
-                                                        &nbsp;
-                                                        <input type="radio" value="2" name="rating">
-                                                        &nbsp;
-                                                        <input type="radio" value="3" name="rating">
-                                                        &nbsp;
-                                                        <input type="radio" value="4" name="rating">
-                                                        &nbsp;
-                                                        <input type="radio" value="5" name="rating" checked>
-                                                        &nbsp;Good
-                                                    </div>
-                                                </div>
-                                                <div class="buttons">
-                                                    <button class="sqr-btn" type="submit">Continue</button>
-                                                </div>
-                                            </form> <!-- end of review-form -->
+
+                                            <h5>@Model.Product.ReviewCount reviews for <span>@Model.Product.Name</span></h5>
+
+                                            <div style="height:600px; overflow-y:scroll">
+                                                @await Html.PartialAsync("_ProductDetailReviewsPartial", Model.ProductReviews)
+                                            </div>
+
+                                            <!--==================================================-->
+
+                                            @await Html.PartialAsync("_ProductDetailWriteReviewPartial", Model.ProductReviewVM)
+
                                         </div>
                                     </div>
                                 </div>
@@ -220,31 +171,32 @@
                                     <div class="product-carousel-4 mbn-50 slick-row-15 slick-arrow-style">
                                         @foreach (var item in Model.Products.Where(p => p.CategoryId == Model.Product.CategoryId && p.Id != Model.Product.Id).Take(20))
                                         {
-                            <div class="product-item mb-50">
-                                <div class="product-thumb">
-                                    <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id">
-                                        <img src="~/assets/img/product/@item.Image" alt="">
-                                    </a>
-                                </div>
-                                <div class="product-content">
-                                    <h5 class="product-name">
-                                        <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id">@item.Name</a>
-                                    </h5>
-                                    <div class="price-box">
-                                        <span class="price-regular">$@item.DiscountPrice</span>
-                                        <span class="price-old"><del>$@item.Price</del></span>
-                                        <a asp-controller="Compare" asp-action="AddToCompare" asp-route-id="@item.Id" class="addtocompare" data-toggle="tooltip" title="Compare"><i class="fa-solid fa-code-compare"></i>COMPARE</a>
-                                    </div>
-                                    <div class="product-action-link">
-                                        <a asp-controller="Wishlist" asp-action="AddToWishlist" asp-route-id="@item.Id" class="addtowishlist" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                        <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@item.Id" data-toggle="tooltip" title="Add To Cart" class="addtobasket"><i class="ion-bag"></i></a>
-                                        <a data-toggle="modal" data-target="#quick_view" asp-controller="Product" asp-action="DetailModal" asp-route-id="@item.Id" class="detailmodal">
-                                            <span data-toggle="tooltip"
-                                                  title="Quick View"><i class="ion-ios-eye-outline"></i></span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>}
+                                            <div class="product-item mb-50">
+                                                <div class="product-thumb">
+                                                    <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id">
+                                                        <img src="~/assets/img/product/@item.Image" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="product-content">
+                                                    <h5 class="product-name">
+                                                        <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id">@item.Name</a>
+                                                    </h5>
+                                                    <div class="price-box">
+                                                        <span class="price-regular">$@item.DiscountPrice</span>
+                                                        <span class="price-old"><del>$@item.Price</del></span>
+                                                        <a asp-controller="Compare" asp-action="AddToCompare" asp-route-id="@item.Id" class="addtocompare" data-toggle="tooltip" title="Compare"><i class="fa-solid fa-code-compare"></i></a>
+                                                    </div>
+                                                    <div class="product-action-link">
+                                                        <a asp-controller="Wishlist" asp-action="AddToWishlist" asp-route-id="@item.Id" class="addtowishlist" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                                        <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@item.Id" data-toggle="tooltip" title="Add To Cart" class="addtobasket"><i class="ion-bag"></i></a>
+                                                        <a data-toggle="modal" data-target="#quick_view" asp-controller="Product" asp-action="DetailModal" asp-route-id="@item.Id" class="detailmodal">
+                                                            <span data-toggle="tooltip"
+                                                                  title="Quick View"><i class="ion-ios-eye-outline"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
 
                                     </div>
                                 </div>

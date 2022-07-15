@@ -9,8 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 //v detail sdelat form, voprosi doljni idti v admin panel, ottuda nado umet otvechat, mojno skinut v partial 
-//koqda delayesh pagination, posle togo kak vibral kategoriyu, i perekluchayeshsa na vtoruyu stranicku, on pochemu to sbrasivayet 
-//kategorii i dayet zanovo vse, sdelat kak v product
 
 namespace Back_End_Project.Controllers
 {
@@ -21,16 +19,47 @@ namespace Back_End_Project.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(int sortbycount, int page = 1)
+        public async Task<IActionResult> Index(int? tagid, int? authorid, string searchvalue, int sortbycount, int? categoryId, int page = 1)
         {
-            IQueryable<Blog> blogs = _context.Blogs.AsQueryable();
+            IQueryable<Blog> blogs = _context.Blogs
+                .Include(b => b.BlogAuthor)
+                .Include(b => b.BlogCategory)
+                .Include(b => b.BlogComments);
 
             if (sortbycount <= 0)
             {
                 sortbycount = 6;
             }
 
-            ViewBag.Select = 6;
+            if (categoryId != null)
+            {
+                blogs = blogs
+                    .Where(p => p.BlogCategoryId == categoryId);
+            }
+
+            if (tagid != null)
+            {
+                blogs = blogs
+                    .Where(p => p.BlogTagId == tagid);
+            }
+
+            if (authorid != null)
+            {
+                blogs = blogs
+                    .Where(p => p.BlogAuthorId == authorid);
+            }
+
+            if (searchvalue != null)
+            {
+                blogs = _context.Blogs
+             .Where(b => b.BlogTitle.ToLower().Contains(searchvalue.ToLower()) ||
+             b.BlogAuthor.AuthorName.ToLower().Contains(searchvalue.ToLower()) ||
+             b.BlogCategory.Name.ToLower().Contains(searchvalue.ToLower()) ||
+             b.BlogTag.Name.ToLower().Contains(searchvalue.ToLower()) ||
+             b.UpperText.ToLower().Contains(searchvalue.ToLower()) ||
+             b.StrongText.ToLower().Contains(searchvalue.ToLower()) ||
+             b.BottomText.ToLower().Contains(searchvalue.ToLower()));
+            }
 
             BlogVM blogVM = new BlogVM
             {
@@ -40,6 +69,14 @@ namespace Back_End_Project.Controllers
                 BlogCategories = await _context.BlogCategories.ToListAsync(),
                 RecentBlogs = await _context.Blogs.Where(b => b.IsRecent).ToListAsync()
             };
+
+            ViewBag.SelectForBlogs = sortbycount;
+            ViewBag.CategoriesForBlogsPage = categoryId;
+            ViewBag.TagsForBlogsPage = tagid;
+            ViewBag.SearchForBlogsPage = searchvalue;
+            ViewBag.AuthorForBlogsPage = authorid;
+
+            //asp-route-tagid="@ViewBag.TagsForBlogsPage" asp-route-authorid="@ViewBag.AuthorForBlogsPage" asp-route-searchvalue="@ViewBag.SearchForBlogsPage" asp-route-categoryId="@ViewBag.CategoriesForBlogsPage" asp-route-sortbycount="@ViewBag.SelectForBlogs"
 
             return View(blogVM);
         }
@@ -81,135 +118,6 @@ namespace Back_End_Project.Controllers
                 .ToListAsync();
 
             return PartialView("_SearchBlogPartial", blogs);
-        }
-        public async Task<IActionResult> SortByCategory(int? id, int sortbycount, int page = 1)
-        {
-            if (sortbycount <= 0)
-            {
-                sortbycount = 6;
-            }
-
-            ViewBag.Sortby = sortbycount;
-
-            if (id == null)
-            {
-                return View("Index");
-            }
-            else
-            {
-                IQueryable<Blog> blogs = _context.Blogs
-                .Where(b => b.BlogCategoryId == id)
-                .AsQueryable();
-
-                BlogVM blogVM = new BlogVM
-                {
-                    Blogs = PaginationList<Blog>.Create(blogs, page, sortbycount),
-                    BlogTags = await _context.BlogTags.ToListAsync(),
-                    BlogAuthors = await _context.BlogAuthors.ToListAsync(),
-                    BlogCategories = await _context.BlogCategories.ToListAsync(),
-                    RecentBlogs = await _context.Blogs.Where(b => b.IsRecent).ToListAsync()
-                };
-
-                return View("Index", blogVM);
-            }
-        }
-        public async Task<IActionResult> SortByTag(int? id, int sortbycount, int page = 1)
-        {
-            if (sortbycount <= 0)
-            {
-                sortbycount = 6;
-            }
-
-            ViewBag.Sortby = sortbycount;
-
-            if (id == null)
-            {
-                return View("Index");
-            }
-            else
-            {
-                IQueryable<Blog> blogs = _context.Blogs
-                .Where(b => b.BlogTagId == id)
-                .AsQueryable();
-
-                BlogVM blogVM = new BlogVM
-                {
-                    Blogs = PaginationList<Blog>.Create(blogs, page, sortbycount),
-                    BlogTags = await _context.BlogTags.ToListAsync(),
-                    BlogAuthors = await _context.BlogAuthors.ToListAsync(),
-                    BlogCategories = await _context.BlogCategories.ToListAsync(),
-                    RecentBlogs = await _context.Blogs.Where(b => b.IsRecent).ToListAsync()
-                };
-
-                return View("Index", blogVM);
-            }
-        }
-        public async Task<IActionResult> SortByAuthor(int? id, int sortbycount, int page = 1)
-        {
-            if (sortbycount <= 0)
-            {
-                sortbycount = 6;
-            }
-
-            ViewBag.Sortby = sortbycount;
-
-            if (id == null)
-            {
-                return View("Index");
-            }
-            else
-            {
-                IQueryable<Blog> blogs = _context.Blogs
-                .Where(b => b.BlogAuthorId == id)
-                .AsQueryable();
-
-                BlogVM blogVM = new BlogVM
-                {
-                    Blogs = PaginationList<Blog>.Create(blogs, page, sortbycount),
-                    BlogTags = await _context.BlogTags.ToListAsync(),
-                    BlogAuthors = await _context.BlogAuthors.ToListAsync(),
-                    BlogCategories = await _context.BlogCategories.ToListAsync(),
-                    RecentBlogs = await _context.Blogs.Where(b => b.IsRecent).ToListAsync()
-                };
-
-                return View("Index", blogVM);
-            }
-        }
-        public async Task<IActionResult> SortBySearch(string sortbysearch, int sortbycount, int page = 1)
-        {
-            if (sortbycount <= 0)
-            {
-                sortbycount = 6;
-            }
-
-            ViewBag.Sortby = sortbycount;
-
-            if (sortbysearch == null)
-            {
-                return View("Index");
-            }
-
-            IQueryable<Blog> blogs = _context.Blogs
-            .Where(b => b.BlogTitle.ToLower().Contains(sortbysearch.ToLower()) ||
-            b.BlogAuthor.AuthorName.ToLower().Contains(sortbysearch.ToLower()) ||
-            b.BlogCategory.Name.ToLower().Contains(sortbysearch.ToLower()) ||
-            b.BlogTag.Name.ToLower().Contains(sortbysearch.ToLower()) ||
-            b.UpperText.ToLower().Contains(sortbysearch.ToLower()) ||
-            b.StrongText.ToLower().Contains(sortbysearch.ToLower()) ||
-            b.BottomText.ToLower().Contains(sortbysearch.ToLower()))
-            .Include(b => b.BlogAuthor)
-            .AsQueryable();
-
-            BlogVM blogVM = new BlogVM
-            {
-                Blogs = PaginationList<Blog>.Create(blogs, page, sortbycount),
-                BlogTags = await _context.BlogTags.ToListAsync(),
-                BlogAuthors = await _context.BlogAuthors.ToListAsync(),
-                BlogCategories = await _context.BlogCategories.ToListAsync(),
-                RecentBlogs = await _context.Blogs.Where(b => b.IsRecent).ToListAsync()
-            };
-
-            return View("Index", blogVM);
         }
     }
 }

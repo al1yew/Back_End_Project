@@ -45,6 +45,12 @@ namespace Back_End_Project.Models
         [StringLength(maximumLength: 2048)]
         public string SecondText { get; set; }
 
+        //public string ProductInfo1 { get; set; }
+        //public string ProductInfo2 { get; set; }
+        //public string ProductInfo3 { get; set; }
+        //public string ProductInfo4 { get; set; }
+        //public string ProductInfo5 { get; set; }
+        //cant add productInformaiton, cant understand how to pass 5 inputs without properties to List ProductInformation
 
 
         //for main home page
@@ -62,8 +68,9 @@ namespace Back_End_Project.Models
 
         //relations with product one to many
         public List<ProductImage> ProductImages { get; set; }
-        public IEnumerable<ProductInformation> ProductInformation { get; set; }
+        public List<ProductInformation> ProductInformation { get; set; }
         public IEnumerable<OrderItem> OrderItems { get; set; }
+        public List<ProductReview> ProductReviews { get; set; }
 
 
         //relations of product

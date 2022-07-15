@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,5 +29,13 @@ namespace Back_End_Project.ViewModels.AccountViewModels
         [Compare(nameof(NewPassword))]
         [DataType(DataType.Password)]
         public string ConfirmPasword { get; set; }
+
+        public string Image { get; set; }
+        public string AppUserId { get; set; }
+
+        //not mapped
+        [NotMapped]
+        public IFormFile Photo { get; set; }
+
     }
 }

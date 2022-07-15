@@ -79,6 +79,19 @@ $(document).ready(function () {
     })
 
 
+    //----------------------------------------------- Product Create view, adding product information inputs
+
+    $(document).on('click', '.addinputs', function (e) {
+        e.preventDefault();
+
+        fetch($(this).attr('href'))
+            .then(res => res.text())
+            .then(data => {
+                $('.inputsContainer').append(data)
+            })
+    })
+
+
     //----------------------------------------------- Product Update view, products productimages delete process
 
     $(document).on('click', '.deleteproductimage', function (e) {

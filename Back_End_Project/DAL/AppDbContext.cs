@@ -23,6 +23,7 @@ namespace Back_End_Project.DAL
         public DbSet<Category> Categories { get; set; }
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
+        public DbSet<ProductReview> ProductReviews { get; set; }
 
 
         //models for ORDER

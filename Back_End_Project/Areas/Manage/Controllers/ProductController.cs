@@ -17,7 +17,8 @@ namespace Back_End_Project.Areas.Manage.Controllers
 {
     [Authorize(Roles = "SuperAdmin, Admin")]
     [Area("Manage")]
-    //detail slider ne rabotayet
+    //product information table!!!!!! one to many mentigi basha dushmurem, bir producta 5 dene input value
+    //nece gonderim, hamsina property verim? mentiqsizdi axi
     public class ProductController : Controller
     {
         private readonly IWebHostEnvironment _env;

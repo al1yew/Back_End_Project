@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,6 +19,7 @@ namespace Back_End_Project.Models
 
         public bool IsAdmin { get; set; }
 
+        public string Image { get; set; }
 
         //crud
         public bool IsDeleted { get; set; }
@@ -30,5 +33,8 @@ namespace Back_End_Project.Models
         public IEnumerable<Order> Orders { get; set; }
         public List<Wishlist> Wishlists { get; set; }
 
+
+        //relations one to many
+        public List<ProductReview> ProductReviews { get; set; }
     }
 }

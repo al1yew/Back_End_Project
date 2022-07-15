@@ -1,8 +1,12 @@
 ﻿using Back_End_Project.DAL;
+using Back_End_Project.Extensions;
+using Back_End_Project.Helper;
 using Back_End_Project.Models;
 using Back_End_Project.ViewModels.AccountViewModels;
 using Back_End_Project.ViewModels.BasketViewModels;
+using Back_End_Project.ViewModels.WishlistViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+//Shekili olsun her userin
 //vezde proverat esli user is admin poslat ego nax
 //u kajdogo appuser doljni bit svoi payment details i adress1, adress2 itd, kotorie budut v Profile html v menu adresi i v menu Payment
 //on sam proverayet kto zaregan poetomu pofiq esli admin v logine, on vse ravno izza [authorize(roles = member)] 
@@ -26,16 +30,19 @@ namespace Back_End_Project.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _env;
 
         public AccountController(RoleManager<IdentityRole> roleManager,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            AppDbContext context)
+            AppDbContext context,
+            IWebHostEnvironment env)
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _env = env;
         }
 
         [HttpGet]
@@ -57,7 +64,6 @@ namespace Back_End_Project.Controllers
         public async Task<IActionResult> Register(RegisterVM registerVM)
         {
             if (!ModelState.IsValid) return View();
-            //var area = ControllerContext.RouteData.DataTokens["area"];
 
             AppUser appUser = new AppUser
             {
@@ -157,6 +163,72 @@ namespace Back_End_Project.Controllers
                 }
             }
 
+            string wishlistcookie = HttpContext.Request.Cookies["wishlist"];
+
+            if (!string.IsNullOrWhiteSpace(wishlistcookie))
+            {
+                List<WishlistVM> WishlistVMs = JsonConvert.DeserializeObject<List<WishlistVM>>(wishlistcookie);
+
+                List<Wishlist> wishlists = new List<Wishlist>();
+
+                foreach (WishlistVM WishlistVM in WishlistVMs)
+                {
+                    if (appUser.Wishlists != null && appUser.Wishlists.Count() > 0)
+                    {
+                        Wishlist existedWishlist = appUser.Wishlists.FirstOrDefault(b => b.ProductId != WishlistVM.ProductId);
+
+                        if (existedWishlist == null)
+                        {
+                            Wishlist wishlist = new Wishlist
+                            {
+                                AppUserId = appUser.Id,
+                                ProductId = WishlistVM.ProductId
+                            };
+
+                            wishlists.Add(wishlist);
+                        }
+                    }
+                    else
+                    {
+                        Wishlist wishlist = new Wishlist
+                        {
+                            AppUserId = appUser.Id,
+                            ProductId = WishlistVM.ProductId
+                        };
+
+                        wishlists.Add(wishlist);
+                    }
+                }
+
+                wishlistcookie = JsonConvert.SerializeObject(WishlistVMs);
+
+                HttpContext.Response.Cookies.Append("wishlist", wishlistcookie);
+
+                await _context.Wishlists.AddRangeAsync(wishlists);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                if (appUser.Wishlists != null && appUser.Wishlists.Count() > 0)
+                {
+                    List<WishlistVM> WishlistVMs = new List<WishlistVM>();
+
+                    foreach (Wishlist wishlist in appUser.Wishlists)
+                    {
+                        WishlistVM WishlistVM = new WishlistVM
+                        {
+                            ProductId = wishlist.ProductId,
+                        };
+
+                        WishlistVMs.Add(WishlistVM);
+                    }
+
+                    wishlistcookie = JsonConvert.SerializeObject(WishlistVMs);
+
+                    HttpContext.Response.Cookies.Append("wishlist", wishlistcookie);
+                }
+            }
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -164,8 +236,8 @@ namespace Back_End_Project.Controllers
         public async Task<IActionResult> Login(LoginVM loginVM)
         {
             if (!ModelState.IsValid) return View();
-
-            AppUser appUser = await _userManager.Users.Include(u => u.Baskets).FirstOrDefaultAsync(u => u.NormalizedEmail == loginVM.Email.Trim().ToUpperInvariant() && !u.IsAdmin && !u.IsDeleted);
+            //hem emailnan hemde username ile daxil olsun
+            AppUser appUser = await _userManager.Users.Include(u => u.Baskets).FirstOrDefaultAsync(u => (u.NormalizedEmail == loginVM.Email.Trim().ToUpperInvariant() || u.NormalizedUserName == loginVM.Email.Trim().ToUpperInvariant()) && !u.IsAdmin && !u.IsDeleted);
 
             if (appUser == null)
             {
@@ -288,6 +360,72 @@ namespace Back_End_Project.Controllers
                 }
             }
 
+            string wishlistcookie = HttpContext.Request.Cookies["wishlist"];
+
+            if (!string.IsNullOrWhiteSpace(wishlistcookie))
+            {
+                List<WishlistVM> WishlistVMs = JsonConvert.DeserializeObject<List<WishlistVM>>(wishlistcookie);
+
+                List<Wishlist> wishlists = new List<Wishlist>();
+
+                foreach (WishlistVM WishlistVM in WishlistVMs)
+                {
+                    if (appUser.Wishlists != null && appUser.Wishlists.Count() > 0)
+                    {
+                        Wishlist existedWishlist = appUser.Wishlists.FirstOrDefault(b => b.ProductId != WishlistVM.ProductId);
+
+                        if (existedWishlist == null)
+                        {
+                            Wishlist wishlist = new Wishlist
+                            {
+                                AppUserId = appUser.Id,
+                                ProductId = WishlistVM.ProductId
+                            };
+
+                            wishlists.Add(wishlist);
+                        }
+                    }
+                    else
+                    {
+                        Wishlist wishlist = new Wishlist
+                        {
+                            AppUserId = appUser.Id,
+                            ProductId = WishlistVM.ProductId
+                        };
+
+                        wishlists.Add(wishlist);
+                    }
+                }
+
+                wishlistcookie = JsonConvert.SerializeObject(WishlistVMs);
+
+                HttpContext.Response.Cookies.Append("wishlist", wishlistcookie);
+
+                await _context.Wishlists.AddRangeAsync(wishlists);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                if (appUser.Wishlists != null && appUser.Wishlists.Count() > 0)
+                {
+                    List<WishlistVM> WishlistVMs = new List<WishlistVM>();
+
+                    foreach (Wishlist wishlist in appUser.Wishlists)
+                    {
+                        WishlistVM WishlistVM = new WishlistVM
+                        {
+                            ProductId = wishlist.ProductId
+                        };
+
+                        WishlistVMs.Add(WishlistVM);
+                    }
+
+                    wishlistcookie = JsonConvert.SerializeObject(WishlistVMs);
+
+                    HttpContext.Response.Cookies.Append("wishlist", wishlistcookie);
+                }
+            }
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -312,7 +450,9 @@ namespace Back_End_Project.Controllers
                 Name = appUser.Name,
                 SurName = appUser.SurName,
                 Email = appUser.Email,
-                UserName = appUser.UserName
+                UserName = appUser.UserName,
+                Image = appUser.Image,
+                AppUserId = appUser.Id
             };
 
             MemberVM memberVM = new MemberVM
@@ -331,6 +471,39 @@ namespace Back_End_Project.Controllers
             if (!ModelState.IsValid) return View("Profile", profileVM);
 
             AppUser dbAppUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            if (profileVM.Photo != null)
+            {
+                if (!profileVM.Photo.CheckContentType("image/jpeg")
+                    && !profileVM.Photo.CheckContentType("image/jpg")
+                    && !profileVM.Photo.CheckContentType("image/png")
+                    && !profileVM.Photo.CheckContentType("image/gif"))
+                {
+                    ModelState.AddModelError("Photo", "Image must be Image format");
+                    return View();
+                }
+
+                if (profileVM.Photo.CheckFileLength(15000))
+                {
+                    ModelState.AddModelError("Photo", "Image must be Image format");
+                    return View();
+                }
+
+                profileVM.Image = await profileVM.Photo.CreateAsync(_env, "assets", "img", "users");
+
+                dbAppUser.Image = profileVM.Image;
+
+                IdentityResult identityResult = await _userManager.UpdateAsync(dbAppUser);
+
+                if (!identityResult.Succeeded)
+                {
+                    ModelState.AddModelError("", "Upload image in right way!");
+
+                    return View("Profile", profileVM);
+                }
+
+                TempData["success"] = "Account is updated!";
+            }
 
             if (dbAppUser.NormalizedUserName != profileVM.UserName.Trim().ToUpperInvariant() ||
                 dbAppUser.Name.ToUpperInvariant() != profileVM.Name.Trim().ToUpperInvariant() ||
@@ -383,6 +556,23 @@ namespace Back_End_Project.Controllers
             return RedirectToAction("Profile");
         }
 
+
+        public async Task<IActionResult> DeleteProfileImage(string id)
+        {
+            if (id == null) return BadRequest();
+
+            AppUser appUser= await _userManager.Users.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (appUser == null) return NotFound();
+
+            FileHelper.DeleteFile(_env, appUser.Image, "assets", "img", "users");
+
+            appUser.Image = null;
+
+            IdentityResult identityResult = await _userManager.UpdateAsync(appUser);
+
+            return RedirectToAction("Profile");
+        }
 
 
 

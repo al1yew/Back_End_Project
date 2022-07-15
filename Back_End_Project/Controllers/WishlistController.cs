@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-//problemi s tempdata smotri vnizu v komentax
+
 namespace Back_End_Project.Controllers
 {
     public class WishlistController : Controller
@@ -62,12 +62,7 @@ namespace Back_End_Project.Controllers
                 wishlistVMs = new List<WishlistVM>();
             }
 
-            if (wishlistVMs.Exists(w => w.ProductId == id))
-            {
-                TempData["info"] = "This product is already in Wishlist!";
-                //ishleyir amma wishlist sehifesinde
-            }
-            else
+            if (!wishlistVMs.Exists(w => w.ProductId == id))
             {
                 WishlistVM wishlistVM = new WishlistVM
                 {
@@ -112,9 +107,6 @@ namespace Back_End_Project.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            TempData["info"] = "Product is added in Wishlist!";
-            //ishleyir amma wishlist sehifesinde
-
             wishlist = JsonConvert.SerializeObject(wishlistVMs);
 
             HttpContext.Response.Cookies.Append("wishlist", wishlist);
@@ -157,9 +149,6 @@ namespace Back_End_Project.Controllers
 
             wishlistVMs.Remove(wishlistVM);
 
-            TempData["info"] = "Product is deleted from Wishlist!";
-            //ishlemir
-
             wishlist = JsonConvert.SerializeObject(wishlistVMs);
 
             Response.Cookies.Append("wishlist", wishlist);
@@ -173,7 +162,6 @@ namespace Back_End_Project.Controllers
             {
                 AppUser appUser = await _userManager.Users.Include(u => u.Wishlists).FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
             }
-            //prover eto
 
             foreach (WishlistVM item in wishlistVMs)
             {

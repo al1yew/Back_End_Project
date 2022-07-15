@@ -17,16 +17,20 @@
                     </div>
                     <div class="row mb-2 mt-2">
                         <div class="w-100 order-1 order-md-2">
-                            <div class="w-100 top-bar-right d-flex justify-content-end" style="padding-right: 15px;">
+                            <form asp-controller="Blog" asp-action="Index" asp-route-tagid="@ViewBag.TagsForBlogsPage" asp-route-authorid="@ViewBag.AuthorForBlogsPage" asp-route-searchvalue="@ViewBag.SearchForBlogsPage" asp-route-categoryId="@ViewBag.CategoriesForBlogsPage" asp-route-sortbycount="@ViewBag.SelectForBlogs" class="w-100 top-bar-right d-flex justify-content-end" style="padding-right: 15px;">
                                 <div class="product-short">
                                     <p>Show: </p>
                                     <select class="sortbycountproduct" name="sortbycount">
-                                        <option selected="@(ViewBag.Select == 5 ? "true" : "false")" value="6">6</option>
-                                        <option selected="@(ViewBag.Select == 10 ? "true" : "false")" value="12">12</option>
-                                        <option selected="@(ViewBag.Select == 15 ? "true" : "false")" value="18">18</option>
+                                        <option selected value="6">6</option>
+                                        <option value="12">12</option>
+                                        <option value="18">18</option>
+                                        <option value="24">24</option>
                                     </select>
                                 </div>
-                            </div>
+                                <div class="col-lg-2">
+                                    <button class="btn btn-primary" type="submit">Filter</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -49,7 +53,7 @@
                         <img src="~/assets/img/blog/@item.AuthorImage" />
                     </div>
                     <div class="blog-author-title text-center">
-                        <h5><a asp-controller="Blog" asp-action="SortByAuthor" asp-route-id="@item.Id">@item.AuthorName</a></h5>
+                        <h5><a asp-controller="Blog" asp-action="Index" asp-route-id="@item.Id" asp-route-tagid="@ViewBag.TagsForBlogsPage" asp-route-authorid="@item.Id" asp-route-searchvalue="@ViewBag.SearchForBlogsPage" asp-route-categoryId="@ViewBag.CategoriesForBlogsPage" asp-route-sortbycount="@ViewBag.SelectForBlogs">@item.AuthorName</a></h5>
                         <span>@item.AuthorPosition</span>
                         <div class="blog-widget-icon">
                             <a href="@(item.LinkedInUrl)"><i class="fa fa-linkedin"></i></a>
@@ -60,7 +64,6 @@
                     </div>
                 </div>}
                         </div>
-                        <p class="text text-danger">Slide for Blogger</p>
                         <!-- widget item end -->
                         <!-- widget item start -->
 
@@ -68,7 +71,7 @@
                             <h4 class="blog-widget-title">Search</h4>
                             <form class="widget-search-form">
                                 <input data-url="http://localhost:15866/Blog/BlogSearch" placeholder="Search keyword" type="text" class="search-field blog-search">
-                                <a asp-controller="Blog" asp-action="SortBySearch" data-url="http://localhost:15866/Blog/SortBySearch" class="search-button-blog search-btn"><i class="fa fa-search"></i></a>
+                                <a asp-controller="Blog" asp-action="Index" asp-route-tagid="@ViewBag.TagsForBlogsPage" asp-route-authorid="@ViewBag.AuthorForBlogsPage" asp-route-searchvalue="@ViewBag.SearchForBlogsPage" asp-route-categoryId="@ViewBag.CategoriesForBlogsPage" asp-route-sortbycount="@ViewBag.SelectForBlogs" data-url="http://localhost:15866/Blog/Index" class="search-button-blog search-btn"><i class="fa fa-search"></i></a>
                             </form>
                             <div class="search-body-blog d-none">
                                 <ul class="list-group-blog" style="height: 300px;position:absolute;width: 100%; right:0; z-index:500;">
@@ -81,26 +84,31 @@
                         <div class="blog-widget">
                             <h4 class="blog-widget-title">Recent Posts</h4>
                             <ul class="recent-posts-inner">
-                                @foreach (Blog blog1 in Model.RecentBlogs.Take(5))
+                                @foreach (Blog blog1 in Model.RecentBlogs.Take(6))
                                 {
-                    <li class="recent-posts">
-                        <div class="recent-posts-image">
-                            <a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog1.Id"><img src="~/assets/img/blog/@blog1.BlogImage"></a>
-                        </div>
-                        <div class="recent-posts-body">
-                            <span class="recent-posts-meta">@blog1.PublishDate</span>
-                            <h6 class="recent-posts-title">
-                                <a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog1.Id">
-                                    @if (blog1.BlogTitle.ToString().Length > 15)
-                                    {@(blog1.BlogTitle.ToString().Substring(0, 15) + "...") }
-                                    else
-                                    {
-                    @blog1.BlogTitle}
-                                </a>
-                            </h6>
-                        </div>
-                    </li>
-}
+                                    <li class="recent-posts">
+                                        <div class="recent-posts-image">
+                                            <a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog1.Id"><img src="~/assets/img/blog/@blog1.BlogImage"></a>
+                                        </div>
+                                        <div class="recent-posts-body">
+                                            <span class="recent-posts-meta">@blog1.PublishDate</span>
+                                            <h6 class="recent-posts-title">
+                                                <a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog1.Id">
+
+                                                    @if (blog1.BlogTitle.ToString().Length > 15)
+                                                    {
+                                                        @(blog1.BlogTitle.ToString().Substring(0, 15) + "...") 
+                                                    }
+                                                    else
+                                                    {
+                                                        @blog1.BlogTitle
+                                                    }
+
+                                                </a>
+                                            </h6>
+                                        </div>
+                                    </li>
+                                    }
                             </ul>
                         </div>
                         <!-- widget item end -->
@@ -110,8 +118,8 @@
                             <ul class="blog-categories">
                                 @foreach (var item in Model.BlogCategories)
                                 {
-                    <li><a asp-controller="Blog" asp-action="SortByCategory" asp-route-id="@item.Id">@item.Name</a><span>(say)</span></li>
-}
+                                    <li><a asp-controller="Blog" asp-action="Index" asp-route-id="@item.Id" asp-route-tagid="@ViewBag.TagsForBlogsPage" asp-route-authorid="@ViewBag.AuthorForBlogsPage" asp-route-searchvalue="@ViewBag.SearchForBlogsPage" asp-route-categoryId="@item.Id" asp-route-sortbycount="@ViewBag.SelectForBlogs">@item.Name</a><span>(@item.Blogs.Where(p => p.BlogCategoryId == item.Id).ToList().Count())</span></li>
+                                }
                             </ul>
                         </div>
                         <!-- widget item end -->
@@ -121,14 +129,14 @@
                             <div class="blog-tag">
                                 @foreach (var item in Model.BlogTags)
                                 {
-                    <a asp-controller="Blog" asp-action="SortByTag" asp-route-id="@item.Id">@item.Name</a>}
+                    <a asp-controller="Blog" asp-action="Index" asp-route-id="@item.Id" asp-route-tagid="@item.Id" asp-route-authorid="@ViewBag.AuthorForBlogsPage" asp-route-searchvalue="@ViewBag.SearchForBlogsPage" asp-route-categoryId="@ViewBag.CategoriesForBlogsPage" asp-route-sortbycount="@ViewBag.SelectForBlogs">@item.Name</a>}
                             </div>
                         </div>
                         <!-- widget item end -->
                     </div>
                 </div>
                 <div class="col-lg-9 order-1 order-lg-2">
-                    
+
 
                     <div class="row blog-col-lg-9">
                         @await Html.PartialAsync("_BlogIndexPartial", Model.Blogs)
@@ -137,20 +145,17 @@
                     <div class="paginatoin-area text-center">
                         <ul class="pagination-box">
                             @if (Model.Blogs.HasPrev)
-                                {
-                                    <li class="page-item"><a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="1">@("<<")</a></li>
+                            {
+                <li class="page-item"><a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-tagid="@ViewBag.TagsForBlogsPage" asp-route-authorid="@ViewBag.AuthorForBlogsPage" asp-route-searchvalue="@ViewBag.SearchForBlogsPage" asp-route-categoryId="@ViewBag.CategoriesForBlogsPage" asp-route-sortbycount="@ViewBag.SelectForBlogs" asp-route-status="@ViewBag.Status" asp-route-page="1">@("<<")</a></li>
 
-                                    <li class="page-item"><a class="page-link"  asp-controller="Blog" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Blogs.Page-1)">@("<")</a></li>
-                                }
-                                @for (int i = 1; i <= Model.Blogs.PageCount; i++)
-                                {
-                                    <li class="page-item @(Model.Blogs.Page == i ? "active":"")"><a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@i">@i</a></li>
-                                }
-                                @if (Model.Blogs.HasNext)
-                                {
-                                    <li class="page-item"><a class="page-link"  asp-controller="Blog" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Blogs.Page+1)">@(">")</a></li>
-                                    <li class="page-item"><a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-page="@Model.Blogs.PageCount">@(">>")</a></li>
-                                }
+                                <li class="page-item"><a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-tagid="@ViewBag.TagsForBlogsPage" asp-route-authorid="@ViewBag.AuthorForBlogsPage" asp-route-searchvalue="@ViewBag.SearchForBlogsPage" asp-route-categoryId="@ViewBag.CategoriesForBlogsPage" asp-route-sortbycount="@ViewBag.SelectForBlogs" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Blogs.Page-1)">@("<")</a></li>}
+                            @for (int i = 1; i <= Model.Blogs.PageCount; i++)
+                            {
+                <li class="page-item @(Model.Blogs.Page == i ? "active":"")"><a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-tagid="@ViewBag.TagsForBlogsPage" asp-route-authorid="@ViewBag.AuthorForBlogsPage" asp-route-searchvalue="@ViewBag.SearchForBlogsPage" asp-route-categoryId="@ViewBag.CategoriesForBlogsPage" asp-route-sortbycount="@ViewBag.SelectForBlogs" asp-route-status="@ViewBag.Status" asp-route-page="@i">@i</a></li>}
+                            @if (Model.Blogs.HasNext)
+                            {
+                <li class="page-item"><a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-tagid="@ViewBag.TagsForBlogsPage" asp-route-authorid="@ViewBag.AuthorForBlogsPage" asp-route-searchvalue="@ViewBag.SearchForBlogsPage" asp-route-categoryId="@ViewBag.CategoriesForBlogsPage" asp-route-sortbycount="@ViewBag.SelectForBlogs" asp-route-status="@ViewBag.Status" asp-route-page="@(Model.Blogs.Page+1)">@(">")</a></li>
+                                <li class="page-item"><a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-tagid="@ViewBag.TagsForBlogsPage" asp-route-authorid="@ViewBag.AuthorForBlogsPage" asp-route-searchvalue="@ViewBag.SearchForBlogsPage" asp-route-categoryId="@ViewBag.CategoriesForBlogsPage" asp-route-sortbycount="@ViewBag.SelectForBlogs" asp-route-status="@ViewBag.Status" asp-route-page="@Model.Blogs.PageCount">@(">>")</a></li>}
                         </ul>
                     </div>
                     <!-- end pagination area -->

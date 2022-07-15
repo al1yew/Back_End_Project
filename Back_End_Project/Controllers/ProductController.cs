@@ -2,37 +2,43 @@
 using Back_End_Project.Models;
 using Back_End_Project.ViewModels;
 using Back_End_Project.ViewModels.ProductViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Threading.Tasks;
 
-//v indekse nujno popravit (say), sdelat sliderrange, on doljen otprravlat v metod po buttonu, ix mojno vzat v js
+//delat sliderrange, on doljen otprravlat v metod po buttonu, ix mojno vzat v js
 //i fetchanut ix kak dva rezultata, maxprice i minprice, i ya doljen sortirovat ix s pomoshyu etix dvux cen
+//eto sdelano v detail page s pomoshyu rating 
 
 //detail page xochu shto b s inputa value mojno bilo vpisivat rukoy
 //v header defaulte v klasse basketelementscount nado vpisat kolvo productov v baskete
 //product detail stroka 67 s viewbagami, ix iskat v basketcontrollere
 
-//sortby search v custom js ya nemnogo zamenil, v footere popravil brands i categories, dal im asp-route
+//detail page related products modal ishlemir
 
 namespace Back_End_Project.Controllers
 {
     public class ProductController : Controller
     {
+        private readonly UserManager<AppUser> _userManager;
         private readonly AppDbContext _context;
-        public ProductController(AppDbContext context)
+        public ProductController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index(int? sortby, int? categoryId, int? brandId, string searchValue, int? colorId, int? sizeId, int sortbycount, int page = 1)
         {
             IQueryable<Product> products = _context.Products
             .Include(p => p.Category)
-            .Include(p=> p.Brand)
+            .Include(p => p.Brand)
             .Include(p => p.ProductToColors).ThenInclude(p => p.Color)
             .Include(p => p.ProductToSizes).ThenInclude(p => p.Size);
 
@@ -103,7 +109,7 @@ namespace Back_End_Project.Controllers
                 Sizes = await _context.Sizes.Include(c => c.ProductToSizes).ThenInclude(pc => pc.Product).ToListAsync(),
                 Colors = await _context.Colors.Include(c => c.ProductToColors).ThenInclude(pc => pc.Product).ToListAsync(),
                 Categories = await _context.Categories.Include(c => c.Products).ToListAsync(),
-                Brands = await _context.Brands.Include(b=>b.Products).ToListAsync()
+                Brands = await _context.Brands.Include(b => b.Products).ToListAsync()
             };
 
             ViewBag.CategoriesForProductsPage = categoryId;
@@ -119,9 +125,14 @@ namespace Back_End_Project.Controllers
             return View(productVM);
         }
 
+        //[Authorize(Roles = "Member")]
         public async Task<IActionResult> Detail(int? id)
         {
             if (id == null) return BadRequest();
+
+            AppUser appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name && !u.IsAdmin);
+
+            if (appUser == null) return RedirectToAction("LoginRegister", "Account");
 
             Product product = await _context.Products
                 .Include(p => p.ProductToColors).ThenInclude(p => p.Color)
@@ -132,13 +143,24 @@ namespace Back_End_Project.Controllers
                 .Include(p => p.ProductInformation)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
+            ProductReviewVM productReviewVM = new ProductReviewVM
+            {
+                Name = appUser.Name,
+                Email = appUser.Email,
+                AppUserId = appUser.Id
+            };
+
             ProductDetailVM productDetailVM = new ProductDetailVM
             {
                 Product = product,
-                Products = await _context.Products.ToListAsync()
+                Products = await _context.Products.ToListAsync(),
+                ProductReviewVM = productReviewVM,
+                ProductReviews = await _context.ProductReviews.Where(pr => pr.ProductId == id).ToListAsync()
             };
 
             if (product == null) return NotFound();
+
+            ViewBag.ProductId = id;
 
             return View(productDetailVM);
         }
@@ -173,6 +195,44 @@ namespace Back_End_Project.Controllers
                 .ToListAsync();
 
             return PartialView("_SearchPartial", products);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Member")]
+        public async Task<IActionResult> AddProductReview(ProductReviewVM productReviewVM, int id)
+        {
+            if (!ModelState.IsValid) return Redirect($"http://localhost:15866/Product/Detail/{id}");
+
+            if (id == null && id <= 0) return NotFound();
+
+            if (await _context.ProductReviews.Where(x=>x.ProductId == productReviewVM.ProductId).AnyAsync(pr => pr.Email.Trim().ToLower() == productReviewVM.Email.Trim().ToLower()))
+            {
+                ModelState.AddModelError("", "You have already placed your review!");
+                return Redirect($"http://localhost:15866/Product/Detail/{id}");
+            }
+
+            ProductReview productReview = new ProductReview
+            {
+                CreatedAt = DateTime.UtcNow.AddHours(4),
+                Email = productReviewVM.Email,
+                Name = productReviewVM.Name,
+                Rating = productReviewVM.Rating,
+                ReviewText = productReviewVM.ReviewText,
+                ProductId = id,
+                AppUserId = productReviewVM.AppUserId,
+            };
+
+            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+            product.ReviewCount++;
+
+            //await _context.Products.AddAsync(product);
+            await _context.ProductReviews.AddAsync(productReview);
+            await _context.SaveChangesAsync();
+
+            TempData["success"] = "Thanks for review!";
+
+            return Redirect($"http://localhost:15866/Product/Detail/{id}");
         }
     }
 }

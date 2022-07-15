@@ -3,7 +3,31 @@
 <h3>Account Details</h3>
 <div class="account-details-form">
     <div asp-validation-summary="ModelOnly"></div>
-    <form asp-controller="Account" asp-action="Update">
+    <form enctype="multipart/form-data" asp-controller="Account" asp-action="Update" class="w-100">
+
+        <div class="float-right profileimagediv" style="width: 100px; height: 100px;">
+            @if (Model.Image != null)
+            {
+                <a asp-controller="Account" asp-action="DeleteProfileImage" asp-route-id="@Model.AppUserId" class="deleteprofileimage">X</a>
+
+                <label asp-for="Photo" class="updateprofileimage">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </label>
+
+                <input style="display: none;" asp-for="Photo" accept="image/jpeg" />
+                <span class="text text-danger" asp-validation-for="Photo">  </span>
+                <img src="~/assets/img/users/@Model.Image" style=" width: 100px; height: 100px;" class="profileimage" />
+            }
+            else
+            {
+                <label asp-for="Photo" class="updateprofileimage">
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                </label>
+
+                <input style="display: none;" asp-for="Photo" accept="image/jpeg" />
+                <span class="text text-danger" asp-validation-for="Photo">  </span>
+            }
+        </div>
         <div class="row">
             <div class="col-lg-6">
                 <div class="single-input-item">

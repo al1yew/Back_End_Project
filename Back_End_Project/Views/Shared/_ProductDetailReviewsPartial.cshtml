@@ -1,0 +1,27 @@
+﻿@model List<ProductReview>
+
+
+@foreach (var item in Model)
+{
+    <div class="total-reviews">
+        <div class="rev-avatar">
+            <img src="~/assets/img/about/@*Sdes budet avatar dla appuser*@" alt="">
+        </div>
+        <div class="review-box">
+            <div class="ratings">
+                @for (int i = 0; i < item.Rating; i++)
+                {
+                    <span style="color:yellow" class="good"><i class="fa fa-star"></i></span>
+                }
+                @for (int i = 0; i < (5 - item.Rating); i++)
+                {
+                    <span><i style="color: grey" class="fa fa-star"></i></span>
+                }
+            </div>
+            <div class="post-author">
+                <p><span>@item.Name -</span> @item.CreatedAt</p>
+            </div>
+            <p>@item.ReviewText</p>
+        </div>
+    </div>
+}
