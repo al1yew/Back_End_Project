@@ -1,9 +1,9 @@
 ﻿@model PaginationList<Order>
-@{
-    int no = Model.ItemsCount * (Model.Page - 1);
-}
+@{ int no = Model.ItemsCount * (Model.Page - 1);
+    int itemNo = 0;
+    }
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped" style="border-collapse:collapse;">
     <thead>
         <tr>
             <th>No</th>
@@ -20,17 +20,49 @@
         {
             no++;
 
-        <tr>
-            <td>@no</td>
-            <td>@order.Name @order.SurName</td>
-            <td>@order.OrderItems.Sum(oi => oi.Count)</td>
-            <td>@order.OrderStatus</td>
-            <td>@order.CreatedAt?.ToString("dd-MM-yyyy")</td>
-            <td>@order.TotalPrice</td>
-            <td>
-                <a class="btn btn-warning" asp-area="manage" asp-controller="order" asp-action="update" asp-route-id="@order.Id">Update</a>
-            </td>
-        </tr>
-        }
+            <tr data-toggle="collapse" data-target="#demo@(order.Id)" class="accordion-toggle">
+                <td>@no</td>
+                <td>@order.Name @order.SurName</td>
+                <td>@order.OrderItems.Sum(oi => oi.Count)</td>
+                <td>@order.OrderStatus</td>
+                <td>@order.CreatedAt?.ToString("dd-MM-yyyy")</td>
+                <td>@order.TotalPrice</td>
+                <td>
+                    <a class="btn btn-warning" asp-area="manage" asp-controller="order" asp-action="update" asp-route-id="@order.Id">Update</a>
+                </td>
+            </tr>
+
+
+                <tr>
+                    <td colspan="6" class="hiddenRow">
+                        <div class="accordian-body collapse" id="demo@(order.Id)">
+                            <table class="table table-condensed" style="border-collapse:collapse;">
+                                <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Product Name</th>
+                                        <th>Product Price</th>
+                                        <th>Product Count</th>
+                                        <th>Product totalPrice</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (OrderItem orderItem in order.OrderItems)
+                                    {
+                                        itemNo++;
+                                        <tr>
+                                            <td>@itemNo</td>
+                                            <td>@orderItem.Product.Name</td>
+                                            <td>@orderItem.Price</td>
+                                            <td>@orderItem.Count</td>
+                                            <td>@orderItem.TotalPrice</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                }
     </tbody>
 </table>

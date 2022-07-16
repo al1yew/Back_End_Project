@@ -1,0 +1,65 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "Update";
+    int no = 0;
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-10 ">
+        <div class="card" >
+            <div class="card-body">
+                <h5 class="card-title">FUllName @Model.Name @Model.SurName</h5>
+                <p class="card-text">@Model.OrderStatus</p>
+                <p class="card-text">@Model.TotalPrice</p>
+                <p class="card-text">@Model.Address1</p>
+                <p class="card-text">@Model.Address2</p>
+                <p class="card-text">@Model.CompanyName</p>
+                <p class="card-text">@Model.Country</p>
+                <p class="card-text">@Model.CreatedAt?.ToString("dd-MM-yyyy")</p>
+            </div>
+            <div>
+                <table class="table table-bordered table-active table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Product Name</th>
+                            <th>Product Price</th>
+                            <th>Product Count</th>
+                            <th>Product TotalPrice</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (OrderItem orderItem in Model.OrderItems)
+                        {
+                            no++;
+                        <tr>
+                            <td>@no</td>
+                            <td>@orderItem.Product.Name</td>
+                            <td>@orderItem.Price</td>
+                            <td>@orderItem.Count</td>
+                            <td>@orderItem.TotalPrice</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-10">
+        <form method="post" asp-area="manage" asp-controller="order" asp-action="update">
+            <div class="mb-3">
+                <input name="id" type="hidden" value="@Model.Id" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="orderstatus">Order Status</label>
+                <select name="orderstatus" id="orderstatus" class="form-control" asp-items="new SelectList(Enum.GetValues(typeof(OrderStatus)), Model.OrderStatus)">
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Comment">Comment</label>
+                <textarea name="Comment" id="Comment" class="form-control" rows="3">@Model.Comment</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>

@@ -1,6 +1,14 @@
 ﻿
 $(document).ready(function () {
 
+    //----------------------------------------------- Aside menu toggles
+
+    $("button").click(function () {
+        $("p").toggle(1000);
+    });
+
+
+
     //----------------------------------------------- Delete element
 
     $(document).on('click', '.deleteBtn', function (e) {
@@ -54,7 +62,7 @@ $(document).ready(function () {
                 fetch(url)
                     .then(res => {
                         if (res.status == 400) {
-                            
+
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
@@ -165,6 +173,44 @@ $(document).ready(function () {
                 $('.settingContainer').html(data)
             })
     })
+
+
+    //----------------------------------------------- user update view,  photo Deleting
+
+    $(document).on("click", ".deleteprofileimage", function (e) {
+        e.preventDefault();
+
+        let url = $(this).attr('href');
+
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $(".profileimagediv").html(data);
+            })
+    })
+
+
+    //----------------------------------------------- Account Orders toggle table
+
+    $(document).on('show.bs.collapse', '.accordian-body', function () {
+        $(this).closest("table")
+            .find(".collapse.in")
+            .not(this)
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //----------------------------------------------- Toastr
 

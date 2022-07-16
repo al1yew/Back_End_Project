@@ -1,0 +1,32 @@
+﻿
+
+.profileimagediv {
+    position: relative;
+    border: 1px solid grey;
+}
+
+.deleteprofileimage {
+    position: absolute;
+    top: -12px;
+    right: -10px;
+    color: red;
+    padding: 1px 5px;
+    font-size: 10px;
+    border: 0.5px solid red;
+    cursor: pointer;
+    background-color: beige;
+    border-radius: 100%
+}
+
+.updateprofileimage {
+    position: absolute;
+    top: -12px;
+    left: -10px;
+    background-color: beige;
+    border: 0.5px solid blue;
+    color: blue;
+    font-size: 10px;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 100%
+}

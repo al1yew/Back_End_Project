@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-//smotri komenti vnizu problema s temp data i s cvetami produktov
 namespace Back_End_Project.Controllers
 {
     public class CompareController : Controller

@@ -12,6 +12,7 @@ namespace Back_End_Project.Areas.Manage.ViewModels.AccountViewModels
         [StringLength(255)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
         [Required]
         [StringLength(255)]
         [Compare(nameof(Password))]

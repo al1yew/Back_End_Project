@@ -1,27 +1,27 @@
 ﻿using Back_End_Project.DAL;
 using Back_End_Project.Models;
 using Back_End_Project.ViewModels;
+using Back_End_Project.ViewModels.BasketViewModels;
 using Back_End_Project.ViewModels.ProductViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 using System.Threading.Tasks;
-//color id size id yerine tag id elemek zor olardi
 
 //sdelat sliderrange, on doljen otprravlat v metod po buttonu, ix mojno vzat v js
 //i fetchanut ix kak dva rezultata, maxprice i minprice, i ya doljen sortirovat ix s pomoshyu etix dvux cen
 //eto sdelano v detail page s pomoshyu rating 
 
 //detail page xochu shto b s inputa value mojno bilo vpisivat rukoy
-//v header defaulte v klasse basketelementscount nado vpisat kolvo productov v baskete
 //product detail stroka 67 s viewbagami, ix iskat v basketcontrollere
 
-//detail page related products modal ishlemir
+//detail page related products modal photo slider ishlemir
 //footer linkleri duzelt sagda
 
 namespace Back_End_Project.Controllers

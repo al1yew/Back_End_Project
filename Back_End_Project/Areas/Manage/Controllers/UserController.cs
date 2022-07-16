@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using Back_End_Project.Areas.Manage.ViewModels.AccountViewModels;
 using Microsoft.EntityFrameworkCore;
 using Back_End_Project.Areas.Manage.ViewModels.UserViewModels;
+using Back_End_Project.Extensions;
+using Microsoft.AspNetCore.Hosting;
+using Back_End_Project.Helper;
 //useri admin etmek ve admini user etmek, ROLES deyishmelidi!!!! isadmin ile ish bitmir!
 //navbarda users tablesi var, onu gostermemek uchun user.identity.isinrole true false qaytarir, eto nado proverit
 namespace Back_End_Project.Areas.Manage.Controllers
@@ -22,12 +25,16 @@ namespace Back_End_Project.Areas.Manage.Controllers
         private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IWebHostEnvironment _env;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserController(AppDbContext context, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public UserController(AppDbContext context, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IWebHostEnvironment env, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _env = env;
+            _roleManager = roleManager;
         }
 
         public IActionResult Index(int? status, int select, int role, int page = 1)
@@ -123,17 +130,28 @@ namespace Back_End_Project.Areas.Manage.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateUserVM createUserVM, int role, int select, int page = 1)
+        public async Task<IActionResult> Create(CreateUserVM createUserVM)
         {
             if (!ModelState.IsValid) return View();
 
-            AppUser dbAppUser = await _userManager.FindByEmailAsync(createUserVM.Email);
-            List<AppUser> appUsers = await _context.Users.ToListAsync();
-
-            if (dbAppUser != null && appUsers.Any(a => a.UserName == createUserVM.UserName))
+            if (createUserVM.Photo != null)
             {
-                ModelState.AddModelError("", "Admin exists");
-                return View();
+                if (!createUserVM.Photo.CheckContentType("image/jpeg")
+                    && !createUserVM.Photo.CheckContentType("image/jpg")
+                    && !createUserVM.Photo.CheckContentType("image/png")
+                    && !createUserVM.Photo.CheckContentType("image/gif"))
+                {
+                    ModelState.AddModelError("Photo", "You can choose only Image format!");
+                    return View();
+                }
+
+                if (createUserVM.Photo.CheckFileLength(15000))
+                {
+                    ModelState.AddModelError("Photo", "File must be 15MB at most!");
+                    return View();
+                }
+
+                createUserVM.Image = await createUserVM.Photo.CreateAsync(_env, "manage", "img", "users");
             }
 
             AppUser user = new AppUser
@@ -142,7 +160,9 @@ namespace Back_End_Project.Areas.Manage.Controllers
                 SurName = createUserVM.SurName,
                 UserName = createUserVM.UserName,
                 Email = createUserVM.Email,
-                IsAdmin = createUserVM.IsAdmin
+                IsAdmin = createUserVM.IsAdmin,
+                PhoneNumber = createUserVM.Phone,
+                Image = createUserVM.Image
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, createUserVM.Password);
@@ -166,19 +186,144 @@ namespace Back_End_Project.Areas.Manage.Controllers
                 result = await _userManager.AddToRoleAsync(user, "Member");
             }
 
-            IQueryable<AppUser> query = _userManager.Users.Where(u => u.UserName != User.Identity.Name);
+            return RedirectToAction("Index");
+        }
 
-            if (select <= 0)
+        [HttpGet]
+        public async Task<IActionResult> Update(string? id)
+        {
+            AppUser appUser = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+            UpdateUserVM updateUserVM = new UpdateUserVM
             {
-                select = 5;
+                Name = appUser.Name,
+                SurName = appUser.SurName,
+                UserName = appUser.UserName,
+                Email = appUser.Email,
+                IsAdmin = appUser.IsAdmin,
+                Phone = appUser.PhoneNumber,
+                Image = appUser.Image,
+                AppUserId = appUser.Id,
+            };
+
+            return View(updateUserVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdateUserVM updateUserVM, string id)
+        {
+            if (!ModelState.IsValid) return View();
+
+            AppUser dbAppUser = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (updateUserVM.Photo != null)
+            {
+                if (!updateUserVM.Photo.CheckContentType("image/jpeg")
+                    && !updateUserVM.Photo.CheckContentType("image/jpg")
+                    && !updateUserVM.Photo.CheckContentType("image/png")
+                    && !updateUserVM.Photo.CheckContentType("image/gif"))
+                {
+                    ModelState.AddModelError("Photo", "You can choose only Image format!");
+                    return View();
+                }
+
+                if (updateUserVM.Photo.CheckFileLength(15000))
+                {
+                    ModelState.AddModelError("Photo", "File must be 15MB at most!");
+                    return View();
+                }
+
+                updateUserVM.Image = await updateUserVM.Photo.CreateAsync(_env, "manage", "img", "users");
+
+                if (dbAppUser.Image != null)
+                {
+                    FileHelper.DeleteFile(_env, dbAppUser.Image, "manage", "img", "users");
+                }
+
+                dbAppUser.Image = updateUserVM.Image;
+
+                IdentityResult identityResult1 = await _userManager.UpdateAsync(dbAppUser);
+
+                if (!identityResult1.Succeeded)
+                {
+                    ModelState.AddModelError("", "Upload image in right way!");
+
+                    return View("Update", updateUserVM);
+                }
+
+                TempData["success"] = "Account is updated!";
             }
 
-            ViewBag.Select = select;
+            if (dbAppUser.NormalizedUserName != updateUserVM.UserName.Trim().ToUpperInvariant() ||
+                dbAppUser.Name.ToUpperInvariant() != updateUserVM.Name.Trim().ToUpperInvariant() ||
+                dbAppUser.SurName.ToUpperInvariant() != updateUserVM.SurName.Trim().ToUpperInvariant() ||
+                dbAppUser.NormalizedEmail != updateUserVM.Email.Trim().ToUpperInvariant())
+            {
+                dbAppUser.Name = updateUserVM.Name;
+                dbAppUser.SurName = updateUserVM.SurName;
+                dbAppUser.Email = updateUserVM.Email;
+                dbAppUser.UserName = updateUserVM.UserName;
+                dbAppUser.IsAdmin = updateUserVM.IsAdmin;
+                dbAppUser.PhoneNumber = updateUserVM.Phone;
 
-            ViewBag.Role = role;
+                IdentityResult identityResult = await _userManager.UpdateAsync(dbAppUser);
 
-            return View("Index", PaginationList<AppUser>.Create(query, page, select));
+                if (!identityResult.Succeeded)
+                {
+                    foreach (var item in identityResult.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+
+                    return View("Profile", updateUserVM);
+                }
+
+                TempData["success"] = "Account is updated!";
+            }
+
+            if (updateUserVM.IsAdmin && !dbAppUser.IsAdmin)
+            {
+                await _userManager.RemoveFromRoleAsync(dbAppUser, "Member");
+                await _userManager.AddToRoleAsync(dbAppUser, "Admin");
+            }
+            else if (!updateUserVM.IsAdmin && dbAppUser.IsAdmin)
+            {
+                await _userManager.RemoveFromRoleAsync(dbAppUser, "Admin");
+                await _userManager.AddToRoleAsync(dbAppUser, "Member");
+            }
+
+            return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> DeleteProfileImage(string id)
+        {
+            if (id == null) return BadRequest();
+
+            AppUser appUser = await _userManager.Users.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (appUser == null) return NotFound();
+
+            FileHelper.DeleteFile(_env, appUser.Image, "manage", "img", "users");
+
+            appUser.Image = null;
+
+            IdentityResult identityResult = await _userManager.UpdateAsync(appUser);
+
+            CreateUserVM createUserVM = new CreateUserVM
+            {
+                Name = appUser.Name,
+                SurName = appUser.SurName,
+                UserName = appUser.UserName,
+                Email = appUser.Email,
+                IsAdmin = appUser.IsAdmin,
+                Phone = appUser.PhoneNumber,
+                Image = appUser.Image,
+                AppUserId = appUser.Id
+            };
+
+            return Content("");
+        }
+
 
         public async Task<IActionResult> Delete(string? id, int select, int role, int page = 1)
         {

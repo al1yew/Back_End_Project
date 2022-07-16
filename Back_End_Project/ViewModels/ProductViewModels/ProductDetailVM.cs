@@ -1,4 +1,5 @@
 ﻿using Back_End_Project.Models;
+using Back_End_Project.ViewModels.BasketViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace Back_End_Project.ViewModels.ProductViewModels
         public List<Product> Products { get; set; }
         public List<ProductReview> ProductReviews { get; set; }
         public ProductReviewVM ProductReviewVM { get; set; }
+        public BasketVM BasketVM { get; set; }
     }
 }

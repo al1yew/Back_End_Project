@@ -1,6 +1,7 @@
 ﻿using Back_End_Project.DAL;
 using Back_End_Project.Models;
 using Back_End_Project.ViewModels.BasketViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ namespace Back_End_Project.Controllers
             _userManager = userManager;
         }
 
+        [Authorize(Roles = "Member")]
         public async Task<IActionResult> Index()
         {
             string basket = HttpContext.Request.Cookies["basket"];
@@ -45,6 +47,7 @@ namespace Back_End_Project.Controllers
             return View(await _getBasketItemAsync(basketVMs));
         }
 
+        [Authorize(Roles = "Member")]
         public async Task<IActionResult> AddToBasket(int? id)
         {
             if (id == null) return BadRequest();
@@ -128,6 +131,7 @@ namespace Back_End_Project.Controllers
             //return Json(BasketVM.count) i fetch delayem res.json() i datu set delayem vnutr notification klassa vnutri header componenta
         }
 
+        [Authorize(Roles = "Member")]
         public async Task<IActionResult> UpdateCount(int? id, int count)
         {
             if (id == null) return BadRequest();
@@ -178,7 +182,7 @@ namespace Back_End_Project.Controllers
 
             return PartialView("_BasketIndexPartial", await _getBasketItemAsync(basketVMs));
         }
-
+        [Authorize(Roles = "Member")]
         public async Task<IActionResult> DeleteFromCart(int? id)
         {
             if (id == null) return BadRequest();
@@ -220,7 +224,7 @@ namespace Back_End_Project.Controllers
 
             return PartialView("_BasketIndexPartial", await _getBasketItemAsync(basketVMs));
         }
-
+        [Authorize(Roles = "Member")]
         public async Task<IActionResult> DeleteFromBasket(int? id)
         {
             if (id == null) return BadRequest();
@@ -262,7 +266,7 @@ namespace Back_End_Project.Controllers
 
             return PartialView("_BasketPartial", await _getBasketItemAsync(basketVMs));
         }
-
+        
         private async Task<List<BasketVM>> _getBasketItemAsync(List<BasketVM> basketVms)
         {
             if (User.Identity.IsAuthenticated)

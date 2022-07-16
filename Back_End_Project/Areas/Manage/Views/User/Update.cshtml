@@ -1,0 +1,80 @@
+﻿
+@model UpdateUserVM
+
+<h1>Update User</h1>
+
+<div class=" row justify-content-center">
+    <div class="col-lg-8">
+        <form method="post" class="row justify-content-between" enctype="multipart/form-data" asp-controller="User" asp-action="Update" asp-route-id="@Model.AppUserId">
+            <div class="col-lg-3 m-3">
+                <div class=" profileimagediv">
+                    @if (Model.Image != null)
+                    {
+                        <a asp-controller="User" asp-action="DeleteProfileImage" asp-route-id="@Model.AppUserId" class="deleteprofileimage">X</a>
+
+                        <label asp-for="Photo" class="updateprofileimage">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                        </label>
+
+                        <input style="display: none;" asp-for="Photo" accept="image/jpeg" />
+                        <span class="text text-danger" asp-validation-for="Photo">  </span>
+                        <img src="~/manage/img/users/@Model.Image" class="img-fluid profileimage" />
+                    }
+                    else
+                    {
+                        <label asp-for="Photo" class="updateprofileimage">
+                            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                        </label>
+
+                        <input style="display: none;" asp-for="Photo" accept="image/jpeg" />
+                        <span class="text text-danger" asp-validation-for="Photo">  </span>
+
+                    }
+                </div>
+                <button class="btn-primary btn" style="padding:5px; font-size:10px">Save</button>
+            </div>
+            <div class="mb-3 col-lg-4">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control">
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+            <div class="mb-3 col-lg-4">
+                <label asp-for="SurName" class="form-label"></label>
+                <input asp-for="SurName" class="form-control">
+                <span class="text-danger" asp-validation-for="SurName"></span>
+            </div>
+            <div class="mb-3 col-lg-6">
+                <label asp-for="UserName" class="form-label"></label>
+                <input asp-for="UserName" class="form-control">
+                <span class="text-danger" asp-validation-for="UserName"></span>
+            </div>
+            <div class="mb-3 col-lg-6">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control">
+                <span class="text-danger" asp-validation-for="Email"></span>
+            </div>
+            <div class="mb-3 col-lg-12">
+                <label asp-for="Phone" class="form-label"></label>
+                <input asp-for="Phone" class="form-control">
+                <span class="text-danger" asp-validation-for="Phone"></span>
+            </div>
+            @*<div class="mb-3 form-group col-lg-6">
+            <label asp-for="Photo" class="form-label"></label>
+            <input asp-for="Photo" accept="image/jpeg" class="form-control">
+            <span class="text-danger" asp-validation-for="Photo"></span>
+        </div>*@
+
+            <div class="col-lg-12 ml-3 form-check">
+                <input asp-for="IsAdmin" class="form-check-input">
+                <label asp-for="IsAdmin" class="form-check-label">Is admin?</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary m-2 mt-5">Update</button>
+        </form>
+    </div>
+</div>
+
+@section Script
+{
+    <partial name="_ValidationPartial">
+}

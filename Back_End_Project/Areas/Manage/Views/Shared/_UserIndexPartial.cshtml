@@ -7,11 +7,14 @@
     <thead>
         <tr>
             <th class="col-lg-1">№</th>
-            <th class="col-lg-3">Username</th>
+            <th class="col-lg-1">Photo</th>
+            <th class="col-lg-1">Username</th>
+            <th class="col-lg-1">Email</th>
+            <th class="col-lg-1">Email Confirmed</th>
+            <th class="col-lg-1">Phone</th>
             <th class="col-lg-1">Status</th>
             <th class="col-lg-1">Admin/User</th>
-            <th class="col-lg-1">Reset Password</th>
-            <th class="col-lg-1">Delete/Restore</th>
+            <th class="col-lg-1">Delete/Restore Reset Password Update</th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +23,11 @@
             no++;
             <tr>
                 <td class="col-lg-1">@no</td>
+                <td class="col-lg-1"><img class="img-fluid" style="width:80px; height:80px" src="~/manage/img/users/@appUser.Image" /></td>
                 <td class="col-lg-3">@appUser.UserName</td>
+                <td class="col-lg-3"><a href="mailto:@(appUser.Email)">@appUser.Email</a></td>
+                <td class="col-lg-3">@(appUser.EmailConfirmed ? "yes" : "no")</td>
+                <td class="col-lg-3"><a href="tel:@(appUser.PhoneNumber)">@appUser.PhoneNumber</a></td>
                 <td class="col-lg-1" style="color:@(appUser.IsDeleted ? "red" : "green")">@(appUser.IsDeleted ? "Deleted" : "Active")</td>
                 <td class="col-lg-1">
                     @if (appUser.IsAdmin)
@@ -33,18 +40,21 @@
                     }
                 </td>
                 <td class="col-lg-1">
-                    <a class="btn btn-primary" asp-area="Manage" asp-controller="User" asp-action="ResetPassword" asp-route-id="@appUser.Id">Reset Password</a>
-                </td>
-                <td class="col-lg-1">
+                    <a class="btn btn-primary m-2" asp-area="Manage" asp-controller="User" asp-action="ResetPassword" asp-route-id="@appUser.Id">Reset Password</a>
                     @if (appUser.IsDeleted)
                     {
-                        <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="User"
-                           asp-action="Restore" asp-route-id="@appUser.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
+                        <a class="btn btn-warning restoreBtn m-2" asp-area="Manage" asp-controller="User"
+                           asp-action="Restore" asp-route-id="@appUser.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore User</a>
                     }
                     else
                     {
-                        <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="User"
-                           asp-action="Delete" asp-route-id="@appUser.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
+                        <a class="btn btn-danger deleteBtn m-2" asp-area="Manage" asp-controller="User"
+                           asp-action="Delete" asp-route-id="@appUser.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete User</a>
+                    }
+                    @if (!appUser.IsDeleted)
+                    {
+                        <a class="btn btn-primary m-2" asp-area="Manage" asp-controller="User"
+                           asp-action="Update" asp-route-id="@appUser.Id">Update User</a>
                     }
                 </td>
             </tr>
