@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,5 +20,9 @@ namespace Back_End_Project.Models
         [StringLength(40)]
         public string SubTitle { get; set; }
         public string RedirectUrl { get; set; }
+
+
+        [NotMapped]
+        public IFormFile BannerPhoto { get; set; }
     }
 }

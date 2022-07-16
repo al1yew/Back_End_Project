@@ -1,10 +1,10 @@
 ﻿
 $(document).ready(function () {
 
-    //----------------------------------------------- Aside menu toggles
+    //----------------------------------------------- Aside menu toggle menu for mainpage
 
-    $("button").click(function () {
-        $("p").toggle(1000);
+    $(".mainpage").click(function () {
+        $(".toggle_ul_mainpage").toggle(500);
     });
 
 

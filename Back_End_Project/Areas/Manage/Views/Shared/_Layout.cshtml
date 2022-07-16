@@ -106,6 +106,27 @@
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Blog" asp-action="Index" asp-area="Manage">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Blog</span>
+                </a>
+            </li>
+
+            <li class="nav-item mainpage" style="cursor: pointer">
+                <a class="nav-link" >
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>MainPage</span>
+                </a>
+            </li>
+
+            <ul class="toggle_ul_mainpage" style="display: none">
+                <li><a style="text-decoration:none; color:white" asp-controller="Banner" asp-action="Index">Banner</a></li>
+                <li><a style="text-decoration:none; color:white" asp-controller="BrandSlider" asp-action="Index">Brand slider</a></li>
+                <li><a style="text-decoration:none; color:white" asp-controller="Slider" asp-action="Index">Slider</a></li>
+                <li><a style="text-decoration:none; color:white" asp-controller="Service" asp-action="Index">Services</a></li>
+            </ul>
+
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
