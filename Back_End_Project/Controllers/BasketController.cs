@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-//nado shto bi on obnovlal cifrku v headere nad Basket ikonkoy i eshe nado umet uvelicivat i umenshat kolvo tovara is modala,
+// nado umet uvelicivat i umenshat kolvo tovara is modala,
 //iz product detaila, i iz basket indeksa, k tomu je nado shto b inputa regem yazanda da ishlesin, eto budet custom.js funkciya, gde budet 
 //on keyup funkciya shto b on schitival znacneie inputa, delal cifru iz etogo i potom delal Fetch v UpdateCount
 
@@ -28,7 +28,7 @@ namespace Back_End_Project.Controllers
             _userManager = userManager;
         }
 
-        [Authorize(Roles = "Member")]
+        //[Authorize(Roles = "Member")]
         public async Task<IActionResult> Index()
         {
             string basket = HttpContext.Request.Cookies["basket"];
@@ -47,7 +47,7 @@ namespace Back_End_Project.Controllers
             return View(await _getBasketItemAsync(basketVMs));
         }
 
-        [Authorize(Roles = "Member")]
+        //[Authorize(Roles = "Member")]
         public async Task<IActionResult> AddToBasket(int? id)
         {
             if (id == null) return BadRequest();
@@ -130,8 +130,7 @@ namespace Back_End_Project.Controllers
 
             //return Json(BasketVM.count) i fetch delayem res.json() i datu set delayem vnutr notification klassa vnutri header componenta
         }
-
-        [Authorize(Roles = "Member")]
+        //[Authorize(Roles = "Member")]
         public async Task<IActionResult> UpdateCount(int? id, int count)
         {
             if (id == null) return BadRequest();
@@ -182,7 +181,7 @@ namespace Back_End_Project.Controllers
 
             return PartialView("_BasketIndexPartial", await _getBasketItemAsync(basketVMs));
         }
-        [Authorize(Roles = "Member")]
+        //[Authorize(Roles = "Member")]
         public async Task<IActionResult> DeleteFromCart(int? id)
         {
             if (id == null) return BadRequest();
@@ -224,7 +223,7 @@ namespace Back_End_Project.Controllers
 
             return PartialView("_BasketIndexPartial", await _getBasketItemAsync(basketVMs));
         }
-        [Authorize(Roles = "Member")]
+        //[Authorize(Roles = "Member")]
         public async Task<IActionResult> DeleteFromBasket(int? id)
         {
             if (id == null) return BadRequest();
@@ -266,7 +265,7 @@ namespace Back_End_Project.Controllers
 
             return PartialView("_BasketPartial", await _getBasketItemAsync(basketVMs));
         }
-        
+
         private async Task<List<BasketVM>> _getBasketItemAsync(List<BasketVM> basketVms)
         {
             if (User.Identity.IsAuthenticated)
@@ -329,6 +328,50 @@ namespace Back_End_Project.Controllers
             }
 
             return PartialView("_BasketPartial", await _getBasketItemAsync(basketVMs));
+        }
+
+        public async Task<IActionResult> GetBasketCount()
+        {
+            string basket = HttpContext.Request.Cookies["basket"];
+
+            List<BasketVM> basketVMs = null;
+
+            if (!string.IsNullOrWhiteSpace(basket))
+            {
+                basketVMs = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
+            }
+            else
+            {
+                basketVMs = new List<BasketVM>();
+            }
+
+            if (User.Identity.IsAuthenticated)
+            {
+                AppUser appUser = await _userManager.Users.Include(u => u.Baskets).FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+                if (appUser.Baskets != null && appUser.Baskets.Count() > 0)
+                {
+                    foreach (var item in appUser.Baskets)
+                    {
+                        if (!basketVMs.Any(b => b.ProductId == item.ProductId))
+                        {
+                            BasketVM basketVM = new BasketVM
+                            {
+                                ProductId = item.ProductId,
+                                Count = item.Count
+                            };
+
+                            basketVMs.Add(basketVM);
+                        }
+                    }
+
+                    basket = JsonConvert.SerializeObject(basketVMs);
+
+                    Response.Cookies.Append("basket", basket);
+                }
+            }
+
+            return Json(basketVMs.Count());
         }
     }
 

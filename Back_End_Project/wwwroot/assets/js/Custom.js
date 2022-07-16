@@ -188,6 +188,13 @@
             .then(res => res.text())
             .then(data => {
                 $(".minicart-inner-content").html(data);
+
+                fetch('basket/GetBasketCount')
+                    .then(res => res.text())
+                    .then(data => {
+                        console.log("dsa")
+                        $(".basketelementscount").html(data);
+                    })
             })
     })
 
@@ -201,6 +208,13 @@
             .then(res => res.text())
             .then(data => {
                 $(".minicart-inner-content").html(data);
+
+                fetch('basket/GetBasketCount')
+                    .then(res => res.text())
+                    .then(data => {
+                        console.log("dsa")
+                        $(".basketelementscount").html(data);
+                    })
             })
     })
 
@@ -269,11 +283,12 @@
             .then(data => {
                 $('.basketindexcontainer').html(data);
 
-                fetch('/basket/getbasket')
+                fetch('basket/GetBasketCount')
                     .then(res => res.text())
                     .then(data => {
-                        $('.minicart-inner-content').html(data);
-                    });
+                        console.log("dsa")
+                        $(".basketelementscount").html(data);
+                    })
             })
     })
 
