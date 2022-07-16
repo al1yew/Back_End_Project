@@ -1,6 +1,6 @@
 ﻿@model BlogCommentVM
 
-<form method="post" asp-controller="Blog" asp-action="AddBlogComment" asp-route-id="@ViewBag.BlogId">
+<form class="commentform" method="post" asp-controller="Blog" asp-action="AddBlogComment" asp-route-id="@ViewBag.BlogId">
     <div asp-validation-summary="ModelOnly"></div>
     <div class="comment-post-box">
         <div class="row">

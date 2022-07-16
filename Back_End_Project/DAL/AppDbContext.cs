@@ -35,6 +35,9 @@ namespace Back_End_Project.DAL
         public DbSet<Setting> Settings { get; set; }
 
 
+        //models for contact
+        public DbSet<Contact> Contacts { get; set; }
+
         //models for HOME
         public DbSet<HomeBrandSlider> HomeBrandSliders { get; set; }
         public DbSet<HomeSlider> HomeSliders { get; set; }

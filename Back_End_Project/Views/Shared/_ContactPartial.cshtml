@@ -1,0 +1,34 @@
+﻿@model ContactUsVM
+
+<form id="contact-form" method="post" class="contact-form" asp-controller="Contact" asp-action="Contact">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <input placeholder="Name *" asp-for="Name">
+            <span class="text text-danger" asp-validation-for="Name"></span>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <input placeholder="Phone *" asp-for="Phone">
+            <span class="text text-danger" asp-validation-for="Phone"></span>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <input placeholder="Email *" asp-for="Email">
+            <span class="text text-danger" asp-validation-for="Email"></span>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <input placeholder="Subject *" asp-for="Subject">
+            <span class="text text-danger" asp-validation-for="Subject"></span>
+        </div>
+        <div class="col-12">
+            <div class="contact2-textarea text-center">
+                <textarea placeholder="Message *" class="form-control2" asp-for="Message" ></textarea>
+                <span class="text text-danger" asp-validation-for="Message"></span>
+            </div>
+            <div class="contact-btn">
+                <button class="btn" type="submit">Send Message</button>
+            </div>
+        </div>
+        <div class="col-12 d-flex justify-content-center">
+            <p class="form-messege">We will call you soon!</p>
+        </div>
+    </div>
+</form>

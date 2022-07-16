@@ -10,7 +10,7 @@
                     <img src="~/assets/img/users/@blogComment.AuthorImage" alt="">
                 </div>
                 <div class="comment-body">
-                    <span class="reply-btn replybtnforremove"><a asp-controller="Blog" asp-action="AddCommentReply" asp-route-id="@blogComment.Id" class="replybuttonforinputs">Reply</a></span>
+                    <span class="reply-btn replybtnforremove"><a asp-controller="Blog" asp-action="AddCommentReply" asp-route-blogId="@blogComment.BlogId" asp-route-id="@blogComment.Id" class="replybuttonforinputs">Reply</a></span>
                     <h5 class="comment-author">@blogComment.Author</h5>
                     <div class="comment-post-date">
                         @blogComment.CreatedAt
@@ -19,19 +19,12 @@
                         @blogComment.Comment
                     </p>
                 </div>
-                <form method="post" asp-controller="Blog" asp-action="AddCommentReply" asp-route-id="@blogComment.Id" asp-route-blogId="@blogComment.BlogId">
-                    <div asp-validation-summary="ModelOnly"></div>
-                    <div class="comment-post-box">
-                        <div class="row replyinputs">
-
-                        </div>
-                    </div>
-                </form>
+                
             </li>
 
             if (blogComment.HasResponse)
             {
-                foreach (BlogCommentReply blogCommentReply in Model.BlogCommentReplies.Where(b=>b.BlogCommentId == blogComment.Id))
+                foreach (BlogCommentReply blogCommentReply in Model.BlogCommentReplies.Where(b => b.BlogCommentId == blogComment.Id))
                 {
                     <li class="comment-children">
                         <div class="author-avatar">

@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 //pochemu to v detail kategorii i tagi prinosit tupo vse podrad
-//razberis s reply metodom
 namespace Back_End_Project.Controllers
 {
     public class BlogController : Controller
@@ -119,7 +118,6 @@ namespace Back_End_Project.Controllers
             {
                 Blog = blog,
                 Blogs = await _context.Blogs.Include(b => b.BlogCategory).Include(b => b.BlogTag).ToListAsync(),
-                //BlogCommentVM = appUser == null ? new BlogCommentVM() : blogCommentVM,
                 BlogCommentVM = new BlogCommentVM(),
                 CommentReplyVM = commentReplyVM
             };
@@ -150,7 +148,6 @@ namespace Back_End_Project.Controllers
                 IsParentComment = true,
             };
 
-            //cox gozel situaciyadan cixdim ternary ile :DDD
             Blog blog = await _context.Blogs.FirstOrDefaultAsync(p => p.Id == id);
 
             blog.CommentsCount++;
@@ -163,15 +160,20 @@ namespace Back_End_Project.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> AddCommentReply(int? id)
+        public async Task<IActionResult> AddCommentReply(int? id, int blogId)
         {
             BlogComment blogComment = await _context.BlogComments.FirstOrDefaultAsync(x => x.Id == id);
 
-            ViewBag.BlogComment = blogComment.Id;
+            ViewBag.BlogCommentId = blogComment.Id;
+            ViewBag.BlogId = blogId;
 
             return PartialView("_CommentReplyPartial", new BlogCommentVM());
         }
-
+        //evvelce detail page acilanda comment inputlari acilir. Reply knopkasina basanda JS Comment inutunu yigishdirir, COMMENTREPLY
+        //inputunu yapishdirir, cunki metodlar ayridi, sorgu gelir HTTPGET-e, partiali yapishdirir input yerine, inuta deyerler daxil edilir, ad email comment, 
+        //sonra yenede reply basanda gelir HTTPPOST-a, artiq set edir. 
+        //Calishib bunlari bir metodda yazmag lazimdi, amma elebil biliklerim o qeder de cox deyil deye nese catmir, ki bunu duz yazim.
+        //Redirect meselesi deli etdi meni
 
         [HttpPost]
         public async Task<IActionResult> AddCommentReply(BlogCommentVM blogCommentVM, int id, int blogId)
@@ -203,6 +205,7 @@ namespace Back_End_Project.Controllers
                 AppUserId = appUser != null && !appUser.IsAdmin ? appUser.Id : null,
                 BlogCommentId = id
             };
+
             //cox gozel situaciyadan cixdim ternary ile :DDD bele gozel body olmayib hec
 
             blog.CommentsCount++;

@@ -1,4 +1,4 @@
-﻿@model IDictionary<string, string>
+﻿@model ContactVM
 
 <main>
     <!-- breadcrumb area start -->
@@ -26,54 +26,29 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="contact-message">
-                        <h2 class="contact-title">tell us your project</h2>
-                        <form id="contact-form" method="post" class="contact-form">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <input name="first_name" placeholder="Name *" type="text" required>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <input name="phone" placeholder="Phone *" type="text" required>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <input name="email_address" placeholder="Email *" type="text" required>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <input name="contact_subject" placeholder="Subject *" type="text">
-                                </div>
-                                <div class="col-12">
-                                    <div class="contact2-textarea text-center">
-                                        <textarea placeholder="Message *" name="message" class="form-control2" required=""></textarea>
-                                    </div>
-                                    <div class="contact-btn">
-                                        <button class="btn" type="submit">Send Message</button>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex justify-content-center">
-                                    <p class="form-messege"></p>
-                                </div>
-                            </div>
-                        </form>
+                        <h2 class="contact-title">tell us about your project</h2>
+                        @await Html.PartialAsync("_ContactPartial", Model.ContactUsVM)
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="contact-info pt-0">
                         <h2 class="contact-title">contact us</h2>
                         <p>
-                            @Model.FirstOrDefault(x => x.Key == "ContactUsText").Value
+                            @Model.Settings.FirstOrDefault(x => x.Key == "ContactUsText").Value
                         </p>
                         <ul>
-                            <li><i class="fa fa-fax"></i> Address : @Model.FirstOrDefault(x => x.Key == "Address").Value</li>
+                            <li><i class="fa fa-fax"></i> Address : @Model.Settings.FirstOrDefault(x => x.Key == "Address").Value</li>
                             <li>
-                                <i class="fa fa-phone"></i><a href="mailto:@Model.FirstOrDefault(x => x.Key == "Email").Value">
-                                    @Model.FirstOrDefault(x => x.Key == "Email").Value
+                                <i class="fa fa-phone"></i><a href="mailto:@Model.Settings.FirstOrDefault(x => x.Key == "Email").Value">
+                                    @Model.Settings.FirstOrDefault(x => x.Key == "Email").Value
                                 </a>
                             </li>
-                            <li><i class="fa fa-envelope-o"></i> <a href="tel:@Model.FirstOrDefault(x => x.Key == "Phone").Value">@Model.FirstOrDefault(x => x.Key == "Phone").Value</a></li>
+                            <li><i class="fa fa-envelope-o"></i> <a href="tel:@Model.Settings.FirstOrDefault(x => x.Key == "Phone").Value">
+                                @Model.Settings.FirstOrDefault(x => x.Key == "Phone").Value</a></li>
                         </ul>
                         <div class="working-time">
                             <h3>Working Hours</h3>
-                            <p class="pb-0">@Html.Raw(Model.FirstOrDefault(x => x.Key == "WorkingHours").Value)</p>
+                            <p class="pb-0">@Html.Raw(Model.Settings.FirstOrDefault(x => x.Key == "WorkingHours").Value)</p>
                         </div>
                     </div>
                 </div>

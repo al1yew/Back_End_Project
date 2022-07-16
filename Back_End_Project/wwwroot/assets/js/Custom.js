@@ -387,15 +387,17 @@
     $(document).on("click", ".replybuttonforinputs", function (e) {
         e.preventDefault();
 
+        //comment inputlarini yigishdiririq, yerine reply inputlarini saliriq
+
+        $('.divforreply .commentform').addClass('d-none');
+
         let url = $(this).attr('href');
         console.log(url)
-
-        $('.replybtnforremove').addClass('d-none')
 
         fetch(url)
             .then(res => res.text())
             .then(data => {
-                $(".replyinputs").html(data);
+                $(".divforreply").html(data);
             })
     })
 
