@@ -377,9 +377,10 @@
         fetch(url)
             .then(res => res.text())
             .then(data => {
-                $(".minicart-inner-content").html(data);
+                $(".myaccount-content").html(data);
             })
     })
+
 
 
     //----------------------------------------------- Blog comment reply button - adding inputs

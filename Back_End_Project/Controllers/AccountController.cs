@@ -491,6 +491,11 @@ namespace Back_End_Project.Controllers
 
                 profileVM.Image = await profileVM.Photo.CreateAsync(_env, "assets", "img", "users");
 
+                if (dbAppUser.Image != null)
+                {
+                    FileHelper.DeleteFile(_env, dbAppUser.Image, "assets", "img", "users");
+                }
+
                 dbAppUser.Image = profileVM.Image;
 
                 IdentityResult identityResult = await _userManager.UpdateAsync(dbAppUser);
@@ -561,7 +566,7 @@ namespace Back_End_Project.Controllers
         {
             if (id == null) return BadRequest();
 
-            AppUser appUser= await _userManager.Users.FirstOrDefaultAsync(p => p.Id == id);
+            AppUser appUser = await _userManager.Users.FirstOrDefaultAsync(p => p.Id == id);
 
             if (appUser == null) return NotFound();
 
@@ -571,7 +576,17 @@ namespace Back_End_Project.Controllers
 
             IdentityResult identityResult = await _userManager.UpdateAsync(appUser);
 
-            return RedirectToAction("Profile");
+            ProfileVM profileVM = new ProfileVM
+            {
+                Name = appUser.Name,
+                SurName = appUser.SurName,
+                Email = appUser.Email,
+                UserName = appUser.UserName,
+                Image = appUser.Image,
+                AppUserId = appUser.Id
+            };
+
+            return PartialView("_AccountProfilePartialForm", profileVM);
         }
 
 
