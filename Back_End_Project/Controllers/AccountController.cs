@@ -15,13 +15,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-//Shekili olsun her userin
-//vezde proverat esli user is admin poslat ego nax
+
 //u kajdogo appuser doljni bit svoi payment details i adress1, adress2 itd, kotorie budut v Profile html v menu adresi i v menu Payment
-//on sam proverayet kto zaregan poetomu pofiq esli admin v logine, on vse ravno izza [authorize(roles = member)] 
-//nelza zaregatsa esli takoy user uje est - eto nado sdelat v register metode vnizu
-//eto est v admin panele znacit ya napisal hazir v usercontroller
-//napisat update dla adminov, tipa lubogo usera mojno sdelat adminom po jelaniyu, tipa esli useru ne oxota zaxodit na manage itd, esli eto knsh pravilno i realno
 namespace Back_End_Project.Controllers
 {
     public class AccountController : Controller
@@ -48,13 +43,10 @@ namespace Back_End_Project.Controllers
         [HttpGet]
         public IActionResult LoginRegister()
         {
-            RegisterVM registerVM = new RegisterVM();
-            LoginVM loginVM = new LoginVM();
-
             LoginRegisterVM loginRegisterVM = new LoginRegisterVM
             {
-                RegisterVM = registerVM,
-                LoginVM = loginVM
+                RegisterVM = new RegisterVM(),
+                LoginVM = new LoginVM()
             };
 
             return View(loginRegisterVM);
@@ -64,6 +56,26 @@ namespace Back_End_Project.Controllers
         public async Task<IActionResult> Register(RegisterVM registerVM)
         {
             if (!ModelState.IsValid) return View();
+
+            #region trial
+
+            //AppUser dbAppUser = await _userManager.FindByEmailAsync(registerVM.Email);
+
+            //if (dbAppUser != null)
+            //{
+            //    ModelState.AddModelError("", "User Exists!");
+            //}
+
+            //AppUser dbAppUsername = await _userManager.FindByNameAsync(registerVM.UserName);
+
+            //if (dbAppUsername != null)
+            //{
+            //    ModelState.AddModelError("", "User Exists!");
+            //}
+
+            //identityresult ozu yoxlayir exist meselesini
+
+            #endregion
 
             AppUser appUser = new AppUser
             {
@@ -82,7 +94,7 @@ namespace Back_End_Project.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
 
-                return View();
+                return View("LoginRegister", new LoginRegisterVM());
             }
 
             result = await _userManager.AddToRoleAsync(appUser, "Member");
