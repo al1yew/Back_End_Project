@@ -190,6 +190,33 @@ $(document).ready(function () {
     })
 
 
+    //----------------------------------------------- Search Layout
+
+    $(".layoutsearch").keyup(function () {
+        let inputvalue = $(this).val();
+
+        let url = $(this).data('url');
+
+        url = url + '?search=' + inputvalue;
+
+        console.log(url)
+
+        if (inputvalue) {
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $(".search-body-adminarea .list-group-layout").html(data);
+                    $('.search-body-adminarea').removeClass("d-none");
+                })
+        }
+        else {
+            $(".search-body-adminarea .list-group-layout").html('');
+            $('.search-body-adminarea').addClass("d-none");
+        }
+    });
+
+
     //----------------------------------------------- Account Orders toggle table
 
     $(document).on('show.bs.collapse', '.accordian-body', function () {

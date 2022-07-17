@@ -99,14 +99,6 @@ namespace Back_End_Project.Controllers
 
             if (blog == null) return NotFound();
 
-            //AppUser appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name && !u.IsAdmin);
-
-            //BlogCommentVM blogCommentVM = new BlogCommentVM
-            //{
-            //    Email = appUser.Email,
-            //    AuthorName = appUser.Name,
-            //};
-
             CommentReplyVM commentReplyVM = new CommentReplyVM
             {
                 BlogCommentReplies = await _context.BlogCommentReplies.Where(b => b.BlogComment.BlogId == id).ToListAsync(),

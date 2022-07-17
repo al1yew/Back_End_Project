@@ -1,4 +1,4 @@
-﻿@*@model Brand
+﻿@model Brand
 @{
     ViewData["Title"] = "Update";
 }
@@ -9,9 +9,9 @@
     <div class="col-lg-8">
         <form method="post">
             <div class="mb-3">
-                <label asp-for="BrandName" class="form-label">New updated name for selected brand name</label>
-                <input asp-for="BrandName" class="form-control">
-                <span class="text-danger" asp-validation-for="BrandName"></span>
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" class="form-control">
+                <span class="text-danger" asp-validation-for="Name"></span>
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
@@ -20,4 +20,4 @@
 
 @section Script{
     <partial name="_ValidationPartial">
-}*@
+}

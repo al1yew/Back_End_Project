@@ -1,0 +1,422 @@
+﻿@model SearchVM
+
+@{
+    int brandno = 0;
+    int categoryno = 0;
+    int productno = 0;
+    int orderno = 0;
+    int orderitemno = 0;
+    int userno = 0;
+    int blogno = 0;
+    int settingno = 0;
+}
+
+@*
+    <h4>Brands</h4>
+    @foreach (var item in Model.Brands)
+    {
+        brandno++;
+        <li class="list-group-item d-flex justify-content-between align-items-center m-1" style="background-color: #e5d5d5; width: 90%; background-color: white; ">
+            <p>@brandno</p>
+            <p>@item.Name</p>
+
+            <p style="color:@(item.IsDeleted ? "red" : "green")">@(item.IsDeleted ? "Deleted" : "Active")</p>
+
+            <a class="btn btn-warning" asp-area="Manage" asp-controller="Brand" asp-action="Update" asp-route-id="@item.Id">Update</a>
+            @if (item.IsDeleted)
+            {
+                <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="Brand"
+                   asp-action="Restore" asp-route-id="@item.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
+            }
+            else
+            {
+                <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="Brand"
+                   asp-action="Delete" asp-route-id="@item.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
+            }
+        </li>
+    }
+
+    <h4>Categories</h4>
+    @foreach (var item in Model.Categories)
+    {
+        categoryno++;
+        <li class="list-group-item d-flex justify-content-between align-items-center m-1" style="background-color: #e5d5d5; width: 90%; background-color: white; ">
+            <p>@categoryno</p>
+            <p>@item.Name</p>
+
+            <p style="color:@(item.IsDeleted ? "red" : "green")">@(item.IsDeleted ? "Deleted" : "Active")</p>
+
+            <a class="btn btn-warning" asp-area="Manage" asp-controller="Category" asp-action="Update" asp-route-id="@item.Id">Update</a>
+            @if (item.IsDeleted)
+            {
+                <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="Category"
+                   asp-action="Restore" asp-route-id="@item.Id" asp-route-type="@ViewBag.Type" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
+            }
+            else
+            {
+                <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="Category"
+                   asp-action="Delete" asp-route-id="@item.Id" asp-route-type="@ViewBag.Type" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
+            }
+
+        </li>
+    }
+
+    <h4>Products</h4>
+    @foreach (var item in Model.Products)
+    {
+        productno++;
+        <li class="list-group-item d-flex justify-content-between align-items-center m-1" style="background-color: #e5d5d5; width: 90%; background-color: white; ">
+            <p>@productno</p>
+            <p>@item.Name</p>
+
+            <p style="color:@(item.IsDeleted ? "red" : "green")">@(item.IsDeleted ? "Deleted" : "Active")</p>
+
+            <p style="color:@(item.IsDeleted ? "red" : "green")">@(item.IsDeleted ? "Deleted" : "Active")</p>
+            @if (item.IsDeleted == false)
+            {
+                <a class="btn btn-warning" asp-controller="Product" asp-action="Update" asp-area="Manage" asp-route-id="@item.Id">Update</a>
+            }
+            else
+            {
+                <p class="test text-danger" style="font-size:14px;">Restore for Update!</p>
+            }
+            @if (item.IsDeleted)
+            {
+                <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="Product"
+                   asp-action="Restore" asp-route-id="@item.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
+            }
+            else
+            {
+                <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="Product"
+                   asp-action="Delete" asp-route-id="@item.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
+            }
+        </li>
+    }
+
+
+    <h4>Orders</h4>
+    @foreach (var item in Model.Orders)
+    {
+        productno++;
+        <li class="list-group-item d-flex justify-content-between align-items-center m-1" style="background-color: #e5d5d5; width: 90%; background-color: white; ">
+            <p>@productno</p>
+            <p>@item.Name</p>
+
+            <p style="color:@(item.IsDeleted ? "red" : "green")">@(item.IsDeleted ? "Deleted" : "Active")</p>
+
+            <p style="color:@(item.IsDeleted ? "red" : "green")">@(item.IsDeleted ? "Deleted" : "Active")</p>
+            @if (item.IsDeleted == false)
+            {
+                <a class="btn btn-warning" asp-controller="Product" asp-action="Update" asp-area="Manage" asp-route-id="@item.Id">Update</a>
+            }
+            else
+            {
+                <p class="test text-danger" style="font-size:14px;">Restore for Update!</p>
+            }
+            @if (item.IsDeleted)
+            {
+                <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="Product"
+                   asp-action="Restore" asp-route-id="@item.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
+            }
+            else
+            {
+                <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="Product"
+                   asp-action="Delete" asp-route-id="@item.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
+            }
+        </li>
+    }*@
+
+@if (Model.Products.Count > 0)
+{
+    <h4>Products</h4>
+    @*@await Html.PartialAsync("_ProductIndexPartial", Model.Products)*@
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Product image</th>
+                <th>Product Category</th>
+                <th>Product's Brand</th>
+                <th>Product Name</th>
+                <th>Discount Price/ Real Price</th>
+                <th>Status</th>
+                <th>Update</th>
+                <th>Clear/Restore</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (Product product in Model.Products)
+            {
+                productno++;
+                <tr>
+                    <td class="col-lg-1">@productno</td>
+                    <td class="col-lg-1"><img src="~/assets/img/product/@product.Image" class="img-fluid" /></td>
+                    <td class="col-lg-1">@product.Category.Name</td>
+                    <td class="col-lg-1">@product.Brand.Name</td>
+                    <td class="col-lg-2"><a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id" asp-area="Manage">@product.Name</a></td>
+                    <td class="col-lg-1">$@product.DiscountPrice/$@product.Price</td>
+                    <td class="col-lg-1" style="color:@(product.IsDeleted ? "red" : "green")">@(product.IsDeleted ? "Deleted" : "Active")</td>
+                    <td class="col-lg-1">
+                        @if (product.IsDeleted == false)
+                        {
+                            <a class="btn btn-warning" asp-controller="Product" asp-action="Update" asp-area="Manage" asp-route-id="@product.Id">Update</a>
+                        }
+                        else
+                        {
+                            <p class="test text-danger" style="font-size:14px;">Restore for Update!</p>
+                        }
+                    </td>
+                    <td class="col-lg-1">
+                        @if (product.IsDeleted)
+                        {
+                            <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="Product"
+                               asp-action="Restore" asp-route-id="@product.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="Product"
+                               asp-action="Delete" asp-route-id="@product.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.Brands.Count > 0)
+{
+    <h4>Brands</h4>
+    @*@await Html.PartialAsync("_BrandIndexPartial", Model.Brands)*@
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th class="col-lg-1">№</th>
+                <th class="col-lg-3">Name</th>
+                <th class="col-lg-1">Status</th>
+                <th class="col-lg-1">Update</th>
+                <th class="col-lg-1">Delete/Restore</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Brand brand in Model.Brands)
+            {
+                brandno++;
+                <tr>
+                    <td class="col-lg-1">@brandno</td>
+                    <td class="col-lg-2">@brand.Name</td>
+                    <td class="col-lg-1" style="color:@(brand.IsDeleted ? "red" : "green")">@(brand.IsDeleted ? "Deleted" : "Active")</td>
+                    <td class="col-lg-1">
+                        <a class="btn btn-warning" asp-area="Manage" asp-controller="Brand" asp-action="Update" asp-route-id="@brand.Id">Update</a>
+                    </td>
+                    <td class="col-lg-1">
+                        @if (brand.IsDeleted)
+                        {
+                            <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="Brand"
+                               asp-action="Restore" asp-route-id="@brand.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="Brand"
+                               asp-action="Delete" asp-route-id="@brand.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.Categories.Count > 0)
+{
+    <h4>Categories</h4>
+    @*@await Html.PartialAsync("_CategoryIndexPartial", Model.Categories)*@
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th class="col-lg-1">№</th>
+                <th class="col-lg-1">Image</th>
+                <th class="col-lg-3">Name</th>
+                <th class="col-lg-1">Category Type</th>
+                <th class="col-lg-1">Status</th>
+                <th class="col-lg-1">Update</th>
+                <th class="col-lg-1">Delete/Restore</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Category category in Model.Categories)
+            {
+                categoryno++;
+                <tr>
+                    <td class="col-lg-1">@categoryno</td>
+                    <td class="col-lg-1"><img class="img-fluid" src="~/assets/img/product/@category.Image" /></td>
+                    <td class="col-lg-3">@category.Name</td>
+                    <td>@(category.IsMain ? "Main Category"  :"Sub Category")</td>
+                    <td class="col-lg-1" style="color:@(category.IsDeleted ? "red" : "green")">@(category.IsDeleted ? "Deleted" : "Active")</td>
+                    <td class="col-lg-1">
+                        <a class="btn btn-warning" asp-area="Manage" asp-controller="Category" asp-action="Update" asp-route-id="@category.Id">Update</a>
+                    </td>
+                    <td class="col-lg-1">
+                        @if (category.IsDeleted)
+                        {
+                            <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="Category"
+                               asp-action="Restore" asp-route-id="@category.Id" asp-route-type="@ViewBag.Type" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="Category"
+                               asp-action="Delete" asp-route-id="@category.Id" asp-route-type="@ViewBag.Type" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.Orders.Count > 0)
+{
+    <h4>Orders</h4>
+    @*@await Html.PartialAsync("_OrderIndexPartial", Model.Orders)*@
+
+    <table class="table table-bordered table-striped" style="border-collapse:collapse;">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>FullName</th>
+                <th>Product Count</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Total Price</th>
+                <th>Setting</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Order order in Model.Orders)
+            {
+                orderno++;
+
+                <tr data-toggle="collapse" data-target="#demo@(order.Id)" class="accordion-toggle">
+                    <td>@orderno</td>
+                    <td>@order.Name @order.SurName</td>
+                    <td>@order.OrderItems.Sum(oi => oi.Count)</td>
+                    <td>@order.OrderStatus</td>
+                    <td>@order.CreatedAt?.ToString("dd-MM-yyyy")</td>
+                    <td>@order.TotalPrice</td>
+                    <td>
+                        <a class="btn btn-warning" asp-area="manage" asp-controller="order" asp-action="update" asp-route-id="@order.Id">Update</a>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td colspan="6" class="hiddenRow">
+                        <div class="accordian-body collapse" id="demo@(order.Id)">
+                            <table class="table table-condensed" style="border-collapse:collapse;">
+                                <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Product Name</th>
+                                        <th>Product Price</th>
+                                        <th>Product Count</th>
+                                        <th>Product totalPrice</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (OrderItem orderItem in order.OrderItems)
+                                    {
+                                        orderitemno++;
+                                        <tr>
+                                            <td>@orderitemno</td>
+                                            <td>@orderItem.Product.Name</td>
+                                            <td>@orderItem.Price</td>
+                                            <td>@orderItem.Count</td>
+                                            <td>@orderItem.TotalPrice</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.Users.Count > 0)
+{
+    <h4>Users</h4>
+    @*@await Html.PartialAsync("_UserIndexPartial", Model.Users)*@
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th class="col-lg-1">№</th>
+                <th class="col-lg-1">Photo</th>
+                <th class="col-lg-1">Username</th>
+                <th class="col-lg-1">Email</th>
+                <th class="col-lg-1">Email Confirmed</th>
+                <th class="col-lg-1">Phone</th>
+                <th class="col-lg-1">Status</th>
+                <th class="col-lg-1">Admin/User</th>
+                <th class="col-lg-1">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (AppUser appUser in Model.Users)
+            {
+                userno++;
+                <tr>
+                    <td class="col-lg-1">@userno</td>
+                    <td class="col-lg-1"><img class="img-fluid" style="width:80px; height:80px" src="~/manage/img/users/@appUser.Image" /></td>
+                    <td class="col-lg-3">@appUser.UserName</td>
+                    <td class="col-lg-3"><a href="mailto:@(appUser.Email)">@appUser.Email</a></td>
+                    <td class="col-lg-3">@(appUser.EmailConfirmed ? "yes" : "no")</td>
+                    <td class="col-lg-3"><a href="tel:@(appUser.PhoneNumber)">@appUser.PhoneNumber</a></td>
+                    <td class="col-lg-1" style="color:@(appUser.IsDeleted ? "red" : "green")">@(appUser.IsDeleted ? "Deleted" : "Active")</td>
+                    <td class="col-lg-1">
+                        @if (appUser.IsAdmin)
+                        {
+                            <p class="text-success text">Admin</p>
+                        }
+                        else
+                        {
+                            <p class="text-danger text">User</p>
+                        }
+                    </td>
+                    <td class="col-lg-1">
+                        <a class="btn btn-primary m-2" asp-area="Manage" asp-controller="User" asp-action="ResetPassword" asp-route-id="@appUser.Id">Reset Password</a>
+                        @if (appUser.IsDeleted)
+                        {
+                            <a class="btn btn-warning restoreBtn m-2" asp-area="Manage" asp-controller="User"
+                               asp-action="Restore" asp-route-id="@appUser.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore User</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-danger deleteBtn m-2" asp-area="Manage" asp-controller="User"
+                               asp-action="Delete" asp-route-id="@appUser.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete User</a>
+                        }
+                        @if (!appUser.IsDeleted)
+                        {
+                            <a class="btn btn-primary m-2" asp-area="Manage" asp-controller="User"
+                               asp-action="Update" asp-route-id="@appUser.Id">Update User</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.Blogs.Count > 0)
+{
+    <h4>Blogs</h4>
+
+    <p>olacag hele</p>
+}
+
