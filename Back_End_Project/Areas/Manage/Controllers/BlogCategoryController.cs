@@ -197,6 +197,5 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
             return PartialView("_BlogCategoryIndexPartial", PaginationList<BlogCategory>.Create(query, page, select));
         }
-
     }
 }

@@ -1,9 +1,9 @@
-﻿using Back_End_Project.Areas.Manage.ViewModels.BlogViewModels;
-using Back_End_Project.DAL;
+﻿using Back_End_Project.DAL;
 using Back_End_Project.Extensions;
 using Back_End_Project.Helper;
 using Back_End_Project.Models;
 using Back_End_Project.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-//hele mene blogtag ve blogcategory crudu lazimdi
+
 namespace Back_End_Project.Areas.Manage.Controllers
 {
+    [Authorize(Roles = "SuperAdmin, Admin")]
     [Area("Manage")]
     public class BlogController : Controller
     {
@@ -72,7 +73,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(BlogVM blogVM)
+        public async Task<IActionResult> Create(Blog blog)
         {
             ViewBag.Tags = await _context.BlogTags.Where(b => !b.IsDeleted).ToListAsync();
             ViewBag.Categories = await _context.BlogCategories.Where(c => !c.IsDeleted).ToListAsync();
@@ -80,48 +81,42 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
             if (!ModelState.IsValid) return View();
 
-            if (!await _context.BlogTags.AnyAsync(b => !b.IsDeleted && b.Id == blogVM.BlogTagId))
+            if (!await _context.BlogTags.AnyAsync(b => !b.IsDeleted && b.Id == blog.BlogTagId))
             {
                 ModelState.AddModelError("BlogTagId", "Select Tag!");
                 return View();
             }
 
-            if (!await _context.BlogCategories.AnyAsync(c => !c.IsDeleted && c.Id == blogVM.BlogCategoryId))
+            if (!await _context.BlogCategories.AnyAsync(c => !c.IsDeleted && c.Id == blog.BlogCategoryId))
             {
                 ModelState.AddModelError("BlogCategoryId", "Select category");
                 return View();
             }
 
-            if (blogVM.BlogAuthorId != 0 && blogVM.AuthorName != null && blogVM.AuthorPosition != null && blogVM.AuthorSurname != null && blogVM.LinkedInUrl != null && blogVM.AuthorPhoto != null)
+            if (!await _context.BlogAuthors.AnyAsync(c => !c.IsDeleted && c.Id == blog.BlogAuthorId))
             {
-                ModelState.AddModelError("", "You cant select author and also fill inputs below! Choose one option to do!");
+                ModelState.AddModelError("BlogAuthorId", "Select Author");
                 return View();
             }
 
-            if (blogVM.BlogAuthorId == 0 && blogVM.AuthorName == null && blogVM.AuthorPosition == null && blogVM.AuthorSurname == null && blogVM.LinkedInUrl == null && blogVM.AuthorPhoto == null)
+            if (blog.BlogPhoto != null)
             {
-                ModelState.AddModelError("", "You must select author or fill inputs below! Choose one option to do!");
-                return View();
-            }
-
-            if (blogVM.BlogPhoto != null)
-            {
-                if (!blogVM.BlogPhoto.CheckContentType("image/jpeg")
-                    && !blogVM.BlogPhoto.CheckContentType("image/jpg")
-                    && !blogVM.BlogPhoto.CheckContentType("image/png")
-                    && !blogVM.BlogPhoto.CheckContentType("image/gif"))
+                if (!blog.BlogPhoto.CheckContentType("image/jpeg")
+                    && !blog.BlogPhoto.CheckContentType("image/jpg")
+                    && !blog.BlogPhoto.CheckContentType("image/png")
+                    && !blog.BlogPhoto.CheckContentType("image/gif"))
                 {
-                    ModelState.AddModelError("BlogPhoto", "Main image must be image format");
+                    ModelState.AddModelError("BlogPhoto", "Image must be image format");
                     return View();
                 }
 
-                if (blogVM.BlogPhoto.CheckFileLength(15000))
+                if (blog.BlogPhoto.CheckFileLength(15000))
                 {
-                    ModelState.AddModelError("BlogPhoto", "Main image size must be at most 15MB");
+                    ModelState.AddModelError("BlogPhoto", "Image size must be at most 15MB");
                     return View();
                 }
 
-                blogVM.BlogImage = await blogVM.BlogPhoto.CreateAsync(_env, "assets", "img", "blog");
+                blog.BlogImage = await blog.BlogPhoto.CreateAsync(_env, "assets", "img", "blog");
             }
             else
             {
@@ -129,76 +124,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
                 return View();
             }
 
-            if (blogVM.AuthorPhoto != null)
-            {
-                if (!blogVM.AuthorPhoto.CheckContentType("image/jpeg")
-                    && !blogVM.AuthorPhoto.CheckContentType("image/jpg")
-                    && !blogVM.AuthorPhoto.CheckContentType("image/png")
-                    && !blogVM.AuthorPhoto.CheckContentType("image/gif"))
-                {
-                    ModelState.AddModelError("AuthorPhoto", "Main image must be image format");
-                    return View();
-                }
-
-                if (blogVM.AuthorPhoto.CheckFileLength(15000))
-                {
-                    ModelState.AddModelError("AuthorPhoto", "Main image size must be at most 15MB");
-                    return View();
-                }
-
-                blogVM.AuthorImage = await blogVM.AuthorPhoto.CreateAsync(_env, "assets", "img", "blog");
-            }
-
-            blogVM.BlogTitle = blogVM.BlogTitle.Trim();
-
-            #region Recognizing Author as appUser
-
-            //AppUser appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
-
-            //BlogAuthor blogAuthor = new BlogAuthor
-            //{
-            //    AuthorImage = blogVM.AuthorImage != null ? blogVM.AuthorImage : appUser.Image,
-            //    AuthorName = blogVM.AuthorName != null && blogVM.AuthorSurname != null ? blogVM.AuthorName + " " + blogVM.AuthorSurname : appUser.Name + " " + appUser.SurName,
-            //    AuthorPosition = blogVM.AuthorPosition != null ? blogVM.AuthorPosition : "Admin",
-            //    LinkedInUrl = blogVM.LinkedInUrl != null ? blogVM.LinkedInUrl : null
-            //};
-
-            //await _context.BlogAuthors.AddAsync(blogAuthor);
-            //await _context.SaveChangesAsync();
-            //bu onun uchun du ki, form boshdusa, log olan useri author kimi yazdirsin, forma nese deyer daxil edilibse, onlari gotursun.
-            //ammd men hele de select option qatdim deye, her shey qarishmasin deye, yaxhsisi odur ki iki secim olsun, ya hazir select optionnan
-            //secilsin, ya da ozu yazsin forma. 
-            #endregion
-
-            BlogAuthor blogAuthor = new BlogAuthor
-            {
-                AuthorImage = blogVM.AuthorImage,
-                AuthorName = blogVM.AuthorName + " " + blogVM.AuthorSurname,
-                AuthorPosition = blogVM.AuthorPosition,
-                LinkedInUrl = blogVM.LinkedInUrl
-            };
-
-            if (blogAuthor.AuthorImage != null && blogAuthor.AuthorName != null && blogAuthor.AuthorPosition != null && blogAuthor.LinkedInUrl != null)
-            {
-                await _context.BlogAuthors.AddAsync(blogAuthor);
-                await _context.SaveChangesAsync();
-            }
-
-            //forma hecne yazmayibsa, onda selectin authorid-si, yazibsa, select option value 0 gelecek, formdaki yeni avtorun melumatlari gedecek DBya
-
-            Blog blog = new Blog
-            {
-                BlogAuthorId = blogVM.BlogAuthorId == 0 ? blogAuthor.Id : blogVM.BlogAuthorId,
-                BlogCategoryId = blogVM.BlogCategoryId,
-                BlogTagId = blogVM.BlogTagId,
-                BlogImage = blogVM.BlogImage,
-                BlogTitle = blogVM.BlogTitle,
-                IsRecent = blogVM.IsRecent,
-                PublishDate = DateTime.UtcNow.AddHours(4),
-                UpperText = blogVM.UpperText,
-                StrongText = blogVM.StrongText,
-                BottomText = blogVM.BottomText
-            };
+            blog.BlogTitle = blog.BlogTitle.Trim();
 
             blog.CreatedAt = DateTime.UtcNow.AddHours(4);
             await _context.Blogs.AddAsync(blog);
@@ -224,24 +150,11 @@ namespace Back_End_Project.Areas.Manage.Controllers
             ViewBag.Categories = await _context.BlogCategories.Where(c => !c.IsDeleted).ToListAsync();
             ViewBag.Authors = await _context.BlogAuthors.ToListAsync();
 
-            BlogVM blogVM = new BlogVM
-            {
-                BlogAuthorId = blog.BlogAuthorId,
-                BlogCategoryId = blog.BlogCategoryId,
-                BlogTagId = blog.BlogTagId,
-                BlogImage = blog.BlogImage,
-                BlogTitle = blog.BlogTitle,
-                IsRecent = blog.IsRecent,
-                UpperText = blog.UpperText,
-                StrongText = blog.StrongText,
-                BottomText = blog.BottomText
-            };
-
-            return View(blogVM);
+            return View(blog);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int? id, BlogVM blogVM)
+        public async Task<IActionResult> Update(int? id, Blog blog)
         {
             ViewBag.Tags = await _context.BlogTags.Where(b => !b.IsDeleted).ToListAsync();
             ViewBag.Categories = await _context.BlogCategories.Where(c => !c.IsDeleted).ToListAsync();
@@ -255,89 +168,42 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
             if (dbBlog == null) return NotFound();
 
-            if (blogVM.BlogAuthorId != 0 && blogVM.AuthorName != null && blogVM.AuthorPosition != null && blogVM.AuthorSurname != null && blogVM.LinkedInUrl != null && blogVM.AuthorPhoto != null)
+            if (blog.BlogPhoto != null)
             {
-                ModelState.AddModelError("", "You cant select author and also fill inputs below! Choose one option to do!");
-                return View();
-            }
-
-            if (blogVM.BlogAuthorId == 0 && blogVM.AuthorName == null && blogVM.AuthorPosition == null && blogVM.AuthorSurname == null && blogVM.LinkedInUrl == null && blogVM.AuthorPhoto == null)
-            {
-                ModelState.AddModelError("", "You must select author or fill inputs below! Choose one option to do!");
-                return View();
-            }
-
-            if (blogVM.BlogPhoto != null)
-            {
-                if (!blogVM.BlogPhoto.CheckContentType("image/jpeg")
-                    && !blogVM.BlogPhoto.CheckContentType("image/jpg")
-                    && !blogVM.BlogPhoto.CheckContentType("image/png")
-                    && !blogVM.BlogPhoto.CheckContentType("image/gif"))
+                if (!blog.BlogPhoto.CheckContentType("image/jpeg")
+                    && !blog.BlogPhoto.CheckContentType("image/jpg")
+                    && !blog.BlogPhoto.CheckContentType("image/png")
+                    && !blog.BlogPhoto.CheckContentType("image/gif"))
                 {
-                    ModelState.AddModelError("BlogPhoto", "Main image must be image format");
+                    ModelState.AddModelError("BlogPhoto", "Image must be image format");
                     return View();
                 }
 
-                if (blogVM.BlogPhoto.CheckFileLength(15000))
+                if (blog.BlogPhoto.CheckFileLength(15000))
                 {
-                    ModelState.AddModelError("BlogPhoto", "Main image size must be at most 15MB");
+                    ModelState.AddModelError("BlogPhoto", "Image size must be at most 15MB");
                     return View();
                 }
 
-                FileHelper.DeleteFile(_env, dbBlog.BlogImage, "assets", "img", "blog");
-
-                dbBlog.BlogImage = await blogVM.BlogPhoto.CreateAsync(_env, "assets", "img", "blog");
-            }
-
-            if (blogVM.AuthorPhoto != null)
-            {
-                if (!blogVM.AuthorPhoto.CheckContentType("image/jpeg")
-                    && !blogVM.AuthorPhoto.CheckContentType("image/jpg")
-                    && !blogVM.AuthorPhoto.CheckContentType("image/png")
-                    && !blogVM.AuthorPhoto.CheckContentType("image/gif"))
+                if (dbBlog.BlogImage != null)
                 {
-                    ModelState.AddModelError("AuthorPhoto", "Main image must be image format");
-                    return View();
+                    FileHelper.DeleteFile(_env, dbBlog.BlogImage, "assets", "img", "blog");
                 }
 
-                if (blogVM.AuthorPhoto.CheckFileLength(15000))
-                {
-                    ModelState.AddModelError("AuthorPhoto", "Main image size must be at most 15MB");
-                    return View();
-                }
-
-                //silmeye ehtiyac yoxdu
-                //FileHelper.DeleteFile(_env, dbBlog.BlogImage, "assets", "img", "blog");
-
-                dbBlog.BlogAuthor.AuthorImage = await blogVM.AuthorPhoto.CreateAsync(_env, "assets", "img", "blog");
+                dbBlog.BlogImage = await blog.BlogPhoto.CreateAsync(_env, "assets", "img", "blog");
             }
 
-            BlogAuthor blogAuthor = new BlogAuthor
-            {
-                AuthorImage = blogVM.AuthorImage,
-                AuthorName = blogVM.AuthorName + " " + blogVM.AuthorSurname,
-                AuthorPosition = blogVM.AuthorPosition,
-                LinkedInUrl = blogVM.LinkedInUrl
-            };
-
-            if (blogAuthor.AuthorImage != null && blogAuthor.AuthorName != null && blogAuthor.AuthorPosition != null && blogAuthor.LinkedInUrl != null)
-            {
-                await _context.BlogAuthors.AddAsync(blogAuthor);
-                await _context.SaveChangesAsync();
-            }
-
-            dbBlog.BlogTitle = blogVM.BlogTitle.Trim();
-            dbBlog.BlogAuthorId = blogVM.BlogAuthorId == 0 ? blogAuthor.Id : blogVM.BlogAuthorId;
-            dbBlog.BlogCategoryId = blogVM.BlogCategoryId;
-            dbBlog.BlogTagId = blogVM.BlogTagId;
-            dbBlog.BlogImage = blogVM.BlogImage;
-            dbBlog.BlogTitle = blogVM.BlogTitle;
-            dbBlog.IsRecent = blogVM.IsRecent;
+            dbBlog.BlogTitle = blog.BlogTitle.Trim();
+            dbBlog.BlogAuthorId = blog.BlogAuthorId;
+            dbBlog.BlogCategoryId = blog.BlogCategoryId;
+            dbBlog.BlogTagId = blog.BlogTagId;
+            dbBlog.BlogImage = blog.BlogImage;
+            dbBlog.IsRecent = blog.IsRecent;
             dbBlog.IsUpdated = true;
             dbBlog.UpdatedAt = DateTime.UtcNow.AddHours(4);
-            dbBlog.UpperText = blogVM.UpperText;
-            dbBlog.StrongText = blogVM.StrongText;
-            dbBlog.BottomText = blogVM.BottomText;
+            dbBlog.UpperText = blog.UpperText.Trim();
+            dbBlog.StrongText = blog.StrongText.Trim();
+            dbBlog.BottomText = blog.BottomText.Trim();
 
             await _context.SaveChangesAsync();
 
@@ -346,5 +212,91 @@ namespace Back_End_Project.Areas.Manage.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Delete(int? id, int? status, int select, int page = 1)
+        {
+            if (id == null) return BadRequest();
+
+            Blog blog = await _context.Blogs.FirstOrDefaultAsync(b => b.Id == id && !b.IsDeleted);
+
+            if (blog == null) return NotFound();
+
+            blog.IsDeleted = true;
+            blog.DeletedAt = DateTime.UtcNow.AddHours(4);
+
+            await _context.SaveChangesAsync();
+
+            IQueryable<Blog> query = _context.Blogs;
+
+            if (status != null && status > 0)
+            {
+                if (status == 1)
+                {
+                    query = query.Where(b => b.IsDeleted);
+                }
+                else if (status == 2)
+                {
+                    query = query.Where(b => !b.IsDeleted);
+                }
+            }
+
+            if (select <= 0)
+            {
+                select = 5;
+            }
+
+            ViewBag.Select = select;
+
+            ViewBag.Status = status;
+
+            TempData["success"] = "Blog is deleted";
+
+            return PartialView("_BlogIndexPartial", PaginationList<Blog>.Create(query, page, select));
+        }
+
+        public async Task<IActionResult> Restore(int? id, int? status, int select, int page = 1)
+        {
+            if (id == null) return BadRequest();
+
+            Blog blog = await _context.Blogs.FirstOrDefaultAsync(b => b.Id == id && !b.IsDeleted);
+
+            if (blog == null) return NotFound();
+
+            blog.IsDeleted = false;
+            blog.DeletedAt = null;
+
+            await _context.SaveChangesAsync();
+
+            IQueryable<Blog> query = _context.Blogs;
+
+            if (status != null && status > 0)
+            {
+                if (status == 1)
+                {
+                    query = query.Where(b => b.IsDeleted);
+                }
+                else if (status == 2)
+                {
+                    query = query.Where(b => !b.IsDeleted);
+                }
+            }
+
+            if (select <= 0)
+            {
+                select = 5;
+            }
+
+            ViewBag.Select = select;
+
+            ViewBag.Status = status;
+
+            TempData["success"] = "Blog is restored";
+
+            return PartialView("_BlogIndexPartial", PaginationList<Blog>.Create(query, page, select));
+        }
+
+        public async Task<IActionResult> Comments()
+        {
+            return View(await _context.BlogComments.ToListAsync());
+        }
     }
 }

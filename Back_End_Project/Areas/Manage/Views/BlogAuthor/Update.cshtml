@@ -1,0 +1,27 @@
+﻿@model BlogAuthor
+
+    <h1>Update Author</h1>
+
+    <form class=" row col-lg-12 mt-2" method="post" enctype="multipart/form-data">
+        <div class="col-lg-6 pr-2 mb-3 form-group">
+            <label asp-for="AuthorPhoto" class="form-label">Choose image for author</label>
+            <input asp-for="AuthorPhoto" class="form-control">
+            <span class="text-danger" asp-validation-for="AuthorPhoto"></span>
+        </div>
+        <div class="col-lg-6 pr-2 mb-3 form-group">
+            <label asp-for="AuthorName" class="form-label">Name</label>
+            <input asp-for="AuthorName" class="form-control">
+            <span class="text-danger" asp-validation-for="AuthorName"></span>
+        </div>
+        <div class="col-lg-6 pr-2 mb-3 form-group">
+            <label asp-for="LinkedInUrl" class="form-label">LinkedIn url</label>
+            <input asp-for="LinkedInUrl" class="form-control">
+            <span class="text-danger" asp-validation-for="LinkedInUrl"></span>
+        </div>
+        <div class="col-lg-12 pr-2 mb-3 form-group">
+            <label asp-for="AuthorPosition" class="form-label">Position</label>
+            <input asp-for="AuthorPosition" class="form-control">
+            <span class="text-danger" asp-validation-for="AuthorPosition"></span>
+        </div>
+        <button type="submit" class="ml-2 btn btn-primary">Update</button>
+    </form>

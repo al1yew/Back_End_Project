@@ -17,8 +17,6 @@ namespace Back_End_Project.Areas.Manage.Controllers
 {
     [Authorize(Roles = "SuperAdmin, Admin")]
     [Area("Manage")]
-    //product information table!!!!!! one to many mentigi basha dushmurem, bir producta 5 dene input value
-    //nece gonderim, hamsina property verim? mentiqsizdi axi
     public class ProductController : Controller
     {
         private readonly IWebHostEnvironment _env;
@@ -215,7 +213,7 @@ namespace Back_End_Project.Areas.Manage.Controllers
                 return View(product);
             }
 
-            if (product.CategoryId == null && !await _context.Categories.AnyAsync(c => !c.IsDeleted && !c.IsMain && c.Id == product.CategoryId))
+            if (product.CategoryId == 0 && !await _context.Categories.AnyAsync(c => !c.IsDeleted && !c.IsMain && c.Id == product.CategoryId))
             {
                 ModelState.AddModelError("CategoryId", "Select category");
                 return View(product);

@@ -1,0 +1,48 @@
+﻿@model PaginationList<BlogAuthor>
+@{
+    int no = Model.ItemsCount * (Model.Page - 1);
+}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th class="col-lg-1">№</th>
+            <th class="col-lg-2">Name</th>
+            <th class="col-lg-1">Image</th>
+            <th class="col-lg-1">Position</th>
+            <th class="col-lg-1">LinkedinUrl</th>
+            <th class="col-lg-1">Status</th>
+            <th class="col-lg-1">Update</th>
+            <th class="col-lg-1">Delete/Restore</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (BlogAuthor blogAuthor in Model)
+        {
+            no++;
+            <tr>
+                <td class="col-lg-1">@no</td>
+                <td class="col-lg-2">@blogAuthor.AuthorName</td>
+                <td class="col-lg-1"><img style="width:200px" src="~/assets/img/blog/@blogAuthor.AuthorImage" alt="Alternate Text" /></td>
+                <td class="col-lg-1">@blogAuthor.AuthorPosition</td>
+                <td class="col-lg-1">@blogAuthor.LinkedInUrl</td>
+                <td class="col-lg-1" style="color:@(blogAuthor.IsDeleted ? "red" : "green")">@(blogAuthor.IsDeleted ? "Deleted" : "Active")</td>
+                <td class="col-lg-1">
+                    <a class="btn btn-warning" asp-area="Manage" asp-controller="BlogAuthor" asp-action="Update" asp-route-id="@blogAuthor.Id">Update</a>
+                </td>
+                <td class="col-lg-1">
+                    @if (blogAuthor.IsDeleted)
+                    {
+                        <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="BlogAuthor"
+                           asp-action="Restore" asp-route-id="@blogAuthor.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="BlogAuthor"
+                           asp-action="Delete" asp-route-id="@blogAuthor.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
