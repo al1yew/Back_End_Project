@@ -58,5 +58,13 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
             return RedirectToAction("Index", "Home", new { area = "Manage" });
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction("Login");
+        }
+
     }
 }

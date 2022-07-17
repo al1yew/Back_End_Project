@@ -1,0 +1,27 @@
+﻿@model List<HomeBrandSlider>
+@{
+    int no = 0;
+}
+<h1>Home Brand Slider</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th class="col-lg-1">№</th>
+            <th class="col-lg-1">Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (HomeBrandSlider homeBrandSlider in Model)
+        {
+            no++;
+            <tr>
+                <td class="col-lg-1">@no</td>
+                <td class="col-lg-1"><img style=" width: 200px;" src="~/assets/img/brand/@homeBrandSlider.Image" alt="banner-image"></td>
+                <td class="col-lg-1">
+                    <a class="btn btn-warning" asp-area="Manage" asp-controller="MainPage" asp-action="BrandSliderUpdate" asp-route-id="@homeBrandSlider.Id">Update</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

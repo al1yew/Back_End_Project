@@ -326,52 +326,8 @@ namespace Back_End_Project.Controllers
                     Response.Cookies.Append("basket", basket);
                 }
             }
-
-            return PartialView("_BasketPartial", await _getBasketItemAsync(basketVMs));
-        }
-
-        public async Task<IActionResult> GetBasketCount()
-        {
-            string basket = HttpContext.Request.Cookies["basket"];
-
-            List<BasketVM> basketVMs = null;
-
-            if (!string.IsNullOrWhiteSpace(basket))
-            {
-                basketVMs = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
-            }
-            else
-            {
-                basketVMs = new List<BasketVM>();
-            }
-
-            if (User.Identity.IsAuthenticated)
-            {
-                AppUser appUser = await _userManager.Users.Include(u => u.Baskets).FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
-
-                if (appUser.Baskets != null && appUser.Baskets.Count() > 0)
-                {
-                    foreach (var item in appUser.Baskets)
-                    {
-                        if (!basketVMs.Any(b => b.ProductId == item.ProductId))
-                        {
-                            BasketVM basketVM = new BasketVM
-                            {
-                                ProductId = item.ProductId,
-                                Count = item.Count
-                            };
-
-                            basketVMs.Add(basketVM);
-                        }
-                    }
-
-                    basket = JsonConvert.SerializeObject(basketVMs);
-
-                    Response.Cookies.Append("basket", basket);
-                }
-            }
-
             return Json(basketVMs.Count());
+            //return PartialView("_BasketPartial", await _getBasketItemAsync(basketVMs));
         }
     }
 

@@ -10,7 +10,8 @@
     <meta name="author" content="">
 
     <title>Manage Area</title>
-
+    <!--=== Favicon ===-->
+    <link rel="shortcut icon" href="~/assets/img/favicon.ico" type="image/x-icon" />
     <!-- Custom fonts for this template-->
     <link href="~/manage/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -114,17 +115,17 @@
             </li>
 
             <li class="nav-item mainpage" style="cursor: pointer">
-                <a class="nav-link" >
+                <a class="nav-link">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>MainPage</span>
                 </a>
             </li>
 
             <ul class="toggle_ul_mainpage" style="display: none">
-                <li><a style="text-decoration:none; color:white" asp-controller="Banner" asp-action="Index">Banner</a></li>
-                <li><a style="text-decoration:none; color:white" asp-controller="BrandSlider" asp-action="Index">Brand slider</a></li>
-                <li><a style="text-decoration:none; color:white" asp-controller="Slider" asp-action="Index">Slider</a></li>
-                <li><a style="text-decoration:none; color:white" asp-controller="Service" asp-action="Index">Services</a></li>
+                <li><a style="text-decoration:none; color:white" asp-controller="MainPage" asp-action="Banner">Banner</a></li>
+                <li><a style="text-decoration:none; color:white" asp-controller="MainPage" asp-action="BrandSlider">Brand slider</a></li>
+                <li><a style="text-decoration:none; color:white" asp-controller="MainPage" asp-action="Slider">Slider</a></li>
+                <li><a style="text-decoration:none; color:white" asp-controller="MainPage" asp-action="Service">Services</a></li>
             </ul>
 
             <!-- Sidebar Toggler (Sidebar) -->
@@ -338,7 +339,7 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a asp-controller="account" asp-action="logout" class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>

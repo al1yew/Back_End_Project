@@ -1,0 +1,37 @@
+﻿@model HomeService
+
+<h1>Update</h1>
+
+<div class=" row justify-content-center">
+    <div class="col-lg-10">
+        <form method="post" enctype="multipart/form-data">
+            <div class="mb-3 form-group">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control">
+                <span class="text-danger" asp-validation-for="Title"></span>
+            </div>
+            <div class="mb-3 form-group">
+                <label asp-for="SubTitle" class="form-label"></label>
+                <input asp-for="SubTitle" class="form-control">
+                <span class="text-danger" asp-validation-for="SubTitle"></span>
+            </div>
+            <p>Note! Color must be as: #00FFFF, or rgb(245, 245, 245), or hsl(0, 0%, 96%) types.</p>
+            <div class="mb-3 form-group">
+                <label asp-for="Color" class="form-label"></label>
+                <input asp-for="Color" class="form-control">
+                <span class="text-danger" asp-validation-for="Color"></span>
+            </div>
+            <p>Note! Dimensions are 59 x 51 px </p>
+            <div class="mb-3 form-group ">
+                <label asp-for="Photo" class="form-label"></label>
+                <input asp-for="Photo" class="form-control">
+                <span class="text-danger" asp-validation-for="Photo"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>
+
+@section Script{
+    <partial name="_ValidationPartial">
+}

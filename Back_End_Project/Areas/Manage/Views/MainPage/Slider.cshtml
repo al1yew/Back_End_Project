@@ -1,0 +1,38 @@
+﻿@model List<HomeSlider>
+
+@{
+    int no = 0;
+}
+<h1>Home Slider</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th class="col-lg-1">№</th>
+            <th class="col-lg-1">Image</th>
+            <th class="col-lg-3">Main Title</th>
+            <th class="col-lg-1">SubTitle</th>
+            <th class="col-lg-1">Description</th>
+            <th class="col-lg-1">Redirect URL</th>
+            <th class="col-lg-1">Update</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (HomeSlider homeSlider in Model)
+        {
+            no++;
+            <tr>
+                <td class="col-lg-1">@no</td>
+                <td class="col-lg-1"><img style=" width: 300px;" src="~/assets/img/slider/@homeSlider.Image" alt="banner-image"></td>
+                <td class="col-lg-3">@homeSlider.MainTitle</td>
+                <td class="col-lg-3">@homeSlider.SubTitle</td>
+                <td class="col-lg-3">@homeSlider.Description</td>
+                <td class="col-lg-3">@homeSlider.RedirectUrl</td>
+                <td class="col-lg-1">
+                    <a class="btn btn-warning" asp-area="Manage" asp-controller="MainPage" asp-action="SliderUpdate" asp-route-id="@homeSlider.Id">Update</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

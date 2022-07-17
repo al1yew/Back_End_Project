@@ -1,0 +1,36 @@
+﻿@model HomeBanner
+
+<h1>Update</h1>
+
+<div class=" row justify-content-center">
+    <div class="col-lg-10">
+        <form method="post" enctype="multipart/form-data">
+            <div class="mb-3 form-group">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control">
+                <span class="text-danger" asp-validation-for="Title"></span>
+            </div>
+            <div class="mb-3 form-group">
+                <label asp-for="SubTitle" class="form-label"></label>
+                <input asp-for="SubTitle" class="form-control">
+                <span class="text-danger" asp-validation-for="SubTitle"></span>
+            </div>
+            <div class="mb-3 form-group">
+                <label asp-for="RedirectUrl" class="form-label"></label>
+                <input asp-for="RedirectUrl" class="form-control">
+                <span class="text-danger" asp-validation-for="RedirectUrl"></span>
+            </div>
+            <p>Note! Dimensions are 585 x 250 px for first and second banner, and 370 x 368 for third banner</p>
+            <div class="mb-3 form-group ">
+                <label asp-for="BannerPhoto" class="form-label"></label>
+                <input asp-for="BannerPhoto" accept="image/*" class="form-control">
+                <span class="text-danger" asp-validation-for="BannerPhoto"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>
+
+@section Script{
+    <partial name="_ValidationPartial">
+}

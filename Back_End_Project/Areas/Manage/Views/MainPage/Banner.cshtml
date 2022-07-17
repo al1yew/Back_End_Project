@@ -1,0 +1,35 @@
+﻿@model List<HomeBanner>
+@{
+    int no = 0;
+}
+<h1>Home Banners</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th class="col-lg-1">№</th>
+            <th class="col-lg-1">Image</th>
+            <th class="col-lg-3">Title</th>
+            <th class="col-lg-1">SubTitle</th>
+            <th class="col-lg-1">Redirect URL</th>
+            <th class="col-lg-1">Update</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        @foreach (HomeBanner homeBanner in Model)
+        {
+            no++;
+            <tr>
+                <td class="col-lg-1">@no</td>
+                <td class="col-lg-1"><img style=" width: 300px;" src="~/assets/img/banner/@homeBanner.Image" alt="banner-image"></td>
+                <td class="col-lg-3">@homeBanner.Title</td>
+                <td class="col-lg-3">@homeBanner.SubTitle</td>
+                <td class="col-lg-3">@homeBanner.RedirectUrl</td>
+                <td class="col-lg-1">
+                    <a class="btn btn-warning" asp-area="Manage" asp-controller="MainPage" asp-action="BannerUpdate" asp-route-id="@homeBanner.Id">Update</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

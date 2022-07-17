@@ -1,0 +1,21 @@
+﻿@model HomeBrandSlider
+
+<h1>Update Home Brand Slider</h1>
+
+<div class=" row justify-content-center">
+    <div class="col-lg-10">
+        <form method="post" enctype="multipart/form-data">
+            <p>Note! Dimensions are 152 x 51 px!</p>
+            <div class="mb-3 form-group ">
+                <label asp-for="Photo" class="form-label"></label>
+                <input asp-for="Photo" accept="image/*" class="form-control">
+                <span class="text-danger" asp-validation-for="Photo"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>
+
+@section Script{
+    <partial name="_ValidationPartial">
+}

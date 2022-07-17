@@ -177,7 +177,7 @@
 
 
 
-    //----------------------------------------------- Add to basket
+    //----------------------------------------------- Add to basket (basket icon is in header, json code is also here)
 
     $(document).on("click", ".addtobasket", function (e) {
         e.preventDefault();
@@ -189,11 +189,10 @@
             .then(data => {
                 $(".minicart-inner-content").html(data);
 
-                fetch('basket/GetBasketCount')
-                    .then(res => res.text())
+                fetch('basket/GetBasket')
+                    .then(res => res.json())
                     .then(data => {
-                        console.log("dsa")
-                        $(".basketelementscount").html(data);
+                        $(".notification").html(data);
                     })
             })
     })
@@ -209,11 +208,10 @@
             .then(data => {
                 $(".minicart-inner-content").html(data);
 
-                fetch('basket/GetBasketCount')
-                    .then(res => res.text())
+                fetch('basket/GetBasket')
+                    .then(res => res.json())
                     .then(data => {
-                        console.log("dsa")
-                        $(".basketelementscount").html(data);
+                        $(".notification").html(data);
                     })
             })
     })
@@ -235,11 +233,11 @@
                 .then(data => {
                     $('.basketindexcontainer').html(data);
 
-                    fetch('/basket/getbasket')
-                        .then(res => res.text())
+                    fetch('basket/GetBasket')
+                        .then(res => res.json())
                         .then(data => {
-                            $('.minicart-inner-content').html(data);
-                        });
+                            $(".notification").html(data);
+                        })
                 });
         }
     })
@@ -265,11 +263,11 @@
             .then(data => {
                 $('.basketindexcontainer').html(data);
 
-                fetch('/basket/getbasket')
-                    .then(res => res.text())
+                fetch('basket/GetBasket')
+                    .then(res => res.json())
                     .then(data => {
-                        $('.minicart-inner-content').html(data);
-                    });
+                        $(".notification").html(data);
+                    })
             });
     })
 
@@ -283,11 +281,10 @@
             .then(data => {
                 $('.basketindexcontainer').html(data);
 
-                fetch('basket/GetBasketCount')
-                    .then(res => res.text())
+                fetch('basket/GetBasket')
+                    .then(res => res.json())
                     .then(data => {
-                        console.log("dsa")
-                        $(".basketelementscount").html(data);
+                        $(".notification").html(data);
                     })
             })
     })
@@ -354,24 +351,6 @@
 
 
 
-
-    //----------------------------------------------- Tabmenu Navbar
-
-    let path = window.location.pathname
-    path = path.split('/')
-    let links = $('.header-menu-for-tabmenu')
-
-    for (var i = 0; i < links.length; i++) {
-        console.log("djas")
-        let hrefpath = links[i].children[0].getAttribute('href').split('/')
-        if (hrefpath[1].toLowerCase() == path[1].toLowerCase()) {
-            links[i].classList.add('active')
-        } else {
-            links[i].classList.remove('active')
-        }
-    }
-
-
     //----------------------------------------------- Account Orders toggle table
 
     $(document).on('show.bs.collapse', '.accordian-body', function () {
@@ -416,43 +395,6 @@
                 $(".divforreply").html(data);
             })
     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //----------------------------------------------- Getting value of sortbycount from select option in products (shop page) index page
-
-    //console.log("dasda")
-    //$("#hellolar").change(function () {
-    //    console.log($(this).val());
-    //    console.log("salam")
-    //});
-
-
-    //$('#hellolar').change(function () {
-
-    //    var select = document.getElementById('hellolar');
-    //    var value = select.options[select.selectedIndex].value;
-    //    console.log(value)
-    //});
-
-
-
-
-
-
-
-
 
 
 

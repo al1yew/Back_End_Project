@@ -1,0 +1,36 @@
+﻿@model List<HomeService>
+
+@{
+    int no = 0;
+}
+<h1>Home Service</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th class="col-lg-1">№</th>
+            <th class="col-lg-1">Image</th>
+            <th class="col-lg-3">Title</th>
+            <th class="col-lg-1">SubTitle</th>
+            <th class="col-lg-1">Color</th>
+            <th class="col-lg-1">Update</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (HomeService homeService in Model)
+        {
+            no++;
+            <tr>
+                <td class="col-lg-1">@no</td>
+                <td class="col-lg-1"><img style=" width: 150px;" src="~/assets/img/icon/@homeService.Image" alt="banner-image"></td>
+                <td class="col-lg-3">@homeService.Title</td>
+                <td class="col-lg-3">@homeService.SubTitle</td>
+                <td class="col-lg-3" style="font-size:24px; color: @(homeService.Color)">@homeService.Color <div style="width: 50px; height: 50px; background-color: @homeService.Color">.</div></td>
+                <td class="col-lg-1">
+                    <a class="btn btn-warning" asp-area="Manage" asp-controller="MainPage" asp-action="ServiceUpdate" asp-route-id="@homeService.Id">Update</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
