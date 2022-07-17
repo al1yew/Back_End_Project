@@ -52,7 +52,6 @@ namespace Back_End_Project.Controllers
 
             Contact contact = new Contact
             {
-                AppUserId = appUser != null ? appUser.Id : null,
                 Name = contactUsVM.Name.Trim(),
                 Phone = contactUsVM.Phone,
                 Message = contactUsVM.Message.Trim(),

@@ -1,0 +1,23 @@
+﻿@model BlogCommentReply
+
+<h1>Reply</h1>
+
+<div class=" row justify-content-center">
+    <div class="col-lg-8">
+        <form method="post">
+            <div class="mb-3">
+                @ViewBag.CommentForReply
+            </div>
+            <div class="mb-3">
+                <label asp-for="ResponseText" class="form-label">Response Text</label>
+                <input asp-for="ResponseText" class="form-control">
+                <span class="text-danger" asp-validation-for="ResponseText"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Reply</button>
+        </form>
+    </div>
+</div>
+
+@section Script{
+    <partial name="_ValidationPartial">
+}

@@ -1,2 +1,83 @@
-﻿@model List<BlogComment>
+﻿@model PaginationList<BlogComment>
+@{
+    int no = 0;
+}
 
+<div class="row justify-content-between">
+    <div class="col-lg-2">
+        <h1>Comments</h1>
+    </div>
+    <div class="col-lg-6">
+        <form>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 align-items-center py-2">
+                    <label class="form-label">Select:</label>
+                    <select name="select" class="form-select" aria-label="Default select example">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-primary" type="submit">Filter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 tblContent">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th class="col-lg-1">№</th>
+                    <th class="col-lg-3">Comment</th>
+                    <th class="col-lg-1">Has response?</th>
+                    <th class="col-lg-1">User Id</th>
+                    <th class="col-lg-1">Email</th>
+                    <th class="col-lg-1">Reply</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (BlogComment blogComment in Model)
+                {
+                    no++;
+                    <tr>
+                        <td class="col-lg-1">@no</td>
+                        <td class="col-lg-2">@blogComment.Comment</td>
+                        <td class="col-lg-2">@blogComment.HasResponse</td>
+                        <td class="col-lg-2">@blogComment.AppUserId</td>
+                        <td class="col-lg-2">@blogComment.Email</td>
+                        <td class="col-lg-1">
+                            <a class="btn btn-warning" asp-area="Manage" asp-controller="Blog" asp-action="Reply" asp-route-id="@blogComment.Id">Reply</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row justify-content-center w-100">
+    <ul class="pagination ">
+        @if (Model.HasPrev)
+        {
+            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Blog" asp-action="Comments" asp-route-select="@ViewBag.Select" asp-route-page="1">@("<<")</a></li>
+
+            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Blog" asp-action="Comments" asp-route-select="@ViewBag.Select" asp-route-page="@(Model.Page-1)">@("<")</a></li>
+        }
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            <li class="page-item @(Model.Page == i ? "active":"")"><a class="page-link" asp-area="Manage" asp-controller="Blog" asp-action="Comments" asp-route-select="@ViewBag.Select" asp-route-page="@i">@i</a></li>
+        }
+        @if (Model.HasNext)
+        {
+            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Blog" asp-action="Comments" asp-route-select="@ViewBag.Select" asp-route-page="@(Model.Page+1)">@(">")</a></li>
+            <li class="page-item"><a class="page-link" asp-area="Manage" asp-controller="Blog" asp-action="Comments" asp-route-select="@ViewBag.Select" asp-route-page="@Model.PageCount">@(">>")</a></li>
+        }
+    </ul>
+</div>

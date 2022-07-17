@@ -11,19 +11,22 @@ namespace Back_End_Project.Models
         public int Id { get; set; }
 
         [StringLength(255)]
+        [Required]
         public string Name { get; set; }
 
         [Phone]
+        [Required]
         public string Phone { get; set; }
 
         [EmailAddress]
+        [Required]
         public string Email { get; set; }
 
         [StringLength(255)]
+        [Required]
         public string Subject { get; set; }
 
+        [Required]
         public string Message { get; set; }
-
-        public string AppUserId { get; set; }
     }
 }

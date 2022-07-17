@@ -4,7 +4,7 @@
     <div asp-validation-summary="ModelOnly"></div>
     <div class="comment-post-box">
         <div class="row">
-            @if (!User.Identity.IsAuthenticated)
+            @if (!User.Identity.IsAuthenticated && !User.IsInRole("SuperAdmin") && !User.IsInRole("Admin"))
             {
                 <div class="col-lg-4 col-md-4">
                     <label asp-for="AuthorName">Name</label>
@@ -17,14 +17,17 @@
                     <span class="text-danger text-danger" asp-validation-for="Email"></span>
                 </div>
             }
-            <div class="col-12">
-                <label asp-for="Comment"></label>
-                <textarea asp-for="Comment" placeholder="Write a comment"></textarea>
-                <span class="text-danger text-danger" asp-validation-for="Comment"></span>
-            </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">Comment</button>
-            </div>
+            @if (!User.IsInRole("SuperAdmin") && !User.IsInRole("Admin"))
+            {
+                <div class="col-12">
+                    <label asp-for="Comment"></label>
+                    <textarea asp-for="Comment" placeholder="Write a comment"></textarea>
+                    <span class="text-danger text-danger" asp-validation-for="Comment"></span>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Comment</button>
+                </div>
+            }
         </div>
     </div>
 </form>

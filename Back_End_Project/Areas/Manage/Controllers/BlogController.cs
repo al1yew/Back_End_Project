@@ -294,9 +294,60 @@ namespace Back_End_Project.Areas.Manage.Controllers
             return PartialView("_BlogIndexPartial", PaginationList<Blog>.Create(query, page, select));
         }
 
-        public async Task<IActionResult> Comments()
+        public async Task<IActionResult> Comments(int select, int page = 1)
         {
-            return View(await _context.BlogComments.ToListAsync());
+            IQueryable<BlogComment> blogComments = _context.BlogComments.Include(b => b.BlogCommentReplies).AsQueryable();
+
+            if (select <= 0)
+            {
+                select = 5;
+            }
+
+            ViewBag.Select = select;
+
+            return View(PaginationList<BlogComment>.Create(blogComments, page, select));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Reply(int? id)
+        {
+            ViewBag.CommentForReply = _context.BlogComments.FirstOrDefaultAsync(x => x.Id == id).Result.Comment;
+            //birdene komente gore viewmodel yaratmagi sehv bilirem
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Reply(int? id, BlogCommentReply blogCommentReply)
+        {
+            if (id == null) return BadRequest();
+
+            BlogComment dbBlogComment = await _context.BlogComments.FirstOrDefaultAsync(b => b.Id == id);
+
+            if (dbBlogComment == null) return NotFound();
+
+            dbBlogComment.HasResponse = true;
+
+            AppUser appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+            BlogCommentReply bcReply = new BlogCommentReply
+            {
+                AdminImage = appUser.Image,
+                AdminName = appUser.Name,
+                AdminUserId = appUser.Id,
+                ResponseTime = DateTime.UtcNow.AddHours(4),
+                IsChildComment = true,
+                AppUserId = null,
+                ResponseText = blogCommentReply.ResponseText,
+                BlogCommentId = dbBlogComment.Id
+            };
+
+            await _context.BlogCommentReplies.AddAsync(bcReply);
+
+            await _context.SaveChangesAsync();
+
+            TempData["success"] = "Comment Is Replied";
+
+            return RedirectToAction("Comments");
         }
     }
 }

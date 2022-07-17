@@ -14,5 +14,6 @@ namespace Back_End_Project.Areas.Manage.ViewModels.SearchViewModels
         public List<AppUser> Users { get; set; }
         public List<Order> Orders { get; set; }
         public List<Blog> Blogs { get; set; }
+
     }
 }
