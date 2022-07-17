@@ -67,7 +67,6 @@ namespace Back_End_Project.Areas.Manage.Controllers
             return View(await _context.Products.Include(p => p.ProductImages).FirstOrDefaultAsync(p => p.Id == id));
         }
 
-
         [HttpGet]
         public async Task<IActionResult> Create()
         {

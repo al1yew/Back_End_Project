@@ -10,7 +10,6 @@ namespace Back_End_Project.Models
 {
     public class Blog
     {
-        //blog props - blog yazan yegin ki admindi cunki o admin panelden yazir, sonra onun burda relationun gurmag, AppUser ID ile
         public int Id { get; set; }
 
         [StringLength(255)]
@@ -49,5 +48,13 @@ namespace Back_End_Project.Models
 
         //relations with blog
         public List<BlogComment> BlogComments { get; set; }
+
+
+        //crud for Manage Area
+        public Nullable<DateTime> CreatedAt { get; set; }
+        public bool IsDeleted { get; set; }
+        public Nullable<DateTime> DeletedAt { get; set; }
+        public bool IsUpdated { get; set; }
+        public Nullable<DateTime> UpdatedAt { get; set; }
     }
 }
