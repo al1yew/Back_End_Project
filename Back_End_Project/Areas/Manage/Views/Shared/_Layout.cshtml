@@ -107,12 +107,18 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Blog" asp-action="Index" asp-area="Manage">
+            <li class="nav-item blogpage" style="cursor: pointer">
+                <a class="nav-link">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Blog</span>
                 </a>
             </li>
+
+            <ul class="toggle_ul_mainpage_blog" style="display: none">
+                <li><a style="text-decoration:none; color:white" asp-controller="Blog" asp-action="Index">Blogs</a></li>
+                <li><a style="text-decoration:none; color:white" asp-controller="BlogTag" asp-action="Index">Blog Tags</a></li>
+                <li><a style="text-decoration:none; color:white" asp-controller="BlogCategory" asp-action="Index">Blog Categories</a></li>
+            </ul>
 
             <li class="nav-item mainpage" style="cursor: pointer">
                 <a class="nav-link">

@@ -54,113 +54,113 @@ namespace Back_End_Project.Areas.Manage.Controllers
             return View(PaginationList<Blog>.Create(query, page, select));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Create()
-        {
-            //ViewBag.Tags = await _context.BlogTags.Where(b => !b.IsDeleted).ToListAsync();
-            //ViewBag.Categories = await _context.BlogCategories.Where(c => !c.IsDeleted && !c.IsMain).ToListAsync();
+        //[HttpGet]
+        //public async Task<IActionResult> Create()
+        //{
+        //    //ViewBag.Tags = await _context.BlogTags.Where(b => !b.IsDeleted).ToListAsync();
+        //    //ViewBag.Categories = await _context.BlogCategories.Where(c => !c.IsDeleted && !c.IsMain).ToListAsync();
 
-            ViewBag.Tags = await _context.BlogTags.ToListAsync();
-            ViewBag.Categories = await _context.BlogCategories.ToListAsync();
+        //    ViewBag.Tags = await _context.BlogTags.ToListAsync();
+        //    ViewBag.Categories = await _context.BlogCategories.ToListAsync();
 
-            return View();
-        }
+        //    return View();
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Blog blog)
-        {
-            ViewBag.Tags = await _context.BlogTags.ToListAsync();
-            ViewBag.Categories = await _context.BlogCategories.ToListAsync();
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(Blog blog)
+        //{
+        //    ViewBag.Tags = await _context.BlogTags.ToListAsync();
+        //    ViewBag.Categories = await _context.BlogCategories.ToListAsync();
 
-            if (!ModelState.IsValid) return View();
+        //    if (!ModelState.IsValid) return View();
 
-            if (!await _context.BlogTags.AnyAsync(b => !b.IsDeleted && b.Id == blog.BlogTagId))
-            {
-                ModelState.AddModelError("BlogTagId", "Select Tag!");
-                return View();
-            }
+        //    if (!await _context.BlogTags.AnyAsync(b => !b.IsDeleted && b.Id == blog.BlogTagId))
+        //    {
+        //        ModelState.AddModelError("BlogTagId", "Select Tag!");
+        //        return View();
+        //    }
 
-            if (product.CategoryId == null && !await _context.Categories.AnyAsync(c => !c.IsDeleted && !c.IsMain && c.Id == product.CategoryId))
-            {
-                ModelState.AddModelError("CategoryId", "Select category");
-                return View();
-            }
+        //    if (blog.CategoryId == null && !await _context.Categories.AnyAsync(c => !c.IsDeleted && !c.IsMain && c.Id == blog.CategoryId))
+        //    {
+        //        ModelState.AddModelError("CategoryId", "Select category");
+        //        return View();
+        //    }
 
-            if (product.Files != null && product.Files.Count() > 5)
-            {
-                ModelState.AddModelError("Files", "You can select maximum 5 images");
-                return View();
-            }
+        //    if (blog.Files != null && product.Files.Count() > 5)
+        //    {
+        //        ModelState.AddModelError("Files", "You can select maximum 5 images");
+        //        return View();
+        //    }
 
-            if (product.Photo != null)
-            {
-                if (!product.Photo.CheckContentType("image/jpeg")
-                    && !product.Photo.CheckContentType("image/jpg")
-                    && !product.Photo.CheckContentType("image/png")
-                    && !product.Photo.CheckContentType("image/gif"))
-                {
-                    ModelState.AddModelError("Photo", "Main image must be jpg(jpeg) format");
-                    return View();
-                }
+        //    if (product.Photo != null)
+        //    {
+        //        if (!product.Photo.CheckContentType("image/jpeg")
+        //            && !product.Photo.CheckContentType("image/jpg")
+        //            && !product.Photo.CheckContentType("image/png")
+        //            && !product.Photo.CheckContentType("image/gif"))
+        //        {
+        //            ModelState.AddModelError("Photo", "Main image must be jpg(jpeg) format");
+        //            return View();
+        //        }
 
-                if (product.Photo.CheckFileLength(15000))
-                {
-                    ModelState.AddModelError("Photo", "Main image size must be at most 15MB");
-                    return View();
-                }
+        //        if (product.Photo.CheckFileLength(15000))
+        //        {
+        //            ModelState.AddModelError("Photo", "Main image size must be at most 15MB");
+        //            return View();
+        //        }
 
-                product.Image = await product.Photo.CreateAsync(_env, "assets", "img", "product");
-            }
-            else
-            {
-                ModelState.AddModelError("Photo", "Main image is required");
-                return View();
-            }
+        //        product.Image = await product.Photo.CreateAsync(_env, "assets", "img", "product");
+        //    }
+        //    else
+        //    {
+        //        ModelState.AddModelError("Photo", "Main image is required");
+        //        return View();
+        //    }
 
-            if (product.Files != null && product.Files.Count() > 0)
-            {
-                List<ProductImage> productImages = new List<ProductImage>();
+        //    if (product.Files != null && product.Files.Count() > 0)
+        //    {
+        //        List<ProductImage> productImages = new List<ProductImage>();
 
-                foreach (IFormFile file in product.Files)
-                {//burda content type duzeldmek gesheng olsun
-                    if (!file.CheckContentType("image/jpeg")
-                    && !file.CheckContentType("image/jpg")
-                    && !file.CheckContentType("image/png")
-                    && !file.CheckContentType("image/gif"))
-                    {
-                        ModelState.AddModelError("Files", "Main image must be image format");
-                        return View();
-                    }
+        //        foreach (IFormFile file in product.Files)
+        //        {//burda content type duzeldmek gesheng olsun
+        //            if (!file.CheckContentType("image/jpeg")
+        //            && !file.CheckContentType("image/jpg")
+        //            && !file.CheckContentType("image/png")
+        //            && !file.CheckContentType("image/gif"))
+        //            {
+        //                ModelState.AddModelError("Files", "Main image must be image format");
+        //                return View();
+        //            }
 
-                    if (file.CheckFileLength(15000))
-                    {
-                        ModelState.AddModelError("Files", "Each image's size must be at most 15MB");
-                        return View();
-                    }
+        //            if (file.CheckFileLength(15000))
+        //            {
+        //                ModelState.AddModelError("Files", "Each image's size must be at most 15MB");
+        //                return View();
+        //            }
 
-                    ProductImage productImage = new ProductImage
-                    {
-                        Image = await file.CreateAsync(_env, "assets", "img", "product-slider-imgs")
-                    };
+        //            ProductImage productImage = new ProductImage
+        //            {
+        //                Image = await file.CreateAsync(_env, "assets", "img", "product-slider-imgs")
+        //            };
 
-                    productImages.Add(productImage);
-                }
+        //            productImages.Add(productImage);
+        //        }
 
-                product.ProductImages = productImages;
-            }
+        //        product.ProductImages = productImages;
+        //    }
 
-            product.Name = product.Name.Trim();
+        //    product.Name = product.Name.Trim();
 
-            await _context.Products.AddAsync(product);
+        //    await _context.Products.AddAsync(product);
 
-            product.CreatedAt = DateTime.UtcNow.AddHours(4);
+        //    product.CreatedAt = DateTime.UtcNow.AddHours(4);
 
-            await _context.SaveChangesAsync();
+        //    await _context.SaveChangesAsync();
 
-            TempData["success"] = "Product Is Created!";
+        //    TempData["success"] = "Product Is Created!";
 
-            return RedirectToAction("Index");
-        }
+        //    return RedirectToAction("Index");
+        //}
     }
 }

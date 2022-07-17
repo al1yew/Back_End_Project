@@ -7,6 +7,11 @@ $(document).ready(function () {
         $(".toggle_ul_mainpage").toggle(500);
     });
 
+    //----------------------------------------------- Aside menu toggle menu for mainpage
+
+    $(".blogpage").click(function () {
+        $(".toggle_ul_mainpage_blog").toggle(500);
+    });
 
 
     //----------------------------------------------- Delete element
