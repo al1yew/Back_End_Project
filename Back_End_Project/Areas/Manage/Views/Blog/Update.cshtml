@@ -1,11 +1,11 @@
 ﻿@model BlogVM
 
 @{ SelectList categories = new SelectList(ViewBag.Categories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
-    SelectList tags = new SelectList(ViewBag.Tags, nameof(BlogTag.Id), nameof(BlogTag.Name)); 
-    SelectList authors = new SelectList(ViewBag.Authors, nameof(BlogAuthor.Id), nameof(BlogAuthor.AuthorName)); 
-    }
+    SelectList tags = new SelectList(ViewBag.Tags, nameof(BlogTag.Id), nameof(BlogTag.Name));
+    SelectList authors = new SelectList(ViewBag.Authors, nameof(BlogAuthor.Id), nameof(BlogAuthor.AuthorName));
+}
 
-<h1>Create Blog</h1>
+<h1>Update Blog</h1>
 
 <div class="my-3 row justify-content-center">
     <div class="col-lg-11">
@@ -33,7 +33,7 @@
             <div class="col-lg-4 pl-2 form-group">
                 <label class="form-label" asp-for="BlogAuthorId">Brand</label>
                 <select asp-for="BlogAuthorId" class="form-control" asp-items="@authors">
-                    <option value="0">Authors</option>
+                    <option value="0">None</option>
                 </select>
                 <span class="text-danger" asp-validation-for="BlogAuthorId"></span>
             </div>
@@ -91,7 +91,7 @@
                     <span class="text-danger" asp-validation-for="AuthorPosition"></span>
                 </div>
             </div>
-            <button type="submit" class="ml-2 btn btn-primary">Create</button>
+            <button type="submit" class="ml-2 btn btn-primary">Update</button>
         </form>
     </div>
 </div>

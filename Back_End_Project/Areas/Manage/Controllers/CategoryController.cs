@@ -198,9 +198,9 @@ namespace Back_End_Project.Areas.Manage.Controllers
                     return View();
                 }
 
-                FileHelper.DeleteFile(_env, dbCategory.Image, "assets", "images", "product");
+                FileHelper.DeleteFile(_env, dbCategory.Image, "assets", "img", "product");
 
-                dbCategory.Image = await category.Photo.CreateAsync(_env, "assets", "images");
+                dbCategory.Image = await category.Photo.CreateAsync(_env, "assets", "img", "product");
             }
 
             dbCategory.Name = category.Name.Trim();

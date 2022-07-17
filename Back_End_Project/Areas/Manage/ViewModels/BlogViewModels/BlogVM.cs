@@ -12,7 +12,7 @@ namespace Back_End_Project.Areas.Manage.ViewModels.BlogViewModels
     {
         [StringLength(255)]
         public string BlogTitle { get; set; }
-
+        public int BlogId { get; set; }
 
         public bool IsRecent { get; set; }
 

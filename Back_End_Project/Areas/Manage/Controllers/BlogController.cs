@@ -1,6 +1,7 @@
 ﻿using Back_End_Project.Areas.Manage.ViewModels.BlogViewModels;
 using Back_End_Project.DAL;
 using Back_End_Project.Extensions;
+using Back_End_Project.Helper;
 using Back_End_Project.Models;
 using Back_End_Project.ViewModels;
 using Microsoft.AspNetCore.Hosting;
@@ -79,21 +80,27 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
             if (!ModelState.IsValid) return View();
 
-            if (!await _context.BlogTags.AnyAsync(b => !b.IsDeleted && b.Id != blogVM.BlogTagId))
+            if (!await _context.BlogTags.AnyAsync(b => !b.IsDeleted && b.Id == blogVM.BlogTagId))
             {
                 ModelState.AddModelError("BlogTagId", "Select Tag!");
                 return View();
             }
 
-            if (!await _context.Categories.AnyAsync(c => !c.IsDeleted && c.Id != blogVM.BlogCategoryId))
+            if (!await _context.BlogCategories.AnyAsync(c => !c.IsDeleted && c.Id == blogVM.BlogCategoryId))
             {
                 ModelState.AddModelError("BlogCategoryId", "Select category");
                 return View();
             }
 
-            if (blogVM.BlogAuthorId != 0 && blogVM.AuthorName != null && blogVM.AuthorPosition !=null && blogVM.AuthorSurname != null && blogVM.LinkedInUrl != null && blogVM.AuthorPhoto != null)
+            if (blogVM.BlogAuthorId != 0 && blogVM.AuthorName != null && blogVM.AuthorPosition != null && blogVM.AuthorSurname != null && blogVM.LinkedInUrl != null && blogVM.AuthorPhoto != null)
             {
                 ModelState.AddModelError("", "You cant select author and also fill inputs below! Choose one option to do!");
+                return View();
+            }
+
+            if (blogVM.BlogAuthorId == 0 && blogVM.AuthorName == null && blogVM.AuthorPosition == null && blogVM.AuthorSurname == null && blogVM.LinkedInUrl == null && blogVM.AuthorPhoto == null)
+            {
+                ModelState.AddModelError("", "You must select author or fill inputs below! Choose one option to do!");
                 return View();
             }
 
@@ -202,5 +209,142 @@ namespace Back_End_Project.Areas.Manage.Controllers
 
             return RedirectToAction("Index");
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int? id)
+        {
+            if (id == null) return BadRequest();
+
+            Blog blog = await _context.Blogs.Include(b => b.BlogAuthor).Include(b => b.BlogTag).Include(b => b.BlogCategory).FirstOrDefaultAsync(c => !c.IsDeleted && c.Id == id);
+
+            if (blog == null) return NotFound();
+
+            ViewBag.Tags = await _context.BlogTags.Where(b => !b.IsDeleted).ToListAsync();
+            ViewBag.Categories = await _context.BlogCategories.Where(c => !c.IsDeleted).ToListAsync();
+            ViewBag.Authors = await _context.BlogAuthors.ToListAsync();
+
+            BlogVM blogVM = new BlogVM
+            {
+                BlogAuthorId = blog.BlogAuthorId,
+                BlogCategoryId = blog.BlogCategoryId,
+                BlogTagId = blog.BlogTagId,
+                BlogImage = blog.BlogImage,
+                BlogTitle = blog.BlogTitle,
+                IsRecent = blog.IsRecent,
+                UpperText = blog.UpperText,
+                StrongText = blog.StrongText,
+                BottomText = blog.BottomText
+            };
+
+            return View(blogVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(int? id, BlogVM blogVM)
+        {
+            ViewBag.Tags = await _context.BlogTags.Where(b => !b.IsDeleted).ToListAsync();
+            ViewBag.Categories = await _context.BlogCategories.Where(c => !c.IsDeleted).ToListAsync();
+            ViewBag.Authors = await _context.BlogAuthors.ToListAsync();
+
+            if (!ModelState.IsValid) return View();
+
+            if (id == null) return BadRequest();
+
+            Blog dbBlog = await _context.Blogs.FirstOrDefaultAsync(c => !c.IsDeleted && c.Id == id);
+
+            if (dbBlog == null) return NotFound();
+
+            if (blogVM.BlogAuthorId != 0 && blogVM.AuthorName != null && blogVM.AuthorPosition != null && blogVM.AuthorSurname != null && blogVM.LinkedInUrl != null && blogVM.AuthorPhoto != null)
+            {
+                ModelState.AddModelError("", "You cant select author and also fill inputs below! Choose one option to do!");
+                return View();
+            }
+
+            if (blogVM.BlogAuthorId == 0 && blogVM.AuthorName == null && blogVM.AuthorPosition == null && blogVM.AuthorSurname == null && blogVM.LinkedInUrl == null && blogVM.AuthorPhoto == null)
+            {
+                ModelState.AddModelError("", "You must select author or fill inputs below! Choose one option to do!");
+                return View();
+            }
+
+            if (blogVM.BlogPhoto != null)
+            {
+                if (!blogVM.BlogPhoto.CheckContentType("image/jpeg")
+                    && !blogVM.BlogPhoto.CheckContentType("image/jpg")
+                    && !blogVM.BlogPhoto.CheckContentType("image/png")
+                    && !blogVM.BlogPhoto.CheckContentType("image/gif"))
+                {
+                    ModelState.AddModelError("BlogPhoto", "Main image must be image format");
+                    return View();
+                }
+
+                if (blogVM.BlogPhoto.CheckFileLength(15000))
+                {
+                    ModelState.AddModelError("BlogPhoto", "Main image size must be at most 15MB");
+                    return View();
+                }
+
+                FileHelper.DeleteFile(_env, dbBlog.BlogImage, "assets", "img", "blog");
+
+                dbBlog.BlogImage = await blogVM.BlogPhoto.CreateAsync(_env, "assets", "img", "blog");
+            }
+
+            if (blogVM.AuthorPhoto != null)
+            {
+                if (!blogVM.AuthorPhoto.CheckContentType("image/jpeg")
+                    && !blogVM.AuthorPhoto.CheckContentType("image/jpg")
+                    && !blogVM.AuthorPhoto.CheckContentType("image/png")
+                    && !blogVM.AuthorPhoto.CheckContentType("image/gif"))
+                {
+                    ModelState.AddModelError("AuthorPhoto", "Main image must be image format");
+                    return View();
+                }
+
+                if (blogVM.AuthorPhoto.CheckFileLength(15000))
+                {
+                    ModelState.AddModelError("AuthorPhoto", "Main image size must be at most 15MB");
+                    return View();
+                }
+
+                //silmeye ehtiyac yoxdu
+                //FileHelper.DeleteFile(_env, dbBlog.BlogImage, "assets", "img", "blog");
+
+                dbBlog.BlogAuthor.AuthorImage = await blogVM.AuthorPhoto.CreateAsync(_env, "assets", "img", "blog");
+            }
+
+            BlogAuthor blogAuthor = new BlogAuthor
+            {
+                AuthorImage = blogVM.AuthorImage,
+                AuthorName = blogVM.AuthorName + " " + blogVM.AuthorSurname,
+                AuthorPosition = blogVM.AuthorPosition,
+                LinkedInUrl = blogVM.LinkedInUrl
+            };
+
+            if (blogAuthor.AuthorImage != null && blogAuthor.AuthorName != null && blogAuthor.AuthorPosition != null && blogAuthor.LinkedInUrl != null)
+            {
+                await _context.BlogAuthors.AddAsync(blogAuthor);
+                await _context.SaveChangesAsync();
+            }
+
+            dbBlog.BlogTitle = blogVM.BlogTitle.Trim();
+            dbBlog.BlogAuthorId = blogVM.BlogAuthorId == 0 ? blogAuthor.Id : blogVM.BlogAuthorId;
+            dbBlog.BlogCategoryId = blogVM.BlogCategoryId;
+            dbBlog.BlogTagId = blogVM.BlogTagId;
+            dbBlog.BlogImage = blogVM.BlogImage;
+            dbBlog.BlogTitle = blogVM.BlogTitle;
+            dbBlog.IsRecent = blogVM.IsRecent;
+            dbBlog.IsUpdated = true;
+            dbBlog.UpdatedAt = DateTime.UtcNow.AddHours(4);
+            dbBlog.UpperText = blogVM.UpperText;
+            dbBlog.StrongText = blogVM.StrongText;
+            dbBlog.BottomText = blogVM.BottomText;
+
+            await _context.SaveChangesAsync();
+
+            TempData["success"] = "Blog Is Updated!";
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

@@ -12,7 +12,16 @@
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
                                 <li class="breadcrumb-item"><a asp-controller="Blog" asp-action="Index">Blog</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">@Model.Blog.BlogTitle.Substring(0, 15) ...</li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    @if (@Model.Blog.BlogTitle.Length > 15)
+                                    {
+                                        @(Model.Blog.BlogTitle.ToString().Substring(0, 15) + "...")
+                                    }
+                                    else
+                                    {
+                                        @Model.Blog.BlogTitle
+                                    }
+                                </li>
                             </ul>
                         </nav>
                     </div>

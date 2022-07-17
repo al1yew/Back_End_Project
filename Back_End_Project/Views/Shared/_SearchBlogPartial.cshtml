@@ -8,7 +8,7 @@
         </a>
 
         <a style="font-size:12px; margin-left:10px;" asp-controller="Blog" asp-action="Detail" asp-route-id="@blog.Id" target="_blank">
-            @if (blog.BlogTitle != null)
+            @if (blog.BlogTitle.Length > 21)
             {
                 @(blog.BlogTitle.Substring(0, 20)+ "...")
             }
