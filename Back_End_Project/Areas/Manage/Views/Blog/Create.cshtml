@@ -1,57 +1,95 @@
-﻿@model Blog
+﻿@model BlogVM
 
 @{ SelectList categories = new SelectList(ViewBag.Categories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
-    SelectList tags = new SelectList(ViewBag.Tags, nameof(BlogTag.Id), nameof(BlogTag.Name)); }
+    SelectList tags = new SelectList(ViewBag.Tags, nameof(BlogTag.Id), nameof(BlogTag.Name)); 
+    SelectList authors = new SelectList(ViewBag.Authors, nameof(BlogAuthor.Id), nameof(BlogAuthor.AuthorName)); 
+    }
 
 <h1>Create Blog</h1>
 
 <div class="my-3 row justify-content-center">
     <div class="col-lg-11">
+        <div class="text text-danger" asp-validation-summary="ModelOnly"></div>
         <form class="row justify-content-between" method="post" enctype="multipart/form-data">
             <div class="col-lg-12  form-group">
-                <label asp-for="BlogTitle" class="form-label"> Product Name</label>
+                <label asp-for="BlogTitle" class="form-label">Title</label>
                 <input asp-for="BlogTitle" class="form-control">
                 <span asp-validation-for="BlogTitle" class="text-danger"></span>
             </div>
-            <div class="col-lg-6 pr-2 form-group">
+            <div class="col-lg-4 pr-2 form-group">
                 <label class="form-label" asp-for="BlogCategoryId">Category</label>
                 <select asp-for="BlogCategoryId" class="form-control" asp-items="@categories">
                     <option value="">Select Category</option>
                 </select>
                 <span class="text-danger" asp-validation-for="BlogCategoryId"></span>
             </div>
-            <div class="col-lg-6 pl-2 form-group">
+            <div class="col-lg-4 pl-2 form-group">
                 <label class="form-label" asp-for="BlogTagId">Brand</label>
                 <select asp-for="BlogTagId" class="form-control" asp-items="@tags">
-                    <option value="">Select Brand</option>
+                    <option value="">Select Tag</option>
                 </select>
                 <span class="text-danger" asp-validation-for="BlogTagId"></span>
             </div>
-            <div class="col-lg-6 pr-2 mb-3 form-group">
+            <div class="col-lg-4 pl-2 form-group">
+                <label class="form-label" asp-for="BlogAuthorId">Brand</label>
+                <select asp-for="BlogAuthorId" class="form-control" asp-items="@authors">
+                    <option value="0">Authors</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BlogAuthorId"></span>
+            </div>
+            <div class="col-lg-12 pr-2 mb-3 form-group">
                 <label asp-for="UpperText" class="form-label">Upper text</label>
-                <input asp-for="UpperText" class="form-control">
+                <textarea asp-for="UpperText" rows="10" class="form-control"></textarea>
                 <span class="text-danger" asp-validation-for="UpperText"></span>
             </div>
-            <div class="col-lg-6 pl-2 mb-3 form-group">
+            <div class="col-lg-12 pl-2 mb-3 form-group">
                 <label asp-for="StrongText" class="form-label">Middle text</label>
-                <input asp-for="StrongText" class="form-control">
+                <textarea asp-for="StrongText" rows="10" class="form-control"></textarea>
                 <span class="text-danger" asp-validation-for="StrongText"></span>
             </div>
-            <div class="col-lg-6 pr-2 mb-3 form-group">
+            <div class="col-lg-12 pr-2 mb-3 form-group">
                 <label asp-for="BottomText" class="form-label">Bottom text</label>
-                <input asp-for="BottomText" class="form-control">
+                <textarea asp-for="BottomText" rows="10" class="form-control"></textarea>
                 <span class="text-danger" asp-validation-for="BottomText"></span>
             </div>
-            <div class="col-lg-12 row">
-                <div class="col-lg-3 ml-3 form-check">
-                    <input asp-for="IsRecent" class="form-check-input ">
-                    <label asp-for="IsRecent" class="form-check-label">It will be shown as recent post in blog detail page and main blog page</label>
-                </div>
+            <div class="col-lg-6 ml-3 form-check">
+                <input asp-for="IsRecent" class="form-check-input ">
+                <label asp-for="IsRecent" class="form-check-label">It will be shown as recent post in blog detail page and main blog page</label>
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-4">
                 <label asp-for="BlogPhoto"></label>
                 <input asp-for="BlogPhoto" class="form-control" placeholder="Main Photo">
                 <span class="text text-danger" asp-validation-for="BlogPhoto"></span>
+            </div>
+
+            <p class="col-lg-12">Author information(each empty input will be replaced with current user's information )</p>
+            <p class="col-lg-12 authorinfotoggle btn btn-primary text-center mb-2">click to open author info</p>
+            <div class="authorinfo row col-lg-12 mt-2" style="display: none;">
+                <div class="col-lg-6 pr-2 mb-3 form-group">
+                    <label asp-for="AuthorPhoto" class="form-label">Choose image for author</label>
+                    <input asp-for="AuthorPhoto" class="form-control">
+                    <span class="text-danger" asp-validation-for="AuthorPhoto"></span>
+                </div>
+                <div class="col-lg-6 pr-2 mb-3 form-group">
+                    <label asp-for="AuthorName" class="form-label">Name</label>
+                    <input asp-for="AuthorName" class="form-control">
+                    <span class="text-danger" asp-validation-for="AuthorName"></span>
+                </div>
+                <div class="col-lg-6 pr-2 mb-3 form-group">
+                    <label asp-for="AuthorSurname" class="form-label">Surname</label>
+                    <input asp-for="AuthorSurname" class="form-control">
+                    <span class="text-danger" asp-validation-for="AuthorSurname"></span>
+                </div>
+                <div class="col-lg-6 pr-2 mb-3 form-group">
+                    <label asp-for="LinkedInUrl" class="form-label">LinkedIn url</label>
+                    <input asp-for="LinkedInUrl" class="form-control">
+                    <span class="text-danger" asp-validation-for="LinkedInUrl"></span>
+                </div>
+                <div class="col-lg-12 pr-2 mb-3 form-group">
+                    <label asp-for="AuthorPosition" class="form-label">Position</label>
+                    <input asp-for="AuthorPosition" class="form-control">
+                    <span class="text-danger" asp-validation-for="AuthorPosition"></span>
+                </div>
             </div>
             <button type="submit" class="ml-2 btn btn-primary">Create</button>
         </form>

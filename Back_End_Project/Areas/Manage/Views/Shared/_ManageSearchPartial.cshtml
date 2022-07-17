@@ -8,7 +8,6 @@
     int orderitemno = 0;
     int userno = 0;
     int blogno = 0;
-    int settingno = 0;
 }
 
 
@@ -302,8 +301,62 @@
 
 @if (Model.Blogs.Count > 0)
 {
-    <h4>Blogs</h4>
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Title</th>
+                <th>Image</th>
+                <th>Category</th>
+                <th>Tag</th>
+                <th>Author</th>
+                <th>Publish Date</th>
+                <th>Comments Count click to reply</th>
+                <th>Status</th>
+                <th>Update</th>
+                <th>Clear/Restore</th>
+            </tr>
+        </thead>
 
-    <p>olacag hele</p>
+        <tbody>
+            @foreach (Blog blog in Model.Blogs)
+            {
+                blogno++;
+                <tr>
+                    <td class="col-lg-1">@blogno</td>
+                    <td class="col-lg-2">@blog.BlogTitle</td>
+                    <td class="col-lg-1"><img src="~/assets/img/blog/@blog.BlogImage" class="img-fluid" /></td>
+                    <td class="col-lg-1">@blog.BlogCategory.Name</td>
+                    <td class="col-lg-1">@blog.BlogTag.Name</td>
+                    <td class="col-lg-1">@blog.BlogAuthor.AuthorName</td>
+                    <td class="col-lg-1">@blog.PublishDate</td>
+                    <td class="col-lg-1"><a asp-controller="Blog" asp-action="ReplyComments" asp-route-id="@blog.Id">@blog.CommentsCount</a></td>
+                    <td class="col-lg-1" style="color:@(blog.IsDeleted ? "red" : "green")">@(blog.IsDeleted ? "Deleted" : "Active")</td>
+                    <td class="col-lg-1">
+                        @if (blog.IsDeleted == false)
+                        {
+                            <a class="btn btn-warning" asp-controller="Blog" asp-action="Update" asp-area="Manage" asp-route-id="@blog.Id">Update</a>
+                        }
+                        else
+                        {
+                            <p class="test text-danger" style="font-size:14px;">Restore for Update!</p>
+                        }
+                    </td>
+                    <td class="col-lg-1">
+                        @if (blog.IsDeleted)
+                        {
+                            <a class="btn btn-primary restoreBtn" asp-area="Manage" asp-controller="Blog"
+                               asp-action="Restore" asp-route-id="@blog.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Restore</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-danger deleteBtn" asp-area="Manage" asp-controller="Blog"
+                               asp-action="Delete" asp-route-id="@blog.Id" asp-route-select="@ViewBag.Select" asp-route-status="@ViewBag.Status">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 

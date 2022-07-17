@@ -56,10 +56,13 @@
                         <h5><a asp-controller="Blog" asp-action="Index" asp-route-tagid="@ViewBag.TagsForBlogsPage" asp-route-authorid="@item.Id" asp-route-searchvalue="@ViewBag.SearchForBlogsPage" asp-route-categoryId="@ViewBag.CategoriesForBlogsPage" asp-route-sortbycount="@ViewBag.SelectForBlogs">@item.AuthorName</a></h5>
                         <span>@item.AuthorPosition</span>
                         <div class="blog-widget-icon">
-                            <a href="@(item.LinkedInUrl)"><i class="fa fa-linkedin"></i></a>
-                            <a href="@(item.LinkedInUrl)"><i class="fa fa-facebook"></i></a>
-                            <a href="@(item.LinkedInUrl)"><i class="fa fa-twitch"></i></a>
-                            <a href="@(item.LinkedInUrl)"><i class="fa fa-pinterest"></i></a>
+                            @if (@item.LinkedInUrl != null)
+	                        {
+		                        <a href="@(item.LinkedInUrl)"><i class="fa fa-linkedin"></i></a>
+                                <a href="@(item.LinkedInUrl)"><i class="fa fa-facebook"></i></a>
+                                <a href="@(item.LinkedInUrl)"><i class="fa fa-twitch"></i></a>
+                                <a href="@(item.LinkedInUrl)"><i class="fa fa-pinterest"></i></a>
+	                        }
                         </div>
                     </div>
                 </div>}

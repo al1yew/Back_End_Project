@@ -1,18 +1,24 @@
 ﻿
 $(document).ready(function () {
 
-    //----------------------------------------------- Aside menu toggle menu for mainpage
+    //----------------------------------------------- Aside menu toggle menu for Mainpage
 
     $(".mainpage").click(function () {
         $(".toggle_ul_mainpage").toggle(500);
     });
 
-    //----------------------------------------------- Aside menu toggle menu for mainpage
+    //----------------------------------------------- Aside menu toggle menu for Blog
 
     $(".blogpage").click(function () {
         $(".toggle_ul_mainpage_blog").toggle(500);
     });
 
+
+    //----------------------------------------------- Toggle menu for Blog Create view (author info)
+
+    $(".authorinfotoggle").click(function () {
+        $(".authorinfo").toggle(500);
+    });
 
     //----------------------------------------------- Delete element
 
